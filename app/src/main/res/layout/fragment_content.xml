@@ -1,0 +1,38 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="layout.ParentFragment"
+    android:id="@+id/fl1">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/linearLayout">
+
+        <fragment
+            tools:layout="@layout/fragment_f_bar_up"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:name="layout.FBarUp"
+            android:id="@+id/fragment4" />
+
+        <fragment
+            tools:layout="@layout/fragment_f_center"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:name="layout.FCenter"
+            android:id="@+id/fragment5"
+            android:layout_weight="1" />
+
+        <fragment
+            tools:layout="@layout/fragment_f__bar_down"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:name="layout.F_BarDown"
+            android:id="@+id/fragment6" />
+    </LinearLayout>
+</FrameLayout>

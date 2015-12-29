@@ -1,0 +1,117 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="layout.F_Game1"
+    android:background="@drawable/giftly">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left|center_vertical"
+        android:id="@+id/flMarcador">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/Game1Marcador"
+            android:text="0"
+            android:numeric="integer"
+            android:minWidth="14sp"
+            android:textColor="@color/GamesMarcador"
+            android:textAlignment="center"
+            android:layout_marginLeft="@dimen/buttons_emotion_distance_small" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|top">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/game1_title"
+            android:id="@+id/game1TVTitle"
+            android:layout_gravity="top|center_horizontal"
+            android:autoText="false"
+            android:textColor="#6F6177"
+            android:textSize="@dimen/gameTitle_small" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imVisor" />
+    </FrameLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/emotion_happy"
+            android:id="@+id/btHappy"
+            android:background="#fa8831"
+            android:textColor="#0B2E73"
+            android:layout_marginLeft="@dimen/buttons_emotion_distance_small"
+            android:layout_marginRight="@dimen/buttons_emotion_distance_small"
+            android:textSize="@dimen/buttons_emotions_size_small" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/emotion_surprised"
+            android:id="@+id/btCry"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/btAngry"
+            android:layout_toEndOf="@+id/btAngry"
+            android:background="#45d924"
+            android:textColor="#007363"
+            android:layout_marginLeft="@dimen/buttons_emotion_distance_small"
+            android:layout_marginRight="@dimen/buttons_emotion_distance_small"
+            android:textSize="@dimen/buttons_emotions_size_small" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/emotion_angry"
+            android:id="@+id/btAngry"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/btSad"
+            android:layout_toEndOf="@+id/btSad"
+            android:background="#e6101e"
+            android:textColor="#005A50"
+            android:layout_marginLeft="@dimen/buttons_emotion_distance_small"
+            android:layout_marginRight="@dimen/buttons_emotion_distance_small"
+            android:textSize="@dimen/buttons_emotions_size_small" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/emotion_sad"
+            android:id="@+id/btSad"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/btHappy"
+            android:layout_toEndOf="@+id/btHappy"
+            android:background="#972ad6"
+            android:textColor="#91D600"
+            android:layout_marginLeft="@dimen/buttons_emotion_distance_small"
+            android:layout_marginRight="@dimen/buttons_emotion_distance_small"
+            android:textSize="@dimen/buttons_emotions_size_small" />
+    </RelativeLayout>
+
+</FrameLayout>

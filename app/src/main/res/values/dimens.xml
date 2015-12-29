@@ -1,0 +1,11 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="gameTitle">30dp</dimen>
+    <dimen name="buttons_emotion_distance">10dp</dimen>
+    <dimen name="buttons_emotions_size">28dp</dimen>
+    <dimen name="buttons_emotions_size_small">18dp</dimen>
+    <dimen name="buttons_emotion_distance_small">7dp</dimen>
+    />
+</resources>

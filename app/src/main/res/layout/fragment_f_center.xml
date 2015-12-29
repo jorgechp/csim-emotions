@@ -1,0 +1,17 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="layout.FCenter"
+    android:id="@+id/fCenter">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="layout.FCenterContent"
+        android:id="@+id/fCenterContent"
+        android:layout_gravity="center"
+        tools:layout="@layout/fragment_f_center_content" />
+</FrameLayout>

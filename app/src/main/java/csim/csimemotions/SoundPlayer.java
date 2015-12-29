@@ -33,8 +33,15 @@ public class SoundPlayer {
         this.buildPlayer(context, loop);
     }
 
+    public void pause() {
+        mp.pause();
+    }
     public void destroy() {
         mp.stop();
+    }
+
+    public boolean isPlaying() {
+        return mp.isPlaying();
     }
 
     public void onDestroy() {

@@ -205,6 +205,14 @@ public class MainActivity extends ActionBarActivity {
     /*****/
 
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (this.isFinishing()) {
+
+        }
+    }
+
     /**
      * Genera la base de datos insertando todas las imagenes que existan en el directorio drawable
      * <p/>

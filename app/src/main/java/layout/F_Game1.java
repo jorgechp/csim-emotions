@@ -70,6 +70,7 @@ public class F_Game1 extends Fragment {
      * Maneja el contador de la interfaz
      */
     private TextView marcador;
+    private boolean wasSoundPlaying;
 
     public F_Game1() {
         // Required empty public constructor
@@ -102,6 +103,7 @@ public class F_Game1 extends Fragment {
         }
         this.respuestaUsuario = null;
         this.respuestaCorrecta = null;
+        this.wasSoundPlaying = false;
 
         this.dbc = new DataBaseController("Imagenes", "Sonidos", getActivity());
 
@@ -494,5 +496,27 @@ public class F_Game1 extends Fragment {
 
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (this.sonido.isPlaying()) {
+            this.sonido.destroy();
+            this.wasSoundPlaying = true;
+        }
+    }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (this.wasSoundPlaying) {
+            this.sonido.play(getActivity());
+            this.wasSoundPlaying = false;
+        }
+
+    }
 }

@@ -114,4 +114,17 @@
             android:textSize="@dimen/buttons_emotions_size_small" />
     </RelativeLayout>
 
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|center_vertical"
+        android:id="@+id/flFeedBack">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ivFeedback"
+            android:layout_marginRight="@dimen/buttons_emotion_distance" />
+    </FrameLayout>
+
 </FrameLayout>

@@ -18,6 +18,10 @@ import java.lang.reflect.Field;
  * status bar and navigation/system bar) with user interaction.
  */
 public class MainActivity extends ActionBarActivity {
+
+
+    private StateOfGame stateGame;
+
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -99,6 +103,13 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         mVisible = true;
+
+
+        /**
+         * Se instancia el estado del juego
+         */
+        this.stateGame = StateOfGame.getInstance();
+        this.stateGame.init();
 
 
         this.dbc = new DataBaseController("Imagenes", "Sonidos", this);
@@ -211,6 +222,10 @@ public class MainActivity extends ActionBarActivity {
         if (this.isFinishing()) {
 
         }
+    }
+
+    public StateOfGame getStateOfTheGame() {
+        return this.stateGame;
     }
 
     /**

@@ -7,62 +7,114 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <TableLayout
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/tableLayout">
+        android:id="@+id/llFragmentCenterContent">
 
-        <FrameLayout
+        <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/frameLayout">
+            android:layout_height="match_parent">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <FrameLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="@string/mainMenuBarUpTitle"
-                android:id="@+id/textView"
-                android:layout_gravity="center" />
-        </FrameLayout>
+                android:layout_marginBottom="@dimen/buttons_emotion_distance"
+                android:id="@+id/flTitle">
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/tableRow">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/mainMenuBarUpTitle"
+                    android:id="@+id/tvFCenterTitle"
+                    android:layout_gravity="center_horizontal" />
+            </FrameLayout>
 
-            <ImageButton
-                android:layout_width="wrap_content"
+            <FrameLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/ibGame1"
-                android:src="@mipmap/ic_launcher"
-                android:clickable="true" />
+                android:id="@+id/flStage1">
 
-            <ImageButton
-                android:layout_width="wrap_content"
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ibGame1"
+                    android:src="@mipmap/ic_launcher"
+                    android:layout_gravity="center" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/ibGame2"
-                android:src="@mipmap/ic_launcher"
-                android:clickable="true" />
+                android:id="@+id/flStage2">
 
-            <ImageButton
-                android:layout_width="wrap_content"
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ibGame2"
+                    android:src="@mipmap/ic_launcher"
+                    android:layout_gravity="center" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/ibSettings"
-                android:focusableInTouchMode="false"
-                android:src="@mipmap/ic_settings"
-                android:clickable="true" />
+                android:id="@+id/flStage3">
 
-        </TableRow>
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ibGame31"
+                    android:src="@mipmap/ic_launcher"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="@dimen/buttons_emotion_distance" />
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/tableRow2" />
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ibGame32"
+                    android:src="@mipmap/ic_launcher"
+                    android:layout_gravity="center_horizontal" />
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/tableRow3" />
-    </TableLayout>
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ibGame33"
+                    android:src="@mipmap/ic_launcher"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="@dimen/buttons_emotion_distance" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/flStage4">
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ibGame4"
+                    android:src="@mipmap/ic_launcher"
+                    android:layout_gravity="center_horizontal" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/flFinalStage">
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New Button"
+                    android:id="@+id/ibSettings"
+                    android:layout_gravity="right|bottom" />
+            </FrameLayout>
+
+        </TableLayout>
+    </LinearLayout>
+
 </FrameLayout>

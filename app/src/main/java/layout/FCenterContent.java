@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 import csim.csimemotions.R;
@@ -33,7 +34,7 @@ public class FCenterContent extends Fragment {
     private OnFragmentInteractionListener mListener;
     private ImageButton btGame1;
     private ImageButton btGame2;
-    private ImageButton btSettings;
+    private Button btSettings;
 
     private View.OnClickListener onClickListener;
 
@@ -117,7 +118,7 @@ public class FCenterContent extends Fragment {
 
         btGame1 = (ImageButton) getView().findViewById(R.id.ibGame1);
         btGame2 = (ImageButton) getView().findViewById(R.id.ibGame2);
-        btSettings = (ImageButton) getView().findViewById(R.id.ibSettings);
+        btSettings = (Button) getView().findViewById(R.id.ibSettings);
 
 
         btGame1.setOnClickListener(this.onClickListener);

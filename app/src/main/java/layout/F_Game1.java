@@ -25,8 +25,11 @@ import java.util.Random;
 import csim.csimemotions.Config;
 import csim.csimemotions.DataBaseController;
 import csim.csimemotions.Emotions;
+import csim.csimemotions.MainActivity;
 import csim.csimemotions.R;
 import csim.csimemotions.SoundPlayer;
+import csim.csimemotions.StateOfGame;
+import csim.csimemotions.States;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -64,6 +67,13 @@ public class F_Game1 extends Fragment {
 
     private SoundPlayer sonido;
     private SoundPlayer feedBackSoundBien, feedBackSoundMal;
+
+    private StateOfGame sg;
+
+    /**
+     * Muestra el estado actual de este juego en la lista de estados.
+     */
+    private States currentGame = States.GAME1;
 
 
     /**
@@ -203,6 +213,8 @@ public class F_Game1 extends Fragment {
         this.feedBackSoundMal = new SoundPlayer(R.raw.feedback_mal_1);
 
         this.sonido.play(getActivity());
+
+        this.sg = ((MainActivity) getActivity()).getStateOfTheGame();
 
 
     }
@@ -396,6 +408,8 @@ public class F_Game1 extends Fragment {
                 fManagerTransaction.replace(this.getId(), fg);
                 fManagerTransaction.remove(this);
                 fManagerTransaction.commit();
+
+                F_Game1.this.sg.chargeReward(this.currentGame);
                 break;
             case -1: //Respuesta incorrecta
                 this.feedBack(false);

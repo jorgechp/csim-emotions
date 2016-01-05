@@ -5,12 +5,17 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
+import csim.csimemotions.Config;
+import csim.csimemotions.MainActivity;
 import csim.csimemotions.R;
 
 /**
@@ -63,6 +68,7 @@ public class FCenterContent extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ((MainActivity) (getActivity())).setfCenter(this);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -125,7 +131,32 @@ public class FCenterContent extends Fragment {
         btGame2.setOnClickListener(this.onClickListener);
         btSettings.setOnClickListener(this.onClickListener);
 
+        this.resize();
 
+
+    }
+
+    private void resize() {
+        /**
+         * La separacion entre elementos de la interfaz se produce en tiempo de ejecucion
+         * ajustando el tamano en funcion de la resolucion de pantalla.
+         */
+        Display display = getActivity().getWindowManager().getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        display.getMetrics(outMetrics);
+
+        int dpHeight = (int) (outMetrics.heightPixels * Config.STAGES_WIDTH);
+        int dpWidth = (int) (outMetrics.widthPixels * Config.STAGES_WIDTH);
+
+
+        int stages[] = {R.id.flStage1, R.id.flStage2, R.id.flStage3, R.id.flStage4};
+        ViewGroup.MarginLayoutParams lp;
+        FrameLayout fl;
+        for (int stage : stages) {
+            fl = (FrameLayout) getActivity().findViewById(stage);
+            lp = (ViewGroup.MarginLayoutParams) fl.getLayoutParams();
+            lp.setMargins(0, dpHeight, 0, dpWidth);
+        }
     }
 
     @Override
@@ -161,6 +192,9 @@ public class FCenterContent extends Fragment {
             case R.id.ibGame1:
                 fg = new F_Game1();
                 break;
+            case R.id.ibGame2:
+                fg = new F_Game2();
+                break;
         }
 
         if (fg != null) {
@@ -170,5 +204,17 @@ public class FCenterContent extends Fragment {
             //fManagerTransaction.remove(this);
             fManagerTransaction.commit();
         }
+    }
+
+    /**
+     * Called when the fragment is visible to the user and actively running.
+     * This is generally
+     * tied to {@link Activity#onResume() Activity.onResume} of the containing
+     * Activity's lifecycle.
+     */
+    @Override
+    public void onResume() {
+        super.onResume();
+        this.resize();
     }
 }

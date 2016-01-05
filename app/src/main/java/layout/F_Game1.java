@@ -25,11 +25,13 @@ import java.util.Random;
 import csim.csimemotions.Config;
 import csim.csimemotions.DataBaseController;
 import csim.csimemotions.Emotions;
+import csim.csimemotions.IGame;
 import csim.csimemotions.MainActivity;
 import csim.csimemotions.R;
 import csim.csimemotions.SoundPlayer;
 import csim.csimemotions.StateOfGame;
 import csim.csimemotions.States;
+import csim.csimemotions.stageResults;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,7 +41,7 @@ import csim.csimemotions.States;
  * Use the {@link F_Game1#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class F_Game1 extends Fragment {
+public class F_Game1 extends Fragment implements IGame {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -138,7 +140,7 @@ public class F_Game1 extends Fragment {
                 }
 
 
-                int respuesta = F_Game1.this.continueGame();
+                stageResults respuesta = F_Game1.this.continueGame();
                 F_Game1.this.desactivarInferfaz();
                 F_Game1.this.procesarRespuesta(respuesta);
                 Handler handler = new Handler();
@@ -271,8 +273,8 @@ public class F_Game1 extends Fragment {
      *
      * @return int
      */
-    private int continueGame() {
-        int result = 0;
+    public stageResults continueGame() {
+        stageResults result = stageResults.GAME_STARTED;
         Random rnd = new Random();
         int newImage, newSound;
         String imageSelected[];
@@ -289,9 +291,9 @@ public class F_Game1 extends Fragment {
         } else {
             if (this.respuestaCorrecta == this.respuestaUsuario) {
                 this.correctImages.put(this.indexOfCurrentImage, true);
-                result = 1;
+                result = stageResults.PLAYER_WINS;
             } else {
-                result = -1;
+                result = stageResults.PLAYER_ERROR;
             }
             sonido.destroy();
         }
@@ -334,7 +336,7 @@ public class F_Game1 extends Fragment {
 
 
         } else {
-            result = -2;
+            result = stageResults.GAME_WON;
         }
 
         return result;
@@ -397,27 +399,27 @@ public class F_Game1 extends Fragment {
      *
      * @param respuesta
      */
-    private void procesarRespuesta(int respuesta) {
+    public void procesarRespuesta(stageResults respuesta) {
         switch (respuesta) {
-            case -2: //Fin del juego
+            case GAME_STARTED:  //Inicio del juego
+                break;
+            case GAME_WON: //Fin del juego
                 if (this.sonido != null) {
                     this.sonido.destroy();
                 }
-                Fragment fg = new FCenterContent();
                 FragmentTransaction fManagerTransaction = getFragmentManager().beginTransaction();
-                fManagerTransaction.replace(this.getId(), fg);
+                //fManagerTransaction.replace(this.getId(), fg);
                 fManagerTransaction.remove(this);
+                fManagerTransaction.show(((MainActivity) getActivity()).getfCenter());
                 fManagerTransaction.commit();
 
                 F_Game1.this.sg.chargeReward(this.currentGame);
                 break;
-            case -1: //Respuesta incorrecta
+            case PLAYER_ERROR: //Respuesta incorrecta
                 this.feedBack(false);
                 this.reactivarAudio();
                 break;
-            case 0:  //Inicio del juego
-                break;
-            case 1:  //Respuesta correcta
+            case PLAYER_WINS:  //Respuesta correcta
                 this.feedBack(true);
                 this.actualizarMarcador();
                 this.reactivarAudio();
@@ -442,7 +444,7 @@ public class F_Game1 extends Fragment {
      *
      * @param is_correct true si ha sido correcto. false en caso contrario
      */
-    private void feedBack(boolean is_correct) {
+    public void feedBack(boolean is_correct) {
         Drawable resultIcon;
         SoundPlayer player;
         if (is_correct) {

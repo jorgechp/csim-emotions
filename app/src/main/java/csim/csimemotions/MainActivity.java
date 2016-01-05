@@ -13,6 +13,8 @@ import android.view.Window;
 import java.io.IOException;
 import java.lang.reflect.Field;
 
+import layout.FCenterContent;
+
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
@@ -21,6 +23,9 @@ public class MainActivity extends ActionBarActivity {
 
 
     private StateOfGame stateGame;
+    private FCenterContent fCenter;
+
+
 
     /**
      * Whether or not the system UI should be auto-hidden after
@@ -222,6 +227,18 @@ public class MainActivity extends ActionBarActivity {
         if (this.isFinishing()) {
 
         }
+    }
+
+    public DataBaseController getDataBaseController() {
+        return dbc;
+    }
+
+    public FCenterContent getfCenter() {
+        return fCenter;
+    }
+
+    public void setfCenter(FCenterContent fCenter) {
+        this.fCenter = fCenter;
     }
 
     public StateOfGame getStateOfTheGame() {

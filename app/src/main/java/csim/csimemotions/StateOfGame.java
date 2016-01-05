@@ -15,6 +15,7 @@ public class StateOfGame {
     private States lastState;
 
 
+
     private StateOfGame() {
     }
 
@@ -58,8 +59,10 @@ public class StateOfGame {
     }
 
     public void chargeReward(States st) {
-        this.estado.add(st);
-        lastState = st;
+        if (this.estado.contains(st) == false) {
+            this.estado.add(st);
+            lastState = st;
+        }
     }
 
     public boolean isGamePlayed(States game) {

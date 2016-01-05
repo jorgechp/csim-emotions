@@ -8,7 +8,7 @@ public class Config {
     /**
      * Numero de pruebas en el nivel 0
      */
-    public static final byte LEVEL_0_NUM_OF_STAGES = 15;
+    public static final byte LEVEL_0_NUM_OF_STAGES = 3;
     /**
      * Numero de pruebas en el nivel 1
      */
@@ -52,5 +52,12 @@ public class Config {
      * Tiempo de aparicion de las imagenes en la UI tras el feedback
      */
     public static final short TIME_IMAGES = 4000;
+
+    /**
+     * En el menu de juegos, margen entre diferentes layers de niveles de juegos
+     */
+    public static final float STAGES_WIDTH = (float) 0.0475;
+
+
 
 }

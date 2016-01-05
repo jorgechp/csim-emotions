@@ -37,11 +37,17 @@ public class SoundPlayer {
         mp.pause();
     }
     public void destroy() {
-        mp.stop();
+        if (mp != null) {
+            mp.stop();
+        }
     }
 
     public boolean isPlaying() {
-        return mp.isPlaying();
+        boolean res = false;
+        if (mp != null) {
+            res = mp.isPlaying();
+        }
+        return res;
     }
 
     public void onDestroy() {

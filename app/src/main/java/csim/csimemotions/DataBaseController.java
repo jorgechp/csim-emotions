@@ -82,13 +82,19 @@ public class DataBaseController implements IPersistencia {
         String consultaWhere = "";
 
         if (nombre != null) {
-            consultaWhere += "nombre LIKE'" + nombre + "'";
+            consultaWhere += "nombre LIKE '" + nombre + "'";
         }
         if (categoria != null) {
-            consultaWhere += "categoriaEmocion LIKE'" + categoria + "'";
+            if (consultaWhere.length() > 0) {
+                consultaWhere += " AND ";
+            }
+            consultaWhere += "categoriaEmocion LIKE '" + categoria + "'";
         }
         if (dificultad != -1) {
-            consultaWhere += "dificultad ='" + dificultad + "'";
+            if (consultaWhere.length() > 0) {
+                consultaWhere += " AND ";
+            }
+            consultaWhere += "dificultad = '" + dificultad + "'";
         }
 
         String selectQuery = (consultaWhere.length() == 0) ? (consultaStart) : (consultaStart + " WHERE " + consultaWhere);
@@ -150,16 +156,35 @@ public class DataBaseController implements IPersistencia {
         return c.getCount();
     }
 
+    public int getNumRowsImagenes(Emotions category) {
+        Cursor c = db.query(this.nombreImagenes, this.camposImagenes, "categoriaEmocion LIKE '" + category.name() + "'", null, null, null, null);
+        return c.getCount();
+    }
+
+    /**
+     * Obtiene el numero de sonidos en la base de datos
+     *
+     * @return
+     */
     public int getNumRowsSonidos() {
         Cursor c = db.query(this.nombreSonidos, this.camposSonidos, null, null, null, null, null);
         return c.getCount();
     }
 
+    /**
+     * Obtiene el numero de sonidos existentes en la base de datos que se ajustan a una determinada categoria
+     * @param category
+     * @return
+     */
     public int getNumRowsSonidos(Emotions category) {
         Cursor c = db.query(this.nombreSonidos, this.camposSonidos, "categoriaEmocion LIKE '" + category.name() + "'", null, null, null, null);
         return c.getCount();
     }
 
+    /**
+     * Devuelve la version de la base de datos
+     * @return
+     */
     public int getVersion() {
         return this.db.getVersion();
     }

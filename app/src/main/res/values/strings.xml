@@ -17,4 +17,6 @@
     <string name="game1_title">¿Cómo se está sintiendo?</string>
     <string name="Game1_description">Selecciona la emoción que está sintiendo la persona de la imagen.</string>
     <string name="emotion_surprised">Sorprendido</string>
+    <string name="game2_title">¿Quién está escuchando esta canción?</string>
+    <string name="Game2_tvPlayIndicator">¡¡Reproduce la canción!! >> </string>
 </resources>

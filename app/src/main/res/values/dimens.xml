@@ -7,5 +7,6 @@
     <dimen name="buttons_emotions_size">28dp</dimen>
     <dimen name="buttons_emotions_size_small">18dp</dimen>
     <dimen name="buttons_emotion_distance_small">7dp</dimen>
+    <dimen name="flTitle_margin_rows">48dp</dimen>
     />
 </resources>

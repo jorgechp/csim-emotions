@@ -1,6 +1,8 @@
 package layout;
 
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,6 +19,8 @@ import android.widget.ImageButton;
 import csim.csimemotions.Config;
 import csim.csimemotions.MainActivity;
 import csim.csimemotions.R;
+import csim.csimemotions.StateOfGame;
+import csim.csimemotions.States;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,6 +46,10 @@ public class FCenterContent extends Fragment {
     private Button btSettings;
 
     private View.OnClickListener onClickListener;
+    private StateOfGame sog;
+    private MainActivity mainActivity;
+    private FrameLayout stage1, stage2, stage3;
+    private FrameLayout space1, space2, space3;
 
     public FCenterContent() {
         // Required empty public constructor
@@ -56,11 +64,10 @@ public class FCenterContent extends Fragment {
      * @return A new instance of fragment FCenterContent.
      */
     // TODO: Rename and change types and number of parameters
-    public static FCenterContent newInstance(String param1, String param2) {
+    public static FCenterContent newInstance() {
         FCenterContent fragment = new FCenterContent();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -68,11 +75,11 @@ public class FCenterContent extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((MainActivity) (getActivity())).setfCenter(this);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        mainActivity = ((MainActivity) (getActivity()));
+        mainActivity.setfCenter(this);
+        this.sog = mainActivity.getStateOfTheGame();
+
+
 
         this.onClickListener = new View.OnClickListener() {
             @Override
@@ -91,6 +98,7 @@ public class FCenterContent extends Fragment {
 
             }
         };
+
 
 
     }
@@ -113,6 +121,7 @@ public class FCenterContent extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(getActivity());
 
+
     }
 
 
@@ -126,15 +135,23 @@ public class FCenterContent extends Fragment {
         btGame2 = (ImageButton) getView().findViewById(R.id.ibGame2);
         btSettings = (Button) getView().findViewById(R.id.ibSettings);
 
+        this.space1 = (FrameLayout) getActivity().findViewById(R.id.flMargin1);
+        this.space2 = (FrameLayout) getActivity().findViewById(R.id.flMargin2);
+        this.space3 = (FrameLayout) getActivity().findViewById(R.id.flMargin3);
+
+        this.stage1 = (FrameLayout) getActivity().findViewById(R.id.flStage1);
+        this.stage2 = (FrameLayout) getActivity().findViewById(R.id.flStage2);
+        this.stage3 = (FrameLayout) getActivity().findViewById(R.id.flStage3);
 
         btGame1.setOnClickListener(this.onClickListener);
         btGame2.setOnClickListener(this.onClickListener);
         btSettings.setOnClickListener(this.onClickListener);
 
         this.resize();
-
+        this.checkUI();
 
     }
+
 
     private void resize() {
         /**
@@ -146,17 +163,30 @@ public class FCenterContent extends Fragment {
         display.getMetrics(outMetrics);
 
         int dpHeight = (int) (outMetrics.heightPixels * Config.STAGES_WIDTH);
-        int dpWidth = (int) (outMetrics.widthPixels * Config.STAGES_WIDTH);
 
 
-        int stages[] = {R.id.flStage1, R.id.flStage2, R.id.flStage3, R.id.flStage4};
+
+/*
+  int stages[] = {R.id.flStage1, R.id.flStage2, R.id.flStage3, R.id.flStage4};
         ViewGroup.MarginLayoutParams lp;
         FrameLayout fl;
         for (int stage : stages) {
             fl = (FrameLayout) getActivity().findViewById(stage);
             lp = (ViewGroup.MarginLayoutParams) fl.getLayoutParams();
             lp.setMargins(0, dpHeight, 0, dpWidth);
+
+        }*/
+        int stages[] = {R.id.flMargin1, R.id.flMargin2, R.id.flMargin3, R.id.flMargin3};
+        ViewGroup.MarginLayoutParams lp;
+        FrameLayout fl;
+        for (int stage : stages) {
+            fl = (FrameLayout) getActivity().findViewById(stage);
+
+            lp = (ViewGroup.MarginLayoutParams) fl.getLayoutParams();
+            lp.height = dpHeight;
+
         }
+
     }
 
     @Override
@@ -216,5 +246,36 @@ public class FCenterContent extends Fragment {
     public void onResume() {
         super.onResume();
         this.resize();
+    }
+
+    public void checkUI() {
+        States estado = sog.getEstado();
+
+        if (estado != null) { // Se ha superado el GAME1
+
+            Drawable drawable = new ColorDrawable(Config.COLOR_CLOSED_STAGES);
+            this.space1.setForeground(drawable);
+            this.stage2.setForeground(drawable);
+            this.btGame2.setEnabled(true);
+        } else {
+            this.anularBotones();
+        }
+    }
+
+    private void anularBotones() {
+        this.btGame2.setEnabled(false);
+        this.btSettings.setEnabled(false);
+
+    }
+
+    /**
+     * Called when the Fragment is visible to the user.  This is generally
+     * tied to {@link Activity#onStart() Activity.onStart} of the containing
+     * Activity's lifecycle.
+     */
+    @Override
+    public void onStart() {
+        super.onStart();
+
     }
 }

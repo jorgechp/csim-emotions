@@ -102,7 +102,7 @@ public class F_Game2 extends Generic_Game implements IGame {
         this.actualizarMarcador();
 
         this.procesarRespuesta(this.continueGame());
-        this.ibPlayer.setImageResource(R.drawable.ic_play_vector);
+        this.ibPlayer.setImageResource(R.mipmap.ic_play);
         this.ibPlayer.setScaleType(ImageView.ScaleType.FIT_XY);
 
         clickListener = new View.OnClickListener() {
@@ -120,7 +120,7 @@ public class F_Game2 extends Generic_Game implements IGame {
                             F_Game2.this.setEnableButtons(true);
                             F_Game2.this.ibPlayer.setImageResource(R.drawable.ic_pause_vector);
                         } else {
-                            F_Game2.this.ibPlayer.setImageResource(R.drawable.ic_play_vector);
+                            F_Game2.this.ibPlayer.setImageResource(R.mipmap.ic_play);
                             F_Game2.this.isSoundPlaying = false;
                             F_Game2.super.sonido.pause();
                         }
@@ -146,7 +146,7 @@ public class F_Game2 extends Generic_Game implements IGame {
                 if (isUserEmotion) {
                     F_Game2.this.procesarRespuesta(F_Game2.this.continueGame());
                     F_Game2.this.isSoundPlaying = false;
-                    F_Game2.this.ibPlayer.setImageResource(R.drawable.ic_play_vector);
+                    F_Game2.this.ibPlayer.setImageResource(R.mipmap.ic_play);
                     F_Game2.this.setEnableButtons(false);
                 }
             }
@@ -312,14 +312,17 @@ public class F_Game2 extends Generic_Game implements IGame {
                 if (super.sonido != null) {
                     super.sonido.destroy();
                 }
+                F_Game2.this.sg.chargeReward(this.currentGame);
+                FCenterContent fg = this.actividadPrincipal.getfCenter();
+                fg.checkUI();
 
                 FragmentTransaction fManagerTransaction = getFragmentManager().beginTransaction();
                 //fManagerTransaction.replace(this.getId(), fg);
                 fManagerTransaction.remove(this);
-                fManagerTransaction.show(this.actividadPrincipal.getfCenter());
+                fManagerTransaction.show(fg);
                 fManagerTransaction.commit();
 
-                F_Game2.this.sg.chargeReward(this.currentGame);
+
                 break;
             case PLAYER_ERROR: //Respuesta incorrecta
                 this.feedBack(false);

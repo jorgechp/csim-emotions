@@ -8,7 +8,7 @@ public class Config {
     /**
      * Numero de pruebas en el nivel 0
      */
-    public static final byte LEVEL_0_NUM_OF_STAGES = 3;
+    public static final byte LEVEL_0_NUM_OF_STAGES = 1;
     /**
      * Numero de pruebas en el nivel 1
      */
@@ -58,6 +58,10 @@ public class Config {
      */
     public static final float STAGES_WIDTH = (float) 0.0475;
 
+    /**
+     * Color de fondo de los layers de juegos bloqueados.
+     */
+    public static final int COLOR_CLOSED_STAGES = 0x00706377;
 
 
 }

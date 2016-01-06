@@ -407,13 +407,17 @@ public class F_Game1 extends Fragment implements IGame {
                 if (this.sonido != null) {
                     this.sonido.destroy();
                 }
+                F_Game1.this.sg.chargeReward(this.currentGame);
+                FCenterContent fg = ((MainActivity) getActivity()).getfCenter();
+                fg.checkUI();
+
                 FragmentTransaction fManagerTransaction = getFragmentManager().beginTransaction();
                 //fManagerTransaction.replace(this.getId(), fg);
                 fManagerTransaction.remove(this);
-                fManagerTransaction.show(((MainActivity) getActivity()).getfCenter());
+                fManagerTransaction.show(fg);
                 fManagerTransaction.commit();
 
-                F_Game1.this.sg.chargeReward(this.currentGame);
+
                 break;
             case PLAYER_ERROR: //Respuesta incorrecta
                 this.feedBack(false);

@@ -100,6 +100,16 @@ public class MainActivity extends ActionBarActivity {
         }
     };
 
+
+    public MainActivity() {
+        /**
+         * Se instancia el estado del juego
+         */
+        this.stateGame = StateOfGame.getInstance();
+        this.stateGame.init();
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -108,13 +118,6 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         mVisible = true;
-
-
-        /**
-         * Se instancia el estado del juego
-         */
-        this.stateGame = StateOfGame.getInstance();
-        this.stateGame.init();
 
 
         this.dbc = new DataBaseController("Imagenes", "Sonidos", this);

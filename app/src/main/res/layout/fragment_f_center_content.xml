@@ -48,7 +48,14 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/flStage2">
+                android:id="@+id/flMargin1"
+                android:foreground="#61706377"></FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/flStage2"
+                android:foreground="#61706377">
 
                 <ImageButton
                     android:layout_width="wrap_content"
@@ -61,7 +68,14 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/flStage3">
+                android:id="@+id/flMargin2"
+                android:foreground="#61706377" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/flStage3"
+                android:foreground="#61706377">
 
                 <ImageButton
                     android:layout_width="wrap_content"
@@ -90,7 +104,14 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/flStage4">
+                android:id="@+id/flMargin3"
+                android:foreground="#61706377" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/flStage4"
+                android:foreground="#61706377">
 
                 <ImageButton
                     android:layout_width="wrap_content"
@@ -105,7 +126,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/flFinalStage"
 
-                android:layout_marginTop="0dp">
+                android:layout_marginTop="0dp"
+                android:foreground="#61706377">
 
 
             <Button
@@ -116,6 +138,13 @@
                     android:id="@+id/ibSettings"
                     android:layout_gravity="right|bottom" />
             </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:foreground="#61706377"
+                android:focusableInTouchMode="true"
+                android:id="@+id/flFillLayout"></FrameLayout>
 
         </TableLayout>
     </LinearLayout>

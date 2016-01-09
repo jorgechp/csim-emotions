@@ -51,6 +51,7 @@ public class FCenterContent extends Fragment {
     private FrameLayout stage1, stage2, stage3;
     private FrameLayout space1, space2, space3;
 
+
     public FCenterContent() {
         // Required empty public constructor
     }
@@ -78,6 +79,7 @@ public class FCenterContent extends Fragment {
         mainActivity = ((MainActivity) (getActivity()));
         mainActivity.setfCenter(this);
         this.sog = mainActivity.getStateOfTheGame();
+
 
 
 
@@ -210,21 +212,29 @@ public class FCenterContent extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    public void loadNewFragment(int stat) {
+    public Fragment loadNewFragment(int stat) {
 
         FragmentTransaction fManagerTransaction = getFragmentManager().beginTransaction();
         Fragment fg = null;
+        boolean isGame = false;
 
         switch (stat) {
-            case R.id.ibSettings:
-                fg = new F_Settings();
-                break;
             case R.id.ibGame1:
                 fg = new F_Game1();
+                isGame = true;
                 break;
             case R.id.ibGame2:
                 fg = new F_Game2();
+                isGame = true;
                 break;
+            case R.id.ibSettings:
+                fg = new F_Settings();
+                break;
+        }
+
+        if (isGame) {
+            this.mainActivity.getfUp().setGameMode(true);
+
         }
 
         if (fg != null) {
@@ -234,6 +244,7 @@ public class FCenterContent extends Fragment {
             //fManagerTransaction.remove(this);
             fManagerTransaction.commit();
         }
+        return fg;
     }
 
     /**

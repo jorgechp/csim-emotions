@@ -36,7 +36,7 @@
                         android:clickable="true"
                         android:id="@+id/Settings_Fl_options_layout"
                         android:layout_gravity="center"
-                        android:layout_marginBottom="@dimen/Settings_margin_bottom">
+                        android:layout_marginBottom="@dimen/Settings_margin_bottom_small">
 
                         <LinearLayout
                             android:orientation="vertical"
@@ -46,8 +46,8 @@
                             android:clickable="true">
 
                             <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="128dp"
+                                android:layout_height="128dp"
                                 android:id="@+id/Settings_ivOptions"
                                 android:background="@drawable/ic_settings_options"
                                 android:clickable="true"
@@ -97,8 +97,8 @@
                             android:clickable="true">
 
                             <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="94dp"
+                                android:layout_height="94dp"
                                 android:id="@+id/Settings_ivAbout"
                                 android:background="@drawable/ic_settings_about"
                                 android:clickable="true"

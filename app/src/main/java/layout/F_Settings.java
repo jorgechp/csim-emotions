@@ -4,10 +4,12 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import csim.csimemotions.MainActivity;
 import csim.csimemotions.R;
 
 /**
@@ -85,6 +87,19 @@ public class F_Settings extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public void retornar() {
+        MainActivity ma = (MainActivity) getActivity();
+        FCenterContent centerContent = ma.getfCenter();
+
+        centerContent.checkUI();
+
+        FragmentTransaction fManagerTransaction = getFragmentManager().beginTransaction();
+        //fManagerTransaction.replace(this.getId(), fg);
+        fManagerTransaction.remove(this);
+        fManagerTransaction.show(centerContent);
+        fManagerTransaction.commit();
     }
 
     /**

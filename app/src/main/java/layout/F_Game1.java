@@ -408,7 +408,10 @@ public class F_Game1 extends Fragment implements IGame {
                     this.sonido.destroy();
                 }
                 F_Game1.this.sg.chargeReward(this.currentGame);
-                FCenterContent fg = ((MainActivity) getActivity()).getfCenter();
+                MainActivity mainActi = ((MainActivity) getActivity());
+                FCenterContent fg = mainActi.getfCenter();
+                mainActi.getfUp().setGameMode(false);
+
                 fg.checkUI();
 
                 FragmentTransaction fManagerTransaction = getFragmentManager().beginTransaction();

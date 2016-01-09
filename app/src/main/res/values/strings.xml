@@ -19,4 +19,17 @@
     <string name="emotion_surprised">Sorprendido</string>
     <string name="game2_title">¿Quién está escuchando ésta canción?</string>
     <string name="Game2_tvPlayIndicator">¡¡Reproduce la canción!! >> </string>
+    <string name="Settings_optionsText">Adáptame</string>
+    <string name="Settings_AboutText">Acerca de mí</string>
+    <string name="OptionsSettings_Title">¡Adáptame!</string>
+    <string name="OptionsSettings_PlayerDescription">¿Qué canción quieres que suene al iniciar?</string>
+    <string name="OptionsSettings_NameText">¿Cómo te llamas?</string>
+    <string name="OptionsSettings_name_help_text">Me llamo...</string>
+    <string name="OptionsSettings_calification_title">¿Te gusta el juego?</string>
+    <string name="OptionsSettings_calification_description">Valora CsimEmotions indicando, en estrellas, si estás contento con el juego. 1 estrella significa que no te gusta nada y 5 estrellas significa que te gusta mucho. ¡Puedes volver y cambiar esta calificación cuando quieras!.</string>
+    <string name="OptionsSettings_player_text_help_1">Primero selecciona qué tipo de música quieres escuchar</string>
+    <string name="OptionsSettings_player_text_help_2">Y ahora, utiliza este reproductor para escuchar canciones</string>
+    <string name="OptionsSettings_player_text_help_3">Cuando te guste una canción, ¡quédatela!</string>
+    <string name="OptionsSettings_player_saveSongButton_text">¡Me la quedo!</string>
+    />
 </resources>

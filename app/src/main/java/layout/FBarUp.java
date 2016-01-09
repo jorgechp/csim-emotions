@@ -4,14 +4,12 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ImageButton;
 
-import java.util.Calendar;
-
+import csim.csimemotions.MainActivity;
 import csim.csimemotions.R;
 
 /**
@@ -32,11 +30,17 @@ public class FBarUp extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private TextView twHour;
 
-    private java.util.Date noteTS;
 
     private OnFragmentInteractionListener mListener;
+
+
+    private ImageButton ibSettings;
+    private View.OnClickListener onclick;
+    private boolean isSettings;
+    private MainActivity actividadPrincipal;
+    private F_Settings fgSettings;
+    private FCenterContent fCenterContent;
 
     public FBarUp() {
         // Required empty public constructor
@@ -63,8 +67,31 @@ public class FBarUp extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.isSettings = false;
 
 
+
+    }
+
+    /**
+     * Called immediately after {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}
+     * has returned, but before any saved state has been restored in to the view.
+     * This gives subclasses a chance to initialize themselves once
+     * they know their view hierarchy has been completely created.  The fragment's
+     * view hierarchy is not however attached to its parent at this point.
+     *
+     * @param view               The View returned by {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     */
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+
+    }
+
+    private void loadSettings() {
+        this.fgSettings = (F_Settings) this.fCenterContent.loadNewFragment(R.id.ibSettings);
     }
 
     @Override
@@ -80,29 +107,31 @@ public class FBarUp extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        twHour = (TextView) getView().findViewById(R.id.twHour);
-        Thread t = new Thread() {
-
+        this.ibSettings = (ImageButton) getActivity().findViewById(R.id.ibPreferencias);
+        this.onclick = new View.OnClickListener() {
             @Override
-            public void run() {
-                try {
-                    while (!isInterrupted()) {
-                        Thread.sleep(1000);
-                        if (isAdded()) {
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    updateTextView();
-                                }
-                            });
-                        }
-                    }
-                } catch (InterruptedException e) {
+            public void onClick(View v) {
+                if (FBarUp.this.isSettings == false) {
+                    FBarUp.this.loadSettings();
+                    FBarUp.this.ibSettings.setBackgroundResource(R.mipmap.ic_barup_play);
+                    FBarUp.this.isSettings = true;
+                } else {
+                    FBarUp.this.loadGames();
+                    FBarUp.this.ibSettings.setBackgroundResource(R.mipmap.ic_settings);
+                    FBarUp.this.isSettings = false;
                 }
             }
         };
+        this.ibSettings.setOnClickListener(this.onclick);
+        this.actividadPrincipal = (MainActivity) getActivity();
+        this.actividadPrincipal.setfUp(this);
+        this.fCenterContent = this.actividadPrincipal.getfCenter();
 
-        t.start();
+
+    }
+
+    private void loadGames() {
+        this.fgSettings.retornar();
     }
 
 
@@ -140,10 +169,13 @@ public class FBarUp extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    private void updateTextView() {
-        noteTS = Calendar.getInstance().getTime();
-
-        String time = "hh:mm"; // 12:00
-        twHour.setText(DateFormat.format(time, noteTS));
+    public void setGameMode(boolean isGame) {
+        if (isGame) {
+            this.ibSettings.setVisibility(View.INVISIBLE);
+        } else {
+            this.ibSettings.setVisibility(View.VISIBLE);
+        }
     }
+
+
 }

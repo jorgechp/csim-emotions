@@ -6,19 +6,15 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <TableRow
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#A49FA7">
+        android:layout_height="match_parent">
 
-    </TableRow>
-
-    <TextView
-        android:layout_width="79dp"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/twHour"
-        android:layout_gravity="right|center_vertical"
-        android:textColor="#f4e5e5" />
-
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ibPreferencias"
+            android:background="@mipmap/ic_settings" />
+    </LinearLayout>
 </FrameLayout>

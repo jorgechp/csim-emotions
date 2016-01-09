@@ -8,5 +8,7 @@
     <dimen name="buttons_emotions_size_small">18dp</dimen>
     <dimen name="buttons_emotion_distance_small">7dp</dimen>
     <dimen name="flTitle_margin_rows">48dp</dimen>
+    <dimen name="Settings_margin_bottom">20dp</dimen>
+    <dimen name="Settings_playerSelection_margin_right">5dp</dimen>
     />
 </resources>

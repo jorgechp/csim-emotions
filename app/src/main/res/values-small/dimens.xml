@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="gameTitle_small">24dp</dimen>
+    <dimen name="Settings_margin_bottom_small">10dp</dimen>
 </resources>

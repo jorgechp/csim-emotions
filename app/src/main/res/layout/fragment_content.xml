@@ -18,21 +18,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:name="layout.FBarUp"
-            android:id="@+id/fragment4" />
+            android:id="@+id/flBarUp" />
 
         <fragment
             tools:layout="@layout/fragment_f_center"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:name="layout.FCenter"
-            android:id="@+id/fragment5"
+            android:id="@+id/flBarCenter"
             android:layout_weight="1" />
 
-        <fragment
-            tools:layout="@layout/fragment_f__bar_down"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:name="layout.F_BarDown"
-            android:id="@+id/fragment6" />
     </LinearLayout>
 </FrameLayout>

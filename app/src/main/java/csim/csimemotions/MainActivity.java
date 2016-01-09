@@ -13,6 +13,7 @@ import android.view.Window;
 import java.io.IOException;
 import java.lang.reflect.Field;
 
+import layout.FBarUp;
 import layout.FCenterContent;
 
 /**
@@ -24,7 +25,7 @@ public class MainActivity extends ActionBarActivity {
 
     private StateOfGame stateGame;
     private FCenterContent fCenter;
-
+    private FBarUp fUp;
 
 
     /**
@@ -99,6 +100,7 @@ public class MainActivity extends ActionBarActivity {
             return false;
         }
     };
+
 
 
     public MainActivity() {
@@ -325,5 +327,13 @@ public class MainActivity extends ActionBarActivity {
                 this.dbc.insertarSonido(new Sonido(filename, category, rid));
             }
         }
+    }
+
+    public void setfUp(FBarUp fUp) {
+        this.fUp = fUp;
+    }
+
+    public FBarUp getfUp() {
+        return fUp;
     }
 }

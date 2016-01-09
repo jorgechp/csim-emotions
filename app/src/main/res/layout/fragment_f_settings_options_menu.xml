@@ -65,7 +65,8 @@
                             android:id="@+id/OptionsSettings_ib_playerHappy"
                             android:background="@drawable/AF26HAS"
                             android:layout_marginRight="@dimen/Settings_playerSelection_margin_right"
-                            android:clickable="true" />
+                            android:clickable="true"
+                            android:src="@color/color_disabled_element" />
 
                         <ImageButton
                             android:layout_width="wrap_content"
@@ -93,6 +94,7 @@
                             android:background="@drawable/AF26SUS"
                             android:layout_marginRight="@dimen/Settings_playerSelection_margin_right"
                             android:clickable="true" />
+
                     </RelativeLayout>
 
                     <TextView

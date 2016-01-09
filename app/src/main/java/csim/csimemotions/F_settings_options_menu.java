@@ -32,7 +32,10 @@ public class F_settings_options_menu extends Fragment {
     private ImageButton ib_playerPlay, ib_playerBack, ib_playerNext;
     private ImageButton ib_playerHappy, ib_playerSad, ib_playerAngry, ib_playerSurprised;
 
-    private View.OnClickListener clickListener;
+    private View.OnClickListener playerClickListener;
+
+    private MainActivity actividadPrincipal;
+    private DataBaseController dbc;
 
     private OnFragmentInteractionListener mListener;
 
@@ -109,40 +112,49 @@ public class F_settings_options_menu extends Fragment {
         this.ib_playerPlay = (ImageButton) getActivity().findViewById(R.id.OptionsSettings_ib_playerPlay);
         this.ib_playerNext = (ImageButton) getActivity().findViewById(R.id.OptionsSettings_ib_playerNext);
 
-        this.clickListener = new View.OnClickListener() {
+        this.playerClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                F_settings_options_menu.this.enableButtons();
                 switch (v.getId()) {
                     case R.id.OptionsSettings_ib_playerAngry:
+                        F_settings_options_menu.this.ib_playerAngry.setImageResource(R.color.color_disabled_element);
                         break;
                     case R.id.OptionsSettings_ib_playerHappy:
+                        F_settings_options_menu.this.ib_playerAngry.setImageResource(R.color.color_disabled_element);
                         break;
                     case R.id.OptionsSettings_ib_playerSad:
+                        F_settings_options_menu.this.ib_playerAngry.setImageResource(R.color.color_disabled_element);
                         break;
                     case R.id.OptionsSettings_ib_playerSurprised:
+                        F_settings_options_menu.this.ib_playerAngry.setImageResource(R.color.color_disabled_element);
                         break;
-
                     case R.id.OptionsSettings_ib_playerBack:
+                        F_settings_options_menu.this.ib_playerAngry.setImageResource(R.color.color_disabled_element);
                         break;
                     case R.id.OptionsSettings_ib_playerPlay:
+                        F_settings_options_menu.this.ib_playerAngry.setImageResource(R.color.color_disabled_element);
                         break;
                     case R.id.OptionsSettings_ib_playerNext:
+                        F_settings_options_menu.this.ib_playerAngry.setImageResource(R.color.color_disabled_element);
                         break;
                 }
 
             }
         };
 
-        this.ib_playerAngry.setOnClickListener(this.clickListener);
-        this.ib_playerHappy.setOnClickListener(this.clickListener);
-        this.ib_playerSad.setOnClickListener(this.clickListener);
-        this.ib_playerSurprised.setOnClickListener(this.clickListener);
+        this.ib_playerAngry.setOnClickListener(this.playerClickListener);
+        this.ib_playerHappy.setOnClickListener(this.playerClickListener);
+        this.ib_playerSad.setOnClickListener(this.playerClickListener);
+        this.ib_playerSurprised.setOnClickListener(this.playerClickListener);
 
-        this.ib_playerBack.setOnClickListener(this.clickListener);
-        this.ib_playerPlay.setOnClickListener(this.clickListener);
-        this.ib_playerNext.setOnClickListener(this.clickListener);
+        this.ib_playerBack.setOnClickListener(this.playerClickListener);
+        this.ib_playerPlay.setOnClickListener(this.playerClickListener);
+        this.ib_playerNext.setOnClickListener(this.playerClickListener);
 
+
+        this.actividadPrincipal = (MainActivity) getActivity();
+        this.dbc = this.actividadPrincipal.getDataBaseController();
 
     }
 
@@ -170,5 +182,13 @@ public class F_settings_options_menu extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+
+    private void enableButtons() {
+        this.ib_playerAngry.setImageResource(android.R.color.transparent);
+        this.ib_playerHappy.setImageResource(android.R.color.transparent);
+        this.ib_playerSurprised.setImageResource(android.R.color.transparent);
+        this.ib_playerSad.setImageResource(android.R.color.transparent);
     }
 }

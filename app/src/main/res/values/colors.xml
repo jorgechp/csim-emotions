@@ -2,5 +2,6 @@
 
     <color name="black_overlay">#66000000</color>
     <color name="GamesMarcador">#574861</color>
+    <color name="color_disabled_element">#92887f8d</color>
 
 </resources>

@@ -17,6 +17,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
 import csim.csimemotions.Config;
+import csim.csimemotions.F_settings_options_menu;
 import csim.csimemotions.MainActivity;
 import csim.csimemotions.R;
 import csim.csimemotions.StateOfGame;
@@ -229,6 +230,9 @@ public class FCenterContent extends Fragment {
                 break;
             case R.id.ibSettings:
                 fg = new F_Settings();
+                break;
+            case R.id.Settings_ivOptions:
+                fg = new F_settings_options_menu();
                 break;
         }
 

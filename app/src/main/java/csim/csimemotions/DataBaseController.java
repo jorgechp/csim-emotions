@@ -119,6 +119,20 @@ public class DataBaseController implements IPersistencia {
 
     }
 
+    /**
+     * Obtiene un array de String con informacion de los archivos musicales que se corresponden
+     * a una categoría o a un nombre.
+     * <p/>
+     * Devuelve un array de String[] donde, para cada elemento:
+     * <p/>
+     * 0 ) es el nombre del archivo de sonido
+     * 1 ) es la categoria a la que pertenece
+     * 2 ) es el identificador del recurso
+     *
+     * @param nombre
+     * @param categoria
+     * @return
+     */
     @Override
     public String[][] getUrlSonido(String nombre, Emotions categoria) {
         ArrayList<String[]> listaSonidos = new ArrayList<String[]>();

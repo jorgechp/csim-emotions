@@ -7,7 +7,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 
 /**
@@ -31,13 +33,27 @@ public class F_settings_options_menu extends Fragment {
 
     private ImageButton ib_playerPlay, ib_playerBack, ib_playerNext;
     private ImageButton ib_playerHappy, ib_playerSad, ib_playerAngry, ib_playerSurprised;
+    private Button ib_ibPlayerSaveSong;
 
-    private View.OnClickListener playerClickListener;
+    private View.OnClickListener playerClickListener, soundSelectionClickListener;
 
     private MainActivity actividadPrincipal;
     private DataBaseController dbc;
 
     private OnFragmentInteractionListener mListener;
+
+    private byte userSelectedSong;
+    private Emotions userSelectedEmotion;
+
+    private String[][] musicDatabase;
+    private SoundPlayer sp;
+
+    private boolean isPlaying;
+
+
+    private Toast tSavedSong;
+
+
 
     public F_settings_options_menu() {
         // Required empty public constructor
@@ -68,6 +84,7 @@ public class F_settings_options_menu extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        this.isPlaying = false;
     }
 
     @Override
@@ -102,6 +119,8 @@ public class F_settings_options_menu extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        this.tSavedSong = Toast.makeText(getActivity(),
+                R.string.OptionsSettings_player_savedSongToast, Toast.LENGTH_SHORT);
 
         this.ib_playerAngry = (ImageButton) getActivity().findViewById(R.id.OptionsSettings_ib_playerAngry);
         this.ib_playerHappy = (ImageButton) getActivity().findViewById(R.id.OptionsSettings_ib_playerHappy);
@@ -112,50 +131,105 @@ public class F_settings_options_menu extends Fragment {
         this.ib_playerPlay = (ImageButton) getActivity().findViewById(R.id.OptionsSettings_ib_playerPlay);
         this.ib_playerNext = (ImageButton) getActivity().findViewById(R.id.OptionsSettings_ib_playerNext);
 
+        this.ib_ibPlayerSaveSong = (Button) getActivity().findViewById(R.id.OptionsSettings_button_player_Save_song);
+
+        this.userSelectedSong = 0;
+        this.userSelectedEmotion = Emotions.HAPPY;
+
+        this.actividadPrincipal = (MainActivity) getActivity();
+        this.dbc = this.actividadPrincipal.getDataBaseController();
+
+        this.loadMusicDatabase();
+
         this.playerClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int numOfSongs = F_settings_options_menu.this.musicDatabase.length;
+                int numberOfselectedSong = F_settings_options_menu.this.userSelectedSong;
+
+                if (F_settings_options_menu.this.sp != null) {
+                    F_settings_options_menu.this.sp.destroy();
+                }
+                switch (v.getId()) {
+                    case R.id.OptionsSettings_ib_playerBack:
+                        F_settings_options_menu.this.ib_playerPlay.setBackgroundResource(R.mipmap.ic_play);
+                        --numberOfselectedSong;
+                        F_settings_options_menu.this.userSelectedSong = (byte) ((numberOfselectedSong < 0) ? (numOfSongs - (Math.abs(numberOfselectedSong) % numOfSongs)) % numOfSongs : (numberOfselectedSong % numOfSongs));
+                        break;
+                    case R.id.OptionsSettings_ib_playerPlay:
+                        if (F_settings_options_menu.this.isPlaying) {
+                            F_settings_options_menu.this.ib_playerPlay.setBackgroundResource(R.mipmap.ic_play);
+
+                        } else {
+                            String[] selectedSong = F_settings_options_menu.this.musicDatabase[F_settings_options_menu.this.userSelectedSong];
+                            int id = Integer.parseInt(selectedSong[2]);
+                            F_settings_options_menu.this.sp = new SoundPlayer(id);
+                            F_settings_options_menu.this.sp.play(getActivity());
+                            F_settings_options_menu.this.ib_playerPlay.setBackgroundResource(R.mipmap.ic_player_stop);
+                        }
+                        F_settings_options_menu.this.isPlaying = !F_settings_options_menu.this.isPlaying;
+                        break;
+                    case R.id.OptionsSettings_ib_playerNext:
+                        F_settings_options_menu.this.ib_playerPlay.setBackgroundResource(R.mipmap.ic_play);
+                        F_settings_options_menu.this.userSelectedSong = (byte) (F_settings_options_menu.this.userSelectedSong + 1);
+                        F_settings_options_menu.this.userSelectedSong %= numOfSongs;
+                        break;
+                    case R.id.OptionsSettings_button_player_Save_song:
+
+                        F_settings_options_menu.this.ib_playerPlay.setBackgroundResource(R.mipmap.ic_play);
+                        UserConfig uc = F_settings_options_menu.this.actividadPrincipal.getUserConf();
+                        uc.setBackgroundEmotion(F_settings_options_menu.this.userSelectedEmotion);
+                        uc.setBackgroundSoundNumber(F_settings_options_menu.this.userSelectedSong);
+                        F_settings_options_menu.this.actividadPrincipal.saveUserConfig();
+                        F_settings_options_menu.this.tSavedSong.show();
+                        break;
+                }
+            }
+        };
+
+        this.soundSelectionClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 F_settings_options_menu.this.enableButtons();
                 switch (v.getId()) {
                     case R.id.OptionsSettings_ib_playerAngry:
                         F_settings_options_menu.this.ib_playerAngry.setImageResource(R.color.color_disabled_element);
+                        F_settings_options_menu.this.userSelectedEmotion = Emotions.ANGRY;
                         break;
                     case R.id.OptionsSettings_ib_playerHappy:
-                        F_settings_options_menu.this.ib_playerAngry.setImageResource(R.color.color_disabled_element);
+                        F_settings_options_menu.this.ib_playerHappy.setImageResource(R.color.color_disabled_element);
+                        F_settings_options_menu.this.userSelectedEmotion = Emotions.HAPPY;
                         break;
                     case R.id.OptionsSettings_ib_playerSad:
-                        F_settings_options_menu.this.ib_playerAngry.setImageResource(R.color.color_disabled_element);
+                        F_settings_options_menu.this.ib_playerSad.setImageResource(R.color.color_disabled_element);
+                        F_settings_options_menu.this.userSelectedEmotion = Emotions.SAD;
                         break;
                     case R.id.OptionsSettings_ib_playerSurprised:
-                        F_settings_options_menu.this.ib_playerAngry.setImageResource(R.color.color_disabled_element);
-                        break;
-                    case R.id.OptionsSettings_ib_playerBack:
-                        F_settings_options_menu.this.ib_playerAngry.setImageResource(R.color.color_disabled_element);
-                        break;
-                    case R.id.OptionsSettings_ib_playerPlay:
-                        F_settings_options_menu.this.ib_playerAngry.setImageResource(R.color.color_disabled_element);
-                        break;
-                    case R.id.OptionsSettings_ib_playerNext:
-                        F_settings_options_menu.this.ib_playerAngry.setImageResource(R.color.color_disabled_element);
+                        F_settings_options_menu.this.ib_playerSurprised.setImageResource(R.color.color_disabled_element);
+                        F_settings_options_menu.this.userSelectedEmotion = Emotions.SURPRISED;
                         break;
                 }
-
+                F_settings_options_menu.this.loadMusicDatabase();
             }
         };
 
-        this.ib_playerAngry.setOnClickListener(this.playerClickListener);
-        this.ib_playerHappy.setOnClickListener(this.playerClickListener);
-        this.ib_playerSad.setOnClickListener(this.playerClickListener);
-        this.ib_playerSurprised.setOnClickListener(this.playerClickListener);
+
+        this.ib_playerAngry.setOnClickListener(this.soundSelectionClickListener);
+        this.ib_playerHappy.setOnClickListener(this.soundSelectionClickListener);
+        this.ib_playerSad.setOnClickListener(this.soundSelectionClickListener);
+        this.ib_playerSurprised.setOnClickListener(this.soundSelectionClickListener);
 
         this.ib_playerBack.setOnClickListener(this.playerClickListener);
         this.ib_playerPlay.setOnClickListener(this.playerClickListener);
         this.ib_playerNext.setOnClickListener(this.playerClickListener);
+        this.ib_ibPlayerSaveSong.setOnClickListener(this.playerClickListener);
 
 
-        this.actividadPrincipal = (MainActivity) getActivity();
-        this.dbc = this.actividadPrincipal.getDataBaseController();
+    }
 
+    private void loadMusicDatabase() {
+        this.musicDatabase = this.dbc.getUrlSonido(null, this.userSelectedEmotion);
+        this.userSelectedSong = 0;
     }
 
     public void onAttach(Context context) {

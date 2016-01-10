@@ -63,7 +63,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/OptionsSettings_ib_playerHappy"
-                            android:background="@drawable/AF26HAS"
+                            android:background="@drawable/af26has"
                             android:layout_marginRight="@dimen/Settings_playerSelection_margin_right"
                             android:clickable="true"
                             android:src="@color/color_disabled_element" />
@@ -73,7 +73,7 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/OptionsSettings_ib_playerSad"
                             android:layout_toRightOf="@+id/OptionsSettings_ib_playerHappy"
-                            android:background="@drawable/AF26SAS"
+                            android:background="@drawable/af26sas"
                             android:layout_marginRight="@dimen/Settings_playerSelection_margin_right"
                             android:clickable="true" />
 
@@ -82,7 +82,7 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/OptionsSettings_ib_playerAngry"
                             android:layout_toRightOf="@+id/OptionsSettings_ib_playerSad"
-                            android:background="@drawable/AF26ANS"
+                            android:background="@drawable/af26ans"
                             android:layout_marginRight="@dimen/Settings_playerSelection_margin_right"
                             android:clickable="true" />
 
@@ -91,7 +91,7 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/OptionsSettings_ib_playerSurprised"
                             android:layout_toRightOf="@+id/OptionsSettings_ib_playerAngry"
-                            android:background="@drawable/AF26SUS"
+                            android:background="@drawable/af26sus"
                             android:layout_marginRight="@dimen/Settings_playerSelection_margin_right"
                             android:clickable="true" />
 

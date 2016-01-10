@@ -2,6 +2,7 @@ package csim.csimemotions;
 
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
@@ -10,7 +11,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.lang.reflect.Field;
 
 import layout.FBarUp;
@@ -26,6 +32,8 @@ public class MainActivity extends ActionBarActivity {
     private StateOfGame stateGame;
     private FCenterContent fCenter;
     private FBarUp fUp;
+    private UserConfig userConf;
+
 
 
     /**
@@ -135,6 +143,7 @@ public class MainActivity extends ActionBarActivity {
             rowsImagenes = rowsSonidos = 0;
         }
 
+        loadUserConfig();
 
         //Si no hay imagenes en la Base de Datos, esta se ha de crear.
         if (rowsImagenes == 0 || rowsSonidos == 0) {
@@ -163,6 +172,44 @@ public class MainActivity extends ActionBarActivity {
         // while interacting with the UI.
 
 
+    }
+
+    /**
+     * Carga desde un fichero el objeto serializado con las preferencias del usuario
+     */
+    private void loadUserConfig() {
+
+        // save the object to file
+        FileInputStream fis = null;
+        ObjectInputStream in = null;
+        try {
+            fis = this.openFileInput(Config.USER_CONFIG_FILENAME);
+            in = new ObjectInputStream(fis);
+            this.userConf = (UserConfig) in.readObject();
+            in.close();
+        } catch (FileNotFoundException ex) {
+            this.userConf = UserConfig.getInstance();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    /**
+     * Serializa en un fichero el objeto con las preferencias de un usuario
+     */
+    public void saveUserConfig() {
+        // save the object to file
+        FileOutputStream fos = null;
+        ObjectOutputStream out = null;
+        try {
+            fos = this.openFileOutput(Config.USER_CONFIG_FILENAME, Context.MODE_PRIVATE);
+            out = new ObjectOutputStream(fos);
+            out.writeObject(this.userConf);
+
+            out.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
 
@@ -335,5 +382,13 @@ public class MainActivity extends ActionBarActivity {
 
     public FBarUp getfUp() {
         return fUp;
+    }
+
+    public UserConfig getUserConf() {
+        return userConf;
+    }
+
+    public void setUserConf(UserConfig userConf) {
+        this.userConf = userConf;
     }
 }

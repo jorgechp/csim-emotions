@@ -31,5 +31,6 @@
     <string name="OptionsSettings_player_text_help_2">Y ahora, utiliza este reproductor para escuchar canciones</string>
     <string name="OptionsSettings_player_text_help_3">Cuando te guste una canción, ¡quédatela!</string>
     <string name="OptionsSettings_player_saveSongButton_text">¡Me la quedo!</string>
+    <string name="OptionsSettings_player_savedSongToast">¡Vale, canción guardada!</string>
     />
 </resources>

@@ -63,5 +63,10 @@ public class Config {
      */
     public static final int COLOR_CLOSED_STAGES = 0x00706377;
 
+    /**
+     * Nombre del fichero con la configuración del usuario
+     */
+    public static final String USER_CONFIG_FILENAME = "userConfig.data";
+
 
 }

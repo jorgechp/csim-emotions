@@ -315,6 +315,8 @@ public class F_Game2 extends Generic_Game implements IGame {
                 F_Game2.this.sg.chargeReward(this.currentGame);
                 FCenterContent fg = this.actividadPrincipal.getfCenter();
                 this.actividadPrincipal.getfUp().setGameMode(false);
+                this.actividadPrincipal.playSong();
+                this.actividadPrincipal.saveUserConfig();
                 fg.checkUI();
 
                 FragmentTransaction fManagerTransaction = getFragmentManager().beginTransaction();

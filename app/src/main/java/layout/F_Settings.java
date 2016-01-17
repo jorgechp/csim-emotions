@@ -106,6 +106,7 @@ public class F_Settings extends Fragment {
                 switch (v.getId()) {
                     case R.id.Settings_ivOptions:
                         F_Settings.this.loadCustomSettings();
+                        F_Settings.this.actividadPrincipal.getfUp().enableSettingsButton();
                         break;
                 }
             }

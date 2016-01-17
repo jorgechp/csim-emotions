@@ -1,13 +1,14 @@
 package csim.csimemotions;
 
 
+import java.io.Serializable;
 import java.util.LinkedHashSet;
 
 /**
  * State of the Game
  * Created by jorge on 30/12/15.
  */
-public class StateOfGame {
+public class StateOfGame implements Serializable{
     private static StateOfGame INSTANCE = new StateOfGame();
 
     private byte level;

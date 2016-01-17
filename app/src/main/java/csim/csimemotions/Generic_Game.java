@@ -89,7 +89,7 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.actividadPrincipal = (MainActivity) getActivity();
-
+        this.actividadPrincipal.stopSong();
 
     }
 
@@ -165,4 +165,6 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
         }
 
     }
+
+
 }

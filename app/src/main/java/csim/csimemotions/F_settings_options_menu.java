@@ -4,12 +4,17 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RatingBar;
 import android.widget.Toast;
+
+import layout.FCenterContent;
 
 
 /**
@@ -33,9 +38,13 @@ public class F_settings_options_menu extends Fragment {
 
     private ImageButton ib_playerPlay, ib_playerBack, ib_playerNext;
     private ImageButton ib_playerHappy, ib_playerSad, ib_playerAngry, ib_playerSurprised;
-    private Button ib_ibPlayerSaveSong;
+    private Button ib_ibPlayerSaveSong, b_saveNickName, b_SaveUserRating;
+    private RatingBar  rt_UserRating;
 
-    private View.OnClickListener playerClickListener, soundSelectionClickListener;
+    private EditText et_nickName;
+
+    private View.OnClickListener playerClickListener, soundSelectionClickListener, nicknameListener, ratingUser;
+
 
     private MainActivity actividadPrincipal;
     private DataBaseController dbc;
@@ -52,6 +61,8 @@ public class F_settings_options_menu extends Fragment {
 
 
     private Toast tSavedSong;
+    private int idSongSelected;
+    private UserConfig userConfig;
 
 
 
@@ -85,6 +96,7 @@ public class F_settings_options_menu extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         this.isPlaying = false;
+        this.idSongSelected = 0;
     }
 
     @Override
@@ -132,14 +144,24 @@ public class F_settings_options_menu extends Fragment {
         this.ib_playerNext = (ImageButton) getActivity().findViewById(R.id.OptionsSettings_ib_playerNext);
 
         this.ib_ibPlayerSaveSong = (Button) getActivity().findViewById(R.id.OptionsSettings_button_player_Save_song);
+        this.b_saveNickName = (Button) getActivity().findViewById(R.id.OptionsSettings_btSaveNickName);
+        this.b_SaveUserRating = (Button) getActivity().findViewById(R.id.OptionsSettings_btSaveUserRating);
+
+        this.et_nickName = (EditText) getActivity().findViewById(R.id.OptionsSettings_et_Nickname);
+
+        this.rt_UserRating = (RatingBar) getActivity().findViewById(R.id.OptionsSettings_rtBar);
 
         this.userSelectedSong = 0;
         this.userSelectedEmotion = Emotions.HAPPY;
 
         this.actividadPrincipal = (MainActivity) getActivity();
+        this.actividadPrincipal.stopSong();
         this.dbc = this.actividadPrincipal.getDataBaseController();
 
         this.loadMusicDatabase();
+        userConfig = this.actividadPrincipal.getUserConf();
+        this.et_nickName.setText(userConfig.getUserName());
+        this.rt_UserRating.setRating(userConfig.getUserRating());
 
         this.playerClickListener = new View.OnClickListener() {
             @Override
@@ -162,8 +184,8 @@ public class F_settings_options_menu extends Fragment {
 
                         } else {
                             String[] selectedSong = F_settings_options_menu.this.musicDatabase[F_settings_options_menu.this.userSelectedSong];
-                            int id = Integer.parseInt(selectedSong[2]);
-                            F_settings_options_menu.this.sp = new SoundPlayer(id);
+                            idSongSelected = Integer.parseInt(selectedSong[2]);
+                            F_settings_options_menu.this.sp = new SoundPlayer(idSongSelected);
                             F_settings_options_menu.this.sp.play(getActivity());
                             F_settings_options_menu.this.ib_playerPlay.setBackgroundResource(R.mipmap.ic_player_stop);
                         }
@@ -177,9 +199,10 @@ public class F_settings_options_menu extends Fragment {
                     case R.id.OptionsSettings_button_player_Save_song:
 
                         F_settings_options_menu.this.ib_playerPlay.setBackgroundResource(R.mipmap.ic_play);
-                        UserConfig uc = F_settings_options_menu.this.actividadPrincipal.getUserConf();
-                        uc.setBackgroundEmotion(F_settings_options_menu.this.userSelectedEmotion);
-                        uc.setBackgroundSoundNumber(F_settings_options_menu.this.userSelectedSong);
+
+                        userConfig.setBackgroundEmotion(F_settings_options_menu.this.userSelectedEmotion);
+                        userConfig.setBackgroundSoundNumber(F_settings_options_menu.this.userSelectedSong);
+                        userConfig.setIdSongSelected(idSongSelected);
                         F_settings_options_menu.this.actividadPrincipal.saveUserConfig();
                         F_settings_options_menu.this.tSavedSong.show();
                         break;
@@ -213,6 +236,34 @@ public class F_settings_options_menu extends Fragment {
             }
         };
 
+        this.nicknameListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()){
+                    case R.id.OptionsSettings_btSaveNickName:
+                        String text = F_settings_options_menu.this.et_nickName.getText().toString();
+                        if(text.length() > 0 ) {
+                            userConfig.setUserName(text);
+                            F_settings_options_menu.this.actividadPrincipal.saveUserConfig();
+                        }
+                        break;
+                }
+            }
+        };
+
+        this.ratingUser = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()){
+                    case R.id.OptionsSettings_btSaveUserRating:
+                        float rating = F_settings_options_menu.this.rt_UserRating.getRating();
+                        userConfig.setUserRating(rating);
+                        F_settings_options_menu.this.actividadPrincipal.saveUserConfig();
+                        break;
+                }
+            }
+        };
+
 
         this.ib_playerAngry.setOnClickListener(this.soundSelectionClickListener);
         this.ib_playerHappy.setOnClickListener(this.soundSelectionClickListener);
@@ -224,6 +275,8 @@ public class F_settings_options_menu extends Fragment {
         this.ib_playerNext.setOnClickListener(this.playerClickListener);
         this.ib_ibPlayerSaveSong.setOnClickListener(this.playerClickListener);
 
+        this.b_saveNickName.setOnClickListener(this.nicknameListener);
+        this.b_SaveUserRating.setOnClickListener(this.ratingUser);
 
     }
 
@@ -241,6 +294,20 @@ public class F_settings_options_menu extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public void retornar() {
+
+        FCenterContent centerContent = this.actividadPrincipal.getfCenter();
+
+
+        centerContent.checkUI();
+
+        FragmentTransaction fManagerTransaction = getFragmentManager().beginTransaction();
+        //fManagerTransaction.replace(this.getId(), fg);
+        fManagerTransaction.remove(this);
+        fManagerTransaction.show(centerContent);
+        fManagerTransaction.commit();
     }
 
     /**

@@ -216,7 +216,8 @@ public class F_Game1 extends Fragment implements IGame {
 
         this.sonido.play(getActivity());
 
-        this.sg = ((MainActivity) getActivity()).getStateOfTheGame();
+
+        ((MainActivity) getActivity()).stopSong();
 
 
     }
@@ -407,10 +408,12 @@ public class F_Game1 extends Fragment implements IGame {
                 if (this.sonido != null) {
                     this.sonido.destroy();
                 }
-                F_Game1.this.sg.chargeReward(this.currentGame);
+                ((MainActivity) getActivity()).getStateOfTheGame().chargeReward(this.currentGame);
                 MainActivity mainActi = ((MainActivity) getActivity());
+                mainActi.playSong();
                 FCenterContent fg = mainActi.getfCenter();
                 mainActi.getfUp().setGameMode(false);
+                mainActi.saveUserConfig();
 
                 fg.checkUI();
 

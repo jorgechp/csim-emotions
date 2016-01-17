@@ -44,10 +44,11 @@ public class FCenterContent extends Fragment {
     private OnFragmentInteractionListener mListener;
     private ImageButton btGame1;
     private ImageButton btGame2;
+    private ImageButton btGame31,btGame32,btGame33;
     private Button btSettings;
 
     private View.OnClickListener onClickListener;
-    private StateOfGame sog;
+
     private MainActivity mainActivity;
     private FrameLayout stage1, stage2, stage3;
     private FrameLayout space1, space2, space3;
@@ -79,7 +80,7 @@ public class FCenterContent extends Fragment {
         super.onCreate(savedInstanceState);
         mainActivity = ((MainActivity) (getActivity()));
         mainActivity.setfCenter(this);
-        this.sog = mainActivity.getStateOfTheGame();
+        mainActivity.getStateOfTheGame();
 
 
 
@@ -93,6 +94,9 @@ public class FCenterContent extends Fragment {
                         break;
                     case R.id.ibGame2:
                         loadNewFragment(R.id.ibGame2);
+                        break;
+                    case R.id.ibGame31:
+                        loadNewFragment(R.id.ibGame31);
                         break;
                     case R.id.ibSettings:
                         loadNewFragment(R.id.ibSettings);
@@ -136,6 +140,9 @@ public class FCenterContent extends Fragment {
 
         btGame1 = (ImageButton) getView().findViewById(R.id.ibGame1);
         btGame2 = (ImageButton) getView().findViewById(R.id.ibGame2);
+        btGame31 = (ImageButton) getView().findViewById(R.id.ibGame31);
+        btGame32 = (ImageButton) getView().findViewById(R.id.ibGame32);
+        btGame33 = (ImageButton) getView().findViewById(R.id.ibGame33);
         btSettings = (Button) getView().findViewById(R.id.ibSettings);
 
         this.space1 = (FrameLayout) getActivity().findViewById(R.id.flMargin1);
@@ -148,6 +155,9 @@ public class FCenterContent extends Fragment {
 
         btGame1.setOnClickListener(this.onClickListener);
         btGame2.setOnClickListener(this.onClickListener);
+        btGame31.setOnClickListener(this.onClickListener);
+        btGame32.setOnClickListener(this.onClickListener);
+        btGame33.setOnClickListener(this.onClickListener);
         btSettings.setOnClickListener(this.onClickListener);
 
         this.resize();
@@ -217,22 +227,26 @@ public class FCenterContent extends Fragment {
 
         FragmentTransaction fManagerTransaction = getFragmentManager().beginTransaction();
         Fragment fg = null;
-        boolean isGame = false;
+        boolean isGame = true;
 
         switch (stat) {
             case R.id.ibGame1:
                 fg = new F_Game1();
-                isGame = true;
                 break;
             case R.id.ibGame2:
                 fg = new F_Game2();
-                isGame = true;
+                break;
+            case R.id.ibGame31:
+                fg = new F_Game3();
                 break;
             case R.id.ibSettings:
                 fg = new F_Settings();
+                isGame = false;
                 break;
             case R.id.Settings_ivOptions:
                 fg = new F_settings_options_menu();
+                this.mainActivity.getfUp().setFgSettingsOptions((F_settings_options_menu) fg);
+                isGame = false;
                 break;
         }
 
@@ -264,14 +278,21 @@ public class FCenterContent extends Fragment {
     }
 
     public void checkUI() {
-        States estado = sog.getEstado();
+        States estado = mainActivity.getStateOfTheGame().getEstado();
 
-        if (estado != null) { // Se ha superado el GAME1
-
+        if (mainActivity.getStateOfTheGame().isGamePlayed(States.GAME1)) { // Se ha superado el GAME1
             Drawable drawable = new ColorDrawable(Config.COLOR_CLOSED_STAGES);
             this.space1.setForeground(drawable);
             this.stage2.setForeground(drawable);
             this.btGame2.setEnabled(true);
+
+            if(mainActivity.getStateOfTheGame().isGamePlayed(States.GAME2)){
+                this.space2.setForeground(drawable);
+                this.stage3.setForeground(drawable);
+                this.btGame31.setEnabled(true);
+                this.btGame32.setEnabled(true);
+                this.btGame33.setEnabled(true);
+            }
         } else {
             this.anularBotones();
         }
@@ -280,6 +301,12 @@ public class FCenterContent extends Fragment {
     private void anularBotones() {
         this.btGame2.setEnabled(false);
         this.btSettings.setEnabled(false);
+
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
     }
 

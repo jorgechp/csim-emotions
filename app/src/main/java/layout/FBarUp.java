@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import csim.csimemotions.F_settings_options_menu;
 import csim.csimemotions.MainActivity;
 import csim.csimemotions.R;
 
@@ -35,15 +36,24 @@ public class FBarUp extends Fragment {
     private OnFragmentInteractionListener mListener;
 
 
-    private ImageButton ibSettings;
+    private ImageButton ibSettingsGames, ibSettings;
     private View.OnClickListener onclick;
-    private boolean isSettings;
+    private boolean isSettings, isSettingsOptions;
     private MainActivity actividadPrincipal;
     private F_Settings fgSettings;
+    private F_settings_options_menu fgSettingsOptions;
     private FCenterContent fCenterContent;
 
     public FBarUp() {
         // Required empty public constructor
+    }
+
+    public void setFgSettingsOptions(F_settings_options_menu fgSettingsOptions) {
+        this.fgSettingsOptions = fgSettingsOptions;
+    }
+
+    public void setIsSettingsOptions(boolean isSettingsOptions) {
+        this.isSettingsOptions = isSettingsOptions;
     }
 
     /**
@@ -68,6 +78,7 @@ public class FBarUp extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.isSettings = false;
+        this.isSettingsOptions = false;
 
 
 
@@ -90,7 +101,7 @@ public class FBarUp extends Fragment {
 
     }
 
-    private void loadSettings() {
+    private void loadSettingsFragment() {
         this.fgSettings = (F_Settings) this.fCenterContent.loadNewFragment(R.id.ibSettings);
     }
 
@@ -107,31 +118,55 @@ public class FBarUp extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        this.ibSettingsGames = (ImageButton) getActivity().findViewById(R.id.ibPreferenciasGames);
         this.ibSettings = (ImageButton) getActivity().findViewById(R.id.ibPreferencias);
         this.onclick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (FBarUp.this.isSettings == false) {
-                    FBarUp.this.loadSettings();
-                    FBarUp.this.ibSettings.setBackgroundResource(R.mipmap.ic_barup_play);
-                    FBarUp.this.isSettings = true;
-                } else {
-                    FBarUp.this.loadGames();
-                    FBarUp.this.ibSettings.setBackgroundResource(R.mipmap.ic_settings);
-                    FBarUp.this.isSettings = false;
+
+                switch (v.getId()){
+                    case R.id.ibPreferencias:
+                        FBarUp.this.loadSettings();
+                        FBarUp.this.ibSettings.setVisibility(View.INVISIBLE);
+                        break;
+                    case R.id.ibPreferenciasGames:
+                        if (FBarUp.this.isSettings == false) {
+                            FBarUp.this.loadSettings();
+
+                        } else {
+                            FBarUp.this.loadGames();
+                            FBarUp.this.ibSettingsGames.setBackgroundResource(R.mipmap.ic_settings);
+                            FBarUp.this.isSettings = false;
+                        }
+                        break;
                 }
+
             }
         };
+        this.ibSettingsGames.setOnClickListener(this.onclick);
         this.ibSettings.setOnClickListener(this.onclick);
         this.actividadPrincipal = (MainActivity) getActivity();
         this.actividadPrincipal.setfUp(this);
         this.fCenterContent = this.actividadPrincipal.getfCenter();
+        this.ibSettings.setVisibility(View.INVISIBLE);
 
 
     }
 
+
+    private void loadSettings(){
+        this.loadSettingsFragment();
+        this.ibSettingsGames.setBackgroundResource(R.mipmap.ic_barup_play);
+        this.isSettings = true;
+    }
     private void loadGames() {
-        this.fgSettings.retornar();
+        if(isSettingsOptions){
+            this.fgSettingsOptions.retornar();
+            isSettingsOptions = false;
+            this.ibSettings.setVisibility(View.INVISIBLE);
+        }else {
+            this.fgSettings.retornar();
+        }
     }
 
 
@@ -154,6 +189,11 @@ public class FBarUp extends Fragment {
         mListener = null;
     }
 
+    public void enableSettingsButton() {
+        FBarUp.this.ibSettings.setVisibility(View.VISIBLE);
+        this.isSettingsOptions = true;
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -171,9 +211,9 @@ public class FBarUp extends Fragment {
 
     public void setGameMode(boolean isGame) {
         if (isGame) {
-            this.ibSettings.setVisibility(View.INVISIBLE);
+            this.ibSettingsGames.setVisibility(View.INVISIBLE);
         } else {
-            this.ibSettings.setVisibility(View.VISIBLE);
+            this.ibSettingsGames.setVisibility(View.VISIBLE);
         }
     }
 

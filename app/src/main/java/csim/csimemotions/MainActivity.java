@@ -15,6 +15,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InvalidClassException;
+import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Field;
@@ -30,9 +32,12 @@ public class MainActivity extends ActionBarActivity {
 
 
     private StateOfGame stateGame;
+    private UserConfig userConf;
+
+
     private FCenterContent fCenter;
     private FBarUp fUp;
-    private UserConfig userConf;
+    private SoundPlayer backgroundSound;
 
 
 
@@ -111,17 +116,19 @@ public class MainActivity extends ActionBarActivity {
 
 
 
-    public MainActivity() {
+    public MainActivity() throws NotSerializableException {
         /**
          * Se instancia el estado del juego
          */
         this.stateGame = StateOfGame.getInstance();
         this.stateGame.init();
 
+
+
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
 
@@ -143,7 +150,7 @@ public class MainActivity extends ActionBarActivity {
             rowsImagenes = rowsSonidos = 0;
         }
 
-        loadUserConfig();
+
 
         //Si no hay imagenes en la Base de Datos, esta se ha de crear.
         if (rowsImagenes == 0 || rowsSonidos == 0) {
@@ -154,6 +161,26 @@ public class MainActivity extends ActionBarActivity {
                 e.printStackTrace();
             }
         }
+
+        try {
+            loadUserConfig();
+            if(this.userConf.getSog() != null) {
+                this.stateGame = this.userConf.getSog();
+            }
+          //  }else{
+          //      this.stateGame = StateOfGame.getInstance();
+          //      this.stateGame.init();
+          //  }
+
+        } catch (NotSerializableException e) {
+            e.printStackTrace();
+        }
+
+        if(this.userConf.getIdSongSelected() == -1){
+            this.loadDefaultSong();
+        }
+        this.backgroundSound = new SoundPlayer(this.userConf.getIdSongSelected());
+        this.backgroundSound.play(this);
 
         //mControlsView = findViewById(R.id.fullscreen_content_controls);
         //mContentView = findViewById(R.id.fullscreen_content);
@@ -177,7 +204,7 @@ public class MainActivity extends ActionBarActivity {
     /**
      * Carga desde un fichero el objeto serializado con las preferencias del usuario
      */
-    private void loadUserConfig() {
+    private void loadUserConfig() throws java.io.NotSerializableException{
 
         // save the object to file
         FileInputStream fis = null;
@@ -187,17 +214,39 @@ public class MainActivity extends ActionBarActivity {
             in = new ObjectInputStream(fis);
             this.userConf = (UserConfig) in.readObject();
             in.close();
-        } catch (FileNotFoundException ex) {
+        } catch (FileNotFoundException|InvalidClassException ex) {
             this.userConf = UserConfig.getInstance();
-        } catch (Exception ex) {
+            this.loadDefaultSong();
+            saveUserConfig();
+        }
+        catch (Exception ex) {
             ex.printStackTrace();
         }
+        if(this.userConf == null){
+            this.userConf = UserConfig.getInstance();
+
+        }
+
+
+    }
+
+    private void loadDefaultSong(){
+        String[][] sonido = this.dbc.getUrlSonido(null, this.userConf.getBackgroundEmotionNumber());
+        this.userConf.setIdSongSelected(Integer.parseInt(sonido[0][2]));
+    }
+
+    public void stopSong(){
+        this.backgroundSound.destroy();
+    }
+    public void playSong() {
+        this.backgroundSound.play(this);
     }
 
     /**
      * Serializa en un fichero el objeto con las preferencias de un usuario
      */
     public void saveUserConfig() {
+        this.userConf.setSog(this.stateGame);
         // save the object to file
         FileOutputStream fos = null;
         ObjectOutputStream out = null;
@@ -213,10 +262,12 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
+
+
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-
+        this.fCenter.checkUI();
         // Trigger the initial hide() shortly after the activity has been
         // created, to briefly hint to the user that UI controls
         // are available.
@@ -276,9 +327,28 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        this.backgroundSound.destroy();
         if (this.isFinishing()) {
 
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        this.backgroundSound.destroy();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        this.backgroundSound.destroy();
     }
 
     public DataBaseController getDataBaseController() {
@@ -391,4 +461,6 @@ public class MainActivity extends ActionBarActivity {
     public void setUserConf(UserConfig userConf) {
         this.userConf = userConf;
     }
+
+
 }

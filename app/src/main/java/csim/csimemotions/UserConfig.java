@@ -9,6 +9,9 @@ import java.io.Serializable;
 public class UserConfig implements Serializable {
 
     private static UserConfig ourInstance = new UserConfig();
+    private int idSongSelected;
+    private float userRating;
+    private StateOfGame sog;
 
     public static UserConfig getInstance() {
         return ourInstance;
@@ -21,6 +24,9 @@ public class UserConfig implements Serializable {
     private String userName;
 
     private UserConfig() {
+        this.idSongSelected = -1;
+        this.userRating = 0;
+        this.backgroundEmotionNumber = Emotions.HAPPY;
     }
 
     public static UserConfig getOurInstance() {
@@ -56,4 +62,27 @@ public class UserConfig implements Serializable {
     }
 
 
+    public void setIdSongSelected(int idSongSelected) {
+        this.idSongSelected = idSongSelected;
+    }
+
+    public int getIdSongSelected() {
+        return this.idSongSelected;
+    }
+
+    public void setUserRating(float userRating) {
+        this.userRating = userRating;
+    }
+
+    public float getUserRating() {
+        return userRating;
+    }
+
+    public StateOfGame getSog() {
+        return sog;
+    }
+
+    public void setSog(StateOfGame sog) {
+        this.sog = sog;
+    }
 }

@@ -187,10 +187,21 @@
                         <EditText
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/editText"
+                            android:id="@+id/OptionsSettings_et_Nickname"
                             android:ems="11"
                             android:maxEms="25"
-                            android:layout_toRightOf="@+id/textView4" />
+                            android:singleLine="true"
+                            android:layout_toRightOf="@+id/textView4"
+                            android:maxLines="1" />
+
+                        <Button
+                            style="?android:attr/buttonStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/OptionSettings_btNicknameSave"
+                            android:id="@+id/OptionsSettings_btSaveNickName"
+                            android:layout_toRightOf="@+id/OptionsSettings_et_Nickname" />
+
                     </RelativeLayout>
                 </LinearLayout>
             </FrameLayout>
@@ -222,7 +233,7 @@
                     <RatingBar
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/ratingBar"
+                        android:id="@+id/OptionsSettings_rtBar"
                         android:layout_gravity="top|center_horizontal" />
 
                     <TextView
@@ -241,8 +252,8 @@
                         <Button
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="New Button"
-                            android:id="@+id/button"
+                            android:text="@string/OptionsSettings_saveRanking"
+                            android:id="@+id/OptionsSettings_btSaveUserRating"
                             android:layout_gravity="center" />
                     </FrameLayout>
 

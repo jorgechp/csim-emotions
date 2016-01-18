@@ -4,9 +4,13 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.FragmentTransaction;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.ImageView;
+
+import layout.FCenterContent;
+import layout.F_Game2;
 
 /**
  * Created by jorge on 5/01/16.
@@ -166,5 +170,25 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
 
     }
 
+    public void procesarRespuesta(stageResults respuesta) {
+        switch (respuesta) {
+            case GAME_WON:
+                if (this.sonido != null) {
+                    this.sonido.destroy();
+                }
+                this.sg.chargeReward(this.currentGame);
+                FCenterContent fg = this.actividadPrincipal.getfCenter();
+                this.actividadPrincipal.getfUp().setGameMode(false);
+                this.actividadPrincipal.playSong();
+                this.actividadPrincipal.saveUserConfig();
+                fg.checkUI();
 
+                FragmentTransaction fManagerTransaction = getFragmentManager().beginTransaction();
+                //fManagerTransaction.replace(this.getId(), fg);
+                fManagerTransaction.remove(this);
+                fManagerTransaction.show(fg);
+                fManagerTransaction.commit();
+                break;
+        }
+    }
 }

@@ -34,5 +34,7 @@
     <string name="OptionsSettings_player_savedSongToast">¡Vale, canción guardada! La escucharás la próxima vez que me inicies</string>
     <string name="OptionSettings_btNicknameSave">Guardar</string>
     <string name="OptionsSettings_saveRanking">¡Evalúame!</string>
+    <string name="Game31_TitleText">¡Atrapa la música!</string>
+    <string name="Game31_descriptionText">Haz clic en un sonido y adivina quién lo está escuchando</string>
     />
 </resources>

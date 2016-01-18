@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="layout.F_Game3">
+    tools:context="layout.F_Game3"
+    android:background="@drawable/giftly">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -14,15 +15,24 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.15">
+            android:layout_weight="0.12">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Large Text"
-                android:id="@+id/textView11"
-                android:layout_gravity="center" />
+                android:text="@string/Game31_TitleText"
+                android:id="@+id/Game31_title"
+                android:layout_gravity="center"
+                android:textSize="@dimen/gameTitle" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/Game31_descriptionText"
+                android:id="@+id/Game31_ttGameDescription"
+                android:layout_gravity="bottom" />
         </FrameLayout>
 
         <LinearLayout
@@ -30,42 +40,87 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_gravity="center"
-            android:background="@drawable/giftly"
-            android:layout_weight="0.85">
+            android:layout_weight="0.88">
 
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_gravity="center"
-                android:layout_weight="0.9">
+                android:layout_weight="0.94">
 
                 <FrameLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.5"
+                    android:layout_weight="0.49"
                     android:id="@+id/Game3_flSongTab">
 
                 </FrameLayout>
 
                 <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="#e57b7b"
+                    android:layout_weight="0.02"></FrameLayout>
+
+                <FrameLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.5"
-                    android:id="@+id/flEmotionsTab"></FrameLayout>
+                    android:layout_weight="0.49"
+                    android:id="@+id/flEmotionsTab">
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top|center_horizontal">
+
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/Game3_ib_happy"
+                            android:src="@drawable/af26has" />
+
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/Game3_ib_sad"
+                            android:src="@drawable/af26sas"
+                            android:layout_toRightOf="@+id/Game3_ib_happy" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|center_horizontal">
+
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/Game3_ib_angry"
+                            android:src="@drawable/af26ans" />
+
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/Game3_ib_surprised"
+                            android:layout_toRightOf="@+id/Game3_ib_angry"
+                            android:src="@drawable/af26sus" />
+                    </RelativeLayout>
+                </FrameLayout>
             </LinearLayout>
 
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_gravity="bottom"
-                android:layout_weight="0.10">
+                android:layout_weight="0.06">
 
                 <ProgressBar
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/progressBar" />
+                    android:id="@+id/Game31_rbProgressBar"
+                    android:layout_gravity="bottom" />
             </FrameLayout>
         </LinearLayout>
 

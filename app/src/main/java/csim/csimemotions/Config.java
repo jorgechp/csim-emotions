@@ -8,7 +8,7 @@ public class Config {
     /**
      * Numero de pruebas en el nivel 0
      */
-    public static final byte LEVEL_0_NUM_OF_STAGES = 1;
+    public static final byte LEVEL_0_NUM_OF_STAGES = 4;
     /**
      * Numero de pruebas en el nivel 1
      */

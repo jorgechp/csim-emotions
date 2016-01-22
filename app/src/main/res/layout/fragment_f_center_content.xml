@@ -29,7 +29,9 @@
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="@string/mainMenuBarUpTitle"
                     android:id="@+id/tvFCenterTitle"
-                    android:layout_gravity="center_horizontal" />
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="@dimen/gameTitle"
+                    android:textColor="@id/GameTitles" />
             </FrameLayout>
 
             <FrameLayout

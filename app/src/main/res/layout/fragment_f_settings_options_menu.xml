@@ -26,8 +26,10 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="@string/OptionsSettings_Title"
-                    android:id="@+id/textView"
-                    android:layout_gravity="center" />
+                    android:id="@+id/OptionsSettings_tv_title1"
+                    android:layout_gravity="center"
+                    android:textColor="@id/GameTitles"
+                    android:textSize="@dimen/gameTitle" />
             </FrameLayout>
 
             <TextView
@@ -35,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/OptionsSettings_PlayerDescription"
-                android:id="@+id/textView2" />
+                android:id="@+id/OptionsSettings_tv_title2" />
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -52,7 +54,7 @@
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="@string/OptionsSettings_player_text_help_1"
-                        android:id="@+id/textView8" />
+                        android:id="@+id/OptionsSettings_tv_description1" />
 
                     <RelativeLayout
                         android:layout_width="wrap_content"
@@ -102,7 +104,7 @@
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="@string/OptionsSettings_player_text_help_2"
-                        android:id="@+id/textView9" />
+                        android:id="@+id/OptionsSettings_tv_description2" />
 
                     <RelativeLayout
                         android:layout_width="wrap_content"
@@ -137,7 +139,7 @@
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="@string/OptionsSettings_player_text_help_3"
-                        android:id="@+id/textView10" />
+                        android:id="@+id/OptionsSettings_tv_title3" />
 
                     <FrameLayout
                         android:layout_width="match_parent"
@@ -160,7 +162,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/OptionsSettings_NameText"
-                android:id="@+id/textView3" />
+                android:id="@+id/OptionsSettings_tv_title4" />
 
             <FrameLayout
                 android:layout_width="wrap_content"
@@ -211,14 +213,14 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/OptionsSettings_calification_title"
-                android:id="@+id/textView5" />
+                android:id="@+id/OptionsSettings_tv_title5" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="@string/OptionsSettings_calification_description"
-                android:id="@+id/textView6" />
+                android:id="@+id/OptionsSettings_tv_description3" />
 
             <FrameLayout
                 android:layout_width="wrap_content"

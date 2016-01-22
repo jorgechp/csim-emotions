@@ -1,6 +1,7 @@
 package layout;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -55,6 +57,7 @@ public class F_Game2 extends Generic_Game implements IGame {
     private int stageNum;
     private ProgressBar progessb;
     private ImageButton ibPlayer;
+    private TextView tvTitle;
 
 
     public F_Game2() {
@@ -102,8 +105,10 @@ public class F_Game2 extends Generic_Game implements IGame {
         this.actualizarMarcador();
 
         this.procesarRespuesta(this.continueGame());
-        this.ibPlayer.setImageResource(R.mipmap.ic_play);
+        this.ibPlayer.setBackgroundResource(R.mipmap.ic_play);
         this.ibPlayer.setScaleType(ImageView.ScaleType.FIT_XY);
+
+        this.tvTitle = (TextView) getActivity().findViewById(R.id.game2TVTitle);
 
         clickListener = new View.OnClickListener() {
 
@@ -118,9 +123,9 @@ public class F_Game2 extends Generic_Game implements IGame {
                             F_Game2.super.sonido.play(getActivity());
                             F_Game2.this.isSoundPlaying = true;
                             F_Game2.this.setEnableButtons(true);
-                            F_Game2.this.ibPlayer.setImageResource(R.drawable.ic_pause_vector);
+                            F_Game2.this.ibPlayer.setBackgroundResource(R.drawable.ic_pause_vector);
                         } else {
-                            F_Game2.this.ibPlayer.setImageResource(R.mipmap.ic_play);
+                            F_Game2.this.ibPlayer.setBackgroundResource(R.mipmap.ic_play);
                             F_Game2.this.isSoundPlaying = false;
                             F_Game2.super.sonido.pause();
                         }
@@ -146,7 +151,7 @@ public class F_Game2 extends Generic_Game implements IGame {
                 if (isUserEmotion) {
                     F_Game2.this.procesarRespuesta(F_Game2.this.continueGame());
                     F_Game2.this.isSoundPlaying = false;
-                    F_Game2.this.ibPlayer.setImageResource(R.mipmap.ic_play);
+                    F_Game2.this.ibPlayer.setBackgroundResource(R.mipmap.ic_play);
                     F_Game2.this.setEnableButtons(false);
                 }
             }
@@ -159,6 +164,9 @@ public class F_Game2 extends Generic_Game implements IGame {
         this.ibSuprised.setOnClickListener(clickListener);
         this.ibSad.setOnClickListener(clickListener);
         this.ibAngry.setOnClickListener(clickListener);
+
+        Typeface tfTitle = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Action_Man_Bold.ttf");
+        this.tvTitle.setTypeface(tfTitle);
     }
 
     private void setEnableButtons(boolean b) {
@@ -250,19 +258,19 @@ public class F_Game2 extends Generic_Game implements IGame {
 
         newImage = rnd.nextInt(this.numRowsHappy);
         imageSelected = this.imagenesHappy[newImage];
-        this.loadImageOnVisor(imageSelected[0], this.ibHappy);
+        super.loadImageOnVisor(imageSelected[0], this.ibHappy);
 
         newImage = rnd.nextInt(this.numRowsAngry);
         imageSelected = this.imagenesAngry[newImage];
-        this.loadImageOnVisor(imageSelected[0], this.ibAngry);
+        super.loadImageOnVisor(imageSelected[0], this.ibAngry);
 
         newImage = rnd.nextInt(this.numRowsSad);
         imageSelected = this.imagenesSad[newImage];
-        this.loadImageOnVisor(imageSelected[0], this.ibSad);
+        super.loadImageOnVisor(imageSelected[0], this.ibSad);
 
         newImage = rnd.nextInt(this.numRowsSurprised);
         imageSelected = this.imagenesSurprised[newImage];
-        this.loadImageOnVisor(imageSelected[0], this.ibSuprised);
+        super.loadImageOnVisor(imageSelected[0], this.ibSuprised);
 
 
         Emotions correctEmotion = this.getEmotionFromString(sonidoEscogido[1]);
@@ -272,30 +280,7 @@ public class F_Game2 extends Generic_Game implements IGame {
         return result;
     }
 
-    private boolean loadImageOnVisor(String imageSelected, ImageButton ib) {
 
-        boolean resultado = true;
-
-        InputStream ims;
-        Drawable d;
-
-        if (ib != null) {
-            try {
-                ims = getActivity().getAssets().open("imagesEmotion/" + imageSelected);
-                d = Drawable.createFromStream(ims, null);
-                ib.setImageDrawable(d);
-
-                //Redimensiona adecuadamente la imagen
-                int size[] = this.setSizeOfImage((float) 0.55, (float) 0.20);
-                ib.getLayoutParams().height = size[0];
-                ib.getLayoutParams().width = size[1];
-            } catch (IOException e) {
-                e.printStackTrace();
-                resultado = false;
-            }
-        }
-        return resultado;
-    }
 
 
     /**

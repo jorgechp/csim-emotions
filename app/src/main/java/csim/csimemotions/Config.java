@@ -56,7 +56,7 @@ public class Config {
     /**
      * En el menu de juegos, margen entre diferentes layers de niveles de juegos
      */
-    public static final float STAGES_WIDTH = (float) 0.0475;
+    public static final float STAGES_WIDTH = (float) 0.1475;
 
     /**
      * Color de fondo de los layers de juegos bloqueados.

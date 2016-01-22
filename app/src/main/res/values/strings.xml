@@ -36,5 +36,6 @@
     <string name="OptionsSettings_saveRanking">¡Evalúame!</string>
     <string name="Game31_TitleText">¡Atrapa la música!</string>
     <string name="Game31_descriptionText">Haz clic en un sonido y adivina quién lo está escuchando</string>
+    <string name="Game4_title">¡¡Arrastra la canción hasta su destino!!</string>
     />
 </resources>

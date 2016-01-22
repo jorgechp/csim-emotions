@@ -1,0 +1,131 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="layout.F_Game4"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:background="@drawable/giftly">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:id="@+id/Game4_llGameLayout">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/Game4_title"
+                android:id="@+id/Game4_ttTitle"
+                android:layout_gravity="center"
+                android:textColor="@id/GameTitles"
+                android:textSize="@dimen/gameTitle" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.18"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            >
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                >
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/Game4_ivHappy"
+                    android:scaleType="fitXY"
+                    android:src="@mipmap/ic_settings"
+                    android:layout_marginRight="@dimen/Settings_margin_bottom" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/Game4_ivSad"
+                    android:scaleType="fitXY"
+                    android:layout_toRightOf="@+id/Game4_ivHappy"
+                    android:src="@mipmap/ic_settings"
+                    android:layout_marginRight="@dimen/Settings_margin_bottom"
+                    android:layout_marginLeft="@dimen/Settings_margin_bottom" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/Game4_ivAngry"
+                    android:scaleType="fitXY"
+                    android:layout_toRightOf="@+id/Game4_ivSad"
+                    android:src="@mipmap/ic_settings"
+                    android:layout_marginLeft="@dimen/Settings_margin_bottom"
+                    android:layout_marginRight="@dimen/Settings_margin_bottom" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/Game4_ivSurprised"
+                    android:scaleType="fitXY"
+                    android:layout_toRightOf="@+id/Game4_ivAngry"
+                    android:src="@mipmap/ic_settings"
+                    android:layout_marginLeft="@dimen/Settings_margin_bottom"
+                    android:layout_marginRight="@dimen/Settings_margin_bottom" />
+            </RelativeLayout>
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.04"
+            android:background="#6a3131"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            ></FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.68"
+            android:clipChildren="false"
+            android:clipToPadding="false">
+
+            <ProgressBar
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/Game4_progressBar"
+                android:layout_gravity="bottom" />
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/Game4_ivPlayer"
+        android:background="@mipmap/ic_play"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="@dimen/Settings_margin_bottom_small" />
+
+</FrameLayout>

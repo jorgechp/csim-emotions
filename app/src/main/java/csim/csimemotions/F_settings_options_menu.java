@@ -1,6 +1,7 @@
 package csim.csimemotions;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import layout.FCenterContent;
@@ -63,6 +65,9 @@ public class F_settings_options_menu extends Fragment {
     private Toast tSavedSong;
     private int idSongSelected;
     private UserConfig userConfig;
+
+    private TextView tvt1, tvt2,tvt3, tvt4,tvt5;
+    private TextView tvd1,tvd2,tvd3;
 
 
 
@@ -150,6 +155,16 @@ public class F_settings_options_menu extends Fragment {
         this.et_nickName = (EditText) getActivity().findViewById(R.id.OptionsSettings_et_Nickname);
 
         this.rt_UserRating = (RatingBar) getActivity().findViewById(R.id.OptionsSettings_rtBar);
+
+        this.tvt1 = (TextView) getActivity().findViewById(R.id.OptionsSettings_tv_title1);
+        this.tvt2 = (TextView) getActivity().findViewById(R.id.OptionsSettings_tv_title2);
+        this.tvt3 = (TextView) getActivity().findViewById(R.id.OptionsSettings_tv_title3);
+        this.tvt4 = (TextView) getActivity().findViewById(R.id.OptionsSettings_tv_title4);
+        this.tvt5 = (TextView) getActivity().findViewById(R.id.OptionsSettings_tv_title5);
+
+        this.tvd1 = (TextView) getActivity().findViewById(R.id.OptionsSettings_tv_description1);
+        this.tvd2 = (TextView) getActivity().findViewById(R.id.OptionsSettings_tv_description2);
+        this.tvd3 = (TextView) getActivity().findViewById(R.id.OptionsSettings_tv_description3);
 
         this.userSelectedSong = 0;
         this.userSelectedEmotion = Emotions.HAPPY;
@@ -277,6 +292,18 @@ public class F_settings_options_menu extends Fragment {
 
         this.b_saveNickName.setOnClickListener(this.nicknameListener);
         this.b_SaveUserRating.setOnClickListener(this.ratingUser);
+        Typeface tfTitle = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Action_Man_Bold.ttf");
+        Typeface tfFontsButtons = Typeface.createFromAsset(getActivity().getAssets(), "fonts/AndikaNewBasic-B.ttf");
+
+        this.tvt1.setTypeface(tfTitle);
+        this.tvt2.setTypeface(tfTitle);
+        this.tvt3.setTypeface(tfTitle);
+        this.tvt4.setTypeface(tfTitle);
+        this.tvt5.setTypeface(tfTitle);
+
+        this.tvd1.setTypeface(tfFontsButtons);
+        this.tvd2.setTypeface(tfFontsButtons);
+        this.tvd3.setTypeface(tfFontsButtons);
 
     }
 

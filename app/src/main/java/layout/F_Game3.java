@@ -257,24 +257,26 @@ public class F_Game3 extends Generic_Game {
 
                             @Override
                             public void run() {
-                                if(!isLimitCalculated) {
-                                    float hLimit = (F_Game3.this.soundLayout.getMeasuredHeight() * 0.05f);
-                                    float wLimit = (F_Game3.this.soundLayout.getMeasuredWidth() * 0.05f);
-                                    F_Game3.this.heightLimitsMax = (int) (F_Game3.this.soundLayout.getHeight() - hLimit);
-                                    F_Game3.this.widthLimitsMax = (int) (F_Game3.this.soundLayout.getWidth() - wLimit);
-                                    F_Game3.this.heightLimitsMin = (int) hLimit;
-                                    F_Game3.this.widthtLimitsMin = (int) wLimit;
-                                    isLimitCalculated = true;
-                                }
-                                for(Triple ibt : F_Game3.this.soundButtons) {
+                                if (!isInterrupted()) {
+                                    if (!isLimitCalculated) {
+                                        float hLimit = (F_Game3.this.soundLayout.getMeasuredHeight() * 0.05f);
+                                        float wLimit = (F_Game3.this.soundLayout.getMeasuredWidth() * 0.05f);
+                                        F_Game3.this.heightLimitsMax = (int) (F_Game3.this.soundLayout.getHeight() - hLimit);
+                                        F_Game3.this.widthLimitsMax = (int) (F_Game3.this.soundLayout.getWidth() - wLimit);
+                                        F_Game3.this.heightLimitsMin = (int) hLimit;
+                                        F_Game3.this.widthtLimitsMin = (int) wLimit;
+                                        isLimitCalculated = true;
+                                    }
+                                    for (Triple ibt : F_Game3.this.soundButtons) {
 
-                                    int coordenadas[] = new int[2];
-                                    ibt.ib.getLocationInWindow(coordenadas);
-                                    ibt.ib.setTranslationY((r.nextInt(F_Game3.this.heightLimitsMax) + coordenadas[0] + F_Game3.this.heightLimitsMin) % F_Game3.this.heightLimitsMax);
-                                    ibt.ib.setTranslationX((r.nextInt(F_Game3.this.widthLimitsMax) + coordenadas[1] + F_Game3.this.widthtLimitsMin) % F_Game3.this.widthLimitsMax);
+                                        int coordenadas[] = new int[2];
+                                        ibt.ib.getLocationInWindow(coordenadas);
+                                        ibt.ib.setTranslationY((r.nextInt(F_Game3.this.heightLimitsMax) + coordenadas[0] + F_Game3.this.heightLimitsMin) % F_Game3.this.heightLimitsMax);
+                                        ibt.ib.setTranslationX((r.nextInt(F_Game3.this.widthLimitsMax) + coordenadas[1] + F_Game3.this.widthtLimitsMin) % F_Game3.this.widthLimitsMax);
 
-                                    if(F_Game3.this.selectedButton == null) {
-                                        F_Game3.this.newPositionSound.play(F_Game3.super.actividadPrincipal,false);
+                                        if (F_Game3.this.selectedButton == null) {
+                                            F_Game3.this.newPositionSound.play(F_Game3.super.actividadPrincipal, false);
+                                        }
                                     }
                                 }
                             }
@@ -377,5 +379,25 @@ public class F_Game3 extends Generic_Game {
                 break;
         }
 
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        this.threadSound.interrupt();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        this.threadSound.interrupt();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(this.threadSound.isInterrupted() == true) {
+            this.threadSound.start();
+        }
     }
 }

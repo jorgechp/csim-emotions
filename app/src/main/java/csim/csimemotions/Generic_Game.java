@@ -7,7 +7,11 @@ import android.os.Handler;
 import android.support.v4.app.FragmentTransaction;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 import layout.FCenterContent;
 import layout.F_Game2;
@@ -25,7 +29,11 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
     protected Emotions respuestaCorrecta, respuestaUsuario;
     protected ImageView feedbackImage;
     protected SoundPlayer feedBackSoundBien, feedBackSoundMal;
+    protected String[][] imHappy, imSad, imAngry, imSurprised;
     private boolean wasSoundPlaying;
+
+
+
 
 
     protected Emotions getEmotionFromString(String emotion) {
@@ -108,7 +116,10 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
         this.feedBackSoundBien = new SoundPlayer(R.raw.feedback_bien_1);
         this.feedBackSoundMal = new SoundPlayer(R.raw.feedback_mal_1);
 
-
+        this.imHappy = this.dbc.getUrlImagen(null, Emotions.HAPPY, 1);
+        this.imSad = this.dbc.getUrlImagen(null,Emotions.SAD,1);
+        this.imAngry = this.dbc.getUrlImagen(null,Emotions.ANGRY,1);
+        this.imSurprised = this.dbc.getUrlImagen(null,Emotions.SURPRISED,1);
     }
 
     /**
@@ -190,5 +201,34 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
                 fManagerTransaction.commit();
                 break;
         }
+    }
+
+    protected boolean loadImageOnVisor(String imageSelected, ImageButton ib) {
+
+        return this.loadImageOnVisor(imageSelected,ib,0.55f,0.20f);
+    }
+    protected boolean loadImageOnVisor(String imageSelected, ImageButton ib, float sizeX, float sizeY) {
+
+        boolean resultado = true;
+
+        InputStream ims;
+        Drawable d;
+
+        if (ib != null) {
+            try {
+                ims = getActivity().getAssets().open("imagesEmotion/" + imageSelected);
+                d = Drawable.createFromStream(ims, null);
+                ib.setImageDrawable(d);
+
+                //Redimensiona adecuadamente la imagen
+                int size[] = this.setSizeOfImage(sizeX, sizeY);
+                ib.getLayoutParams().height = size[0];
+                ib.getLayoutParams().width = size[1];
+            } catch (IOException e) {
+                e.printStackTrace();
+                resultado = false;
+            }
+        }
+        return resultado;
     }
 }

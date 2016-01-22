@@ -1,6 +1,7 @@
 package layout;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import csim.csimemotions.Config;
 import csim.csimemotions.F_settings_options_menu;
@@ -52,6 +54,8 @@ public class FCenterContent extends Fragment {
     private MainActivity mainActivity;
     private FrameLayout stage1, stage2, stage3;
     private FrameLayout space1, space2, space3;
+
+    private TextView tvTitle;
 
 
     public FCenterContent() {
@@ -98,6 +102,9 @@ public class FCenterContent extends Fragment {
                     case R.id.ibGame31:
                         loadNewFragment(R.id.ibGame31);
                         break;
+                    case R.id.ibGame32:
+                        loadNewFragment(R.id.ibGame32);
+                        break;
                     case R.id.ibSettings:
                         loadNewFragment(R.id.ibSettings);
                         break;
@@ -136,6 +143,9 @@ public class FCenterContent extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        tvTitle = (TextView) getView().findViewById(R.id.tvFCenterTitle);
+
+
         //Buttons
 
         btGame1 = (ImageButton) getView().findViewById(R.id.ibGame1);
@@ -160,6 +170,11 @@ public class FCenterContent extends Fragment {
         btGame33.setOnClickListener(this.onClickListener);
         btSettings.setOnClickListener(this.onClickListener);
 
+
+
+        Typeface tfTitle = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Action_Man_Bold.ttf");
+        tvTitle.setTypeface(tfTitle);
+
         this.resize();
         this.checkUI();
 
@@ -176,19 +191,19 @@ public class FCenterContent extends Fragment {
         display.getMetrics(outMetrics);
 
         int dpHeight = (int) (outMetrics.heightPixels * Config.STAGES_WIDTH);
+        int dpWidth = (int) (outMetrics.widthPixels * Config.STAGES_WIDTH);
 
 
 
-/*
-  int stages[] = {R.id.flStage1, R.id.flStage2, R.id.flStage3, R.id.flStage4};
-        ViewGroup.MarginLayoutParams lp;
-        FrameLayout fl;
-        for (int stage : stages) {
-            fl = (FrameLayout) getActivity().findViewById(stage);
-            lp = (ViewGroup.MarginLayoutParams) fl.getLayoutParams();
-            lp.setMargins(0, dpHeight, 0, dpWidth);
-
-        }*/
+//  int stages[] = {R.id.flStage1, R.id.flStage2, R.id.flStage3, R.id.flStage4};
+//        ViewGroup.MarginLayoutParams lp;
+//        FrameLayout fl;
+//        for (int stage : stages) {
+//            fl = (FrameLayout) getActivity().findViewById(stage);
+//            lp = (ViewGroup.MarginLayoutParams) fl.getLayoutParams();
+//            lp.setMargins(0, dpHeight, 0, dpWidth);
+//
+//        }
         int stages[] = {R.id.flMargin1, R.id.flMargin2, R.id.flMargin3, R.id.flMargin3};
         ViewGroup.MarginLayoutParams lp;
         FrameLayout fl;
@@ -238,6 +253,9 @@ public class FCenterContent extends Fragment {
                 break;
             case R.id.ibGame31:
                 fg = new F_Game3();
+                break;
+            case R.id.ibGame32:
+                fg = new F_Game4();
                 break;
             case R.id.ibSettings:
                 fg = new F_Settings();

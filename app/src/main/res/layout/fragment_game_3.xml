@@ -24,7 +24,8 @@
                 android:text="@string/Game31_TitleText"
                 android:id="@+id/Game31_title"
                 android:layout_gravity="center"
-                android:textSize="@dimen/gameTitle" />
+                android:textSize="@dimen/gameTitle"
+                android:textColor="@id/GameTitles" />
 
             <TextView
                 android:layout_width="wrap_content"

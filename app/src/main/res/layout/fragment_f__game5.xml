@@ -1,0 +1,90 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="layout.F_Game5"
+    android:background="@drawable/giftly"
+    android:id="@+id/Game5_flScreen">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/Game5_Title"
+                android:id="@+id/Game5_tvTitle"
+                android:layout_gravity="center"
+                android:textSize="@dimen/gameTitle"
+                android:textColor="@id/GameTitles" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.85">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/Game5_ib1"
+                android:layout_gravity="bottom|center_horizontal"
+                android:scaleType="fitXY"
+                android:background="@mipmap/ic_barup_play" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/Game5_ib2"
+                android:background="@mipmap/ic_barup_play"
+                android:scaleType="fitXY"
+                android:layout_gravity="top|center_horizontal" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/Game5_ib3"
+                android:layout_gravity="left|center_vertical"
+                android:scaleType="fitXY"
+                android:background="@mipmap/ic_barup_play" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/Game5_ib4"
+                android:background="@mipmap/ic_barup_play"
+                android:scaleType="fitXY"
+                android:layout_gravity="center_vertical|right" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.05">
+
+            <ProgressBar
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/Game5_progressBar" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/Game5_player"
+        android:background="@mipmap/ic_play"
+        android:layout_gravity="center" />
+
+</FrameLayout>

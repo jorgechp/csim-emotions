@@ -66,8 +66,8 @@ public class FCenterContent extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     *
+     *
      * @return A new instance of fragment FCenterContent.
      */
     // TODO: Rename and change types and number of parameters
@@ -104,6 +104,9 @@ public class FCenterContent extends Fragment {
                         break;
                     case R.id.ibGame32:
                         loadNewFragment(R.id.ibGame32);
+                        break;
+                    case R.id.ibGame33:
+                        loadNewFragment(R.id.ibGame33);
                         break;
                     case R.id.ibSettings:
                         loadNewFragment(R.id.ibSettings);
@@ -257,6 +260,9 @@ public class FCenterContent extends Fragment {
             case R.id.ibGame32:
                 fg = new F_Game4();
                 break;
+            case R.id.ibGame33:
+                fg = new F_Game5();
+                break;
             case R.id.ibSettings:
                 fg = new F_Settings();
                 isGame = false;
@@ -286,7 +292,7 @@ public class FCenterContent extends Fragment {
     /**
      * Called when the fragment is visible to the user and actively running.
      * This is generally
-     * tied to {@link Activity#onResume() Activity.onResume} of the containing
+     * tied to  Activity.onResume of the containing
      * Activity's lifecycle.
      */
     @Override

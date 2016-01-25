@@ -231,4 +231,35 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
         }
         return resultado;
     }
+
+    /**
+     * Determines if given points are inside view
+     * @param x - x coordinate of point
+     * @param y - y coordinate of point
+     * @param view - view object to compare
+     * @return true if the points are within view bounds, false otherwise
+     *
+     * http://stackoverflow.com/questions/4165765/how-to-get-a-view-from-an-event-coordinates-in-android
+     */
+    public static boolean isPointInsideView(float x, float y, View view){
+        int location[] = new int[2];
+        view.getLocationInWindow(location);
+        float viewX = view.getX();
+        float viewY = location[1];
+
+        //point is inside view bounds
+
+        float limiteSuperiorX = viewX + view.getMeasuredWidth();
+        float limiteSuperiorY = viewY + view.getMeasuredHeight();
+        if( (x > viewX) && (x < limiteSuperiorX)){
+            if((y > viewY) && (y < limiteSuperiorY)){
+                return true;
+            }
+        }
+
+
+
+        return false;
+
+    }
 }

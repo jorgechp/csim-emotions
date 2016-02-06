@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import csim.csimemotions.F_settings_options_menu;
 import csim.csimemotions.MainActivity;
 import csim.csimemotions.R;
+import csim.csimemotions.stageResults;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,6 +44,7 @@ public class FBarUp extends Fragment {
     private F_Settings fgSettings;
     private F_settings_options_menu fgSettingsOptions;
     private FCenterContent fCenterContent;
+    private boolean isGameMode;
 
     public FBarUp() {
         // Required empty public constructor
@@ -128,15 +130,21 @@ public class FBarUp extends Fragment {
                     case R.id.ibPreferencias:
                         FBarUp.this.loadSettings();
                         FBarUp.this.ibSettings.setVisibility(View.INVISIBLE);
+                        isSettingsOptions= false;
+
                         break;
                     case R.id.ibPreferenciasGames:
-                        if (FBarUp.this.isSettings == false) {
-                            FBarUp.this.loadSettings();
+                        if(FBarUp.this.isGameMode){
+                            FBarUp.this.actividadPrincipal.getCurrentGame().procesarRespuesta(stageResults.USER_EXIT);
+                        }else {
+                            if (FBarUp.this.isSettings == false) {
+                                FBarUp.this.loadSettings();
 
-                        } else {
-                            FBarUp.this.loadGames();
-                            FBarUp.this.ibSettingsGames.setBackgroundResource(R.mipmap.ic_settings);
-                            FBarUp.this.isSettings = false;
+                            } else {
+                                FBarUp.this.loadGames();
+                                FBarUp.this.ibSettingsGames.setBackgroundResource(R.mipmap.ic_settings);
+                                FBarUp.this.isSettings = false;
+                            }
                         }
                         break;
                 }
@@ -164,6 +172,7 @@ public class FBarUp extends Fragment {
             this.fgSettingsOptions.retornar();
             isSettingsOptions = false;
             this.ibSettings.setVisibility(View.INVISIBLE);
+
         }else {
             this.fgSettings.retornar();
         }
@@ -211,10 +220,15 @@ public class FBarUp extends Fragment {
 
     public void setGameMode(boolean isGame) {
         if (isGame) {
-            this.ibSettingsGames.setVisibility(View.INVISIBLE);
+            //this.ibSettingsGames.setVisibility(View.INVISIBLE);
+            FBarUp.this.ibSettingsGames.setBackgroundResource(R.mipmap.ic_barup_play);
+
         } else {
-            this.ibSettingsGames.setVisibility(View.VISIBLE);
+            //this.ibSettingsGames.setVisibility(View.VISIBLE);
+            FBarUp.this.ibSettingsGames.setBackgroundResource(R.mipmap.ic_settings);
+
         }
+        FBarUp.this.isGameMode = isGame;
     }
 
 

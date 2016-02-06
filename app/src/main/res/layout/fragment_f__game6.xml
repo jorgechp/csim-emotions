@@ -1,0 +1,156 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="layout.F_Game6"
+    android:scaleType="fitXY"
+    android:background="@drawable/giftly">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <LinearLayout
+        android:scaleType="fitXY"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:scaleType="fitXY"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.12">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/Game6_title"
+                android:id="@+id/Game6_tvTitle"
+                android:layout_gravity="center"
+                android:textColor="@id/GameTitles"
+                android:textSize="@dimen/gameTitle"
+                android:textAlignment="center" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:id="@+id/Game6_counter"
+                android:layout_gravity="bottom|right" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:scaleType="fitXY"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:id="@+id/Game6_LayoutContainerhistoryOptions">
+
+            <LinearLayout
+                android:scaleType="fitXY"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/Game6_LayoutTexthistoryOptions"
+                android:layout_gravity="center">
+
+                <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:id="@+id/Game6_Text1"
+                    android:layout_gravity="top|center_horizontal"
+                    android:textSize="30dp"
+                    android:textAlignment="textStart"
+                    android:paddingLeft="@dimen/Settings_margin_bottom"
+                    android:paddingRight="@dimen/Settings_margin_bottom" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:id="@+id/Game6_Text2"
+                    android:layout_gravity="top|center_horizontal"
+                    android:textAlignment="textStart"
+                    android:layout_marginTop="@dimen/Settings_margin_bottom"
+                    android:textSize="30dp"
+                    android:paddingLeft="@dimen/Settings_margin_bottom"
+                    android:paddingRight="@dimen/Settings_margin_bottom" />
+            </LinearLayout>
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:scaleType="fitXY"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.38">
+
+            <FrameLayout
+                android:scaleType="fitXY"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:scaleType="fitXY"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <RelativeLayout
+                        android:scaleType="fitXY"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top|center_horizontal">
+
+                        <ImageButton
+                            android:scaleType="fitXY"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/Game6_ibHappy" />
+
+                        <ImageButton
+                            android:scaleType="fitXY"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/Game6_ibSad"
+                            android:layout_toRightOf="@+id/Game6_ibHappy" />
+
+                        <ImageButton
+                            android:scaleType="fitXY"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/Game6_ibAngry"
+                            android:layout_toRightOf="@+id/Game6_ibSad" />
+
+                        <ImageButton
+                            android:scaleType="fitXY"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/Game6_ibSurprised"
+                            android:layout_toRightOf="@+id/Game6_ibAngry" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/Game6_ibContinue"
+                    android:layout_gravity="center"
+                    android:background="@mipmap/ic_game6_continue" />
+
+                <ProgressBar
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/Game6_progressBar"
+                    android:layout_gravity="bottom" />
+
+            </FrameLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

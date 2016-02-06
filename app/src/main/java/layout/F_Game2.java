@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -58,6 +59,7 @@ public class F_Game2 extends Generic_Game implements IGame {
     private ProgressBar progessb;
     private ImageButton ibPlayer;
     private TextView tvTitle;
+    private TextView tvEEGTimer;
 
 
     public F_Game2() {
@@ -91,6 +93,7 @@ public class F_Game2 extends Generic_Game implements IGame {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        this.contador();
 
         this.ibPlayer = (ImageButton) getActivity().findViewById(R.id.Game2_ibPlayer);
 
@@ -109,6 +112,8 @@ public class F_Game2 extends Generic_Game implements IGame {
         this.ibPlayer.setScaleType(ImageView.ScaleType.FIT_XY);
 
         this.tvTitle = (TextView) getActivity().findViewById(R.id.game2TVTitle);
+        this.tvEEGTimer = (TextView) getActivity().findViewById(R.id.Game2_Timer);
+
 
         clickListener = new View.OnClickListener() {
 
@@ -119,15 +124,21 @@ public class F_Game2 extends Generic_Game implements IGame {
                 boolean isUserEmotion = false;
                 switch (id) {
                     case R.id.Game2_ibPlayer:
+                        boolean isEEG = F_Game2.this.actividadPrincipal.getTemporalStateGame().isEnableEEG();
                         if (F_Game2.this.isSoundPlaying == false) {
                             F_Game2.super.sonido.play(getActivity());
                             F_Game2.this.isSoundPlaying = true;
                             F_Game2.this.setEnableButtons(true);
                             F_Game2.this.ibPlayer.setBackgroundResource(R.drawable.ic_pause_vector);
                         } else {
-                            F_Game2.this.ibPlayer.setBackgroundResource(R.mipmap.ic_play);
-                            F_Game2.this.isSoundPlaying = false;
-                            F_Game2.super.sonido.pause();
+                            if(!isEEG) {
+                                F_Game2.this.ibPlayer.setBackgroundResource(R.mipmap.ic_play);
+                                F_Game2.this.isSoundPlaying = false;
+                                F_Game2.super.sonido.pause();
+                            }
+                        }
+                        if(isEEG) {
+                            F_Game2.super.cdTimer.start();
                         }
                         break;
                     case R.id.Game2_ibAngry:
@@ -149,10 +160,8 @@ public class F_Game2 extends Generic_Game implements IGame {
                 }
 
                 if (isUserEmotion) {
-                    F_Game2.this.procesarRespuesta(F_Game2.this.continueGame());
-                    F_Game2.this.isSoundPlaying = false;
-                    F_Game2.this.ibPlayer.setBackgroundResource(R.mipmap.ic_play);
-                    F_Game2.this.setEnableButtons(false);
+                    F_Game2.this.newStage();
+
                 }
             }
         };
@@ -167,6 +176,14 @@ public class F_Game2 extends Generic_Game implements IGame {
 
         Typeface tfTitle = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Action_Man_Bold.ttf");
         this.tvTitle.setTypeface(tfTitle);
+
+    }
+
+    private void newStage() {
+        this.procesarRespuesta(F_Game2.this.continueGame());
+        this.isSoundPlaying = false;
+        this.ibPlayer.setBackgroundResource(R.mipmap.ic_play);
+        this.setEnableButtons(false);
     }
 
     private void setEnableButtons(boolean b) {
@@ -197,6 +214,25 @@ public class F_Game2 extends Generic_Game implements IGame {
     }
 
 
+    @Override
+    protected void contador() {
+        super.cdTimer = new CountDownTimer(Config.EEG_MODE_TIME, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                //mTextField.setText("seconds remaining: " + millisUntilFinished / 1000);
+                F_Game2.this.tvEEGTimer.setText(Long.toString(millisUntilFinished/1000));
+            }
+
+            public void onFinish() {
+                F_Game2.super.respuestaUsuario = Emotions.NONE;
+                F_Game2.this.stageNum++;
+                F_Game2.this.actualizarMarcador();
+                F_Game2.this.newStage();
+                F_Game2.this.tvEEGTimer.setText(null);
+            }
+        };
+    }
+
     public void onAttach(Context context) {
         super.onAttach(getActivity());
 
@@ -216,6 +252,7 @@ public class F_Game2 extends Generic_Game implements IGame {
      */
     @Override
     public stageResults continueGame() {
+
         stageResults result = stageResults.GAME_STARTED;
         Random rnd = new Random();
         int newImage, newSound;
@@ -238,16 +275,17 @@ public class F_Game2 extends Generic_Game implements IGame {
             this.sonidos = super.dbc.getUrlSonido(null, null);
             result = stageResults.GAME_STARTED;
         } else {
+            super.saveStage();
             if (super.respuestaUsuario == super.respuestaCorrecta) {
                 result = stageResults.PLAYER_WINS;
                 ++this.stageNum;
-                if (Config.LEVEL_0_NUM_OF_STAGES < this.stageNum) {
-                    result = stageResults.GAME_WON;
-                }
             } else {
                 result = stageResults.PLAYER_ERROR;
             }
-            super.respuestaUsuario = null;
+            if (Config.LEVEL_0_NUM_OF_STAGES < this.stageNum) {
+                result = stageResults.GAME_WON;
+            }
+
         }
 
         newSound = rnd.nextInt(this.numSonidos);
@@ -290,32 +328,23 @@ public class F_Game2 extends Generic_Game implements IGame {
      */
     @Override
     public void procesarRespuesta(stageResults respuesta) {
+        if(this.actividadPrincipal.getTemporalStateGame().isEnableEEG() && super.cdTimer != null) {
+            super.cdTimer.cancel();
+        }
+        super.procesarRespuesta(respuesta);
         switch (respuesta) {
             case GAME_STARTED:  //Inicio del juego
                 break;
             case GAME_WON: //Fin del juego
-                if (super.sonido != null) {
-                    super.sonido.destroy();
-                }
-                F_Game2.this.sg.chargeReward(this.currentGame);
-                FCenterContent fg = this.actividadPrincipal.getfCenter();
-                this.actividadPrincipal.getfUp().setGameMode(false);
-                this.actividadPrincipal.playSong();
-                this.actividadPrincipal.saveUserConfig();
-                fg.checkUI();
-
-                FragmentTransaction fManagerTransaction = getFragmentManager().beginTransaction();
-                //fManagerTransaction.replace(this.getId(), fg);
-                fManagerTransaction.remove(this);
-                fManagerTransaction.show(fg);
-                fManagerTransaction.commit();
 
 
                 break;
             case PLAYER_ERROR: //Respuesta incorrecta
+
                 this.feedBack(false);
                 break;
             case PLAYER_WINS:  //Respuesta correcta
+
                 this.feedBack(true);
                 this.actualizarMarcador();
                 break;

@@ -90,6 +90,13 @@
                     android:layout_marginLeft="@dimen/Settings_margin_bottom"
                     android:layout_marginRight="@dimen/Settings_margin_bottom" />
             </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:id="@+id/Game4_ttEEGTimer"
+                android:layout_gravity="right|center_vertical" />
         </FrameLayout>
 
         <FrameLayout

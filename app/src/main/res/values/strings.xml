@@ -37,6 +37,14 @@
     <string name="Game31_TitleText">¡Atrapa la música!</string>
     <string name="Game31_descriptionText">Haz clic en un sonido y adivina quién lo está escuchando</string>
     <string name="Game4_title">¡¡Arrastra la canción hasta su destino!!</string>
-    <string name="Game5_Title">¡Mueve tu tablet para resolver este juego!</string>
+    <string name="Game5_Title">¡Mueve tu tablet para resolver el juego!</string>
+    <string name="Settings_export">Exportar datos</string>
+    <string name="Settings_export_file_intent_title">Exportar archivo .csv</string>
+    <string name="Settings_eeg_enable">Activar modo EEG</string>
+    <string name="Settings_eeg_disable">Desactivar modo EEG</string>
+    <string name="Settings_eeg_ok">Aceptar</string>
+    <string name="Settings_eeg_cancel">Cancelar</string>
+    <string name="Settings_eeg_title">¿Cómo deseas llamarte?</string>
+    <string name="Game6_title">¡Lee y escucha el cuento!. Después, relaciona lo que pasa con lo que siente cada persona</string>
     />
 </resources>

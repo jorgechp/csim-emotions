@@ -170,6 +170,7 @@ public class F_Settings extends Fragment {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         dialog.cancel();
+
                                     }
                                 });
 
@@ -189,6 +190,7 @@ public class F_Settings extends Fragment {
 
     private void loadCustomSettings() {
         this.actividadPrincipal.getfCenter().loadNewFragment(R.id.Settings_ivOptions);
+        this.actividadPrincipal.getfUp().setIsSettingsOptions(false);
     }
 
     public void onAttach(Context context) {

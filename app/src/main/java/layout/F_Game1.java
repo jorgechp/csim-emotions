@@ -31,6 +31,9 @@ import csim.csimemotions.R;
 import csim.csimemotions.SoundPlayer;
 import csim.csimemotions.StateOfGame;
 import csim.csimemotions.States;
+import csim.csimemotions.log.Log;
+import csim.csimemotions.log.LogManager;
+import csim.csimemotions.log.LogStage;
 import csim.csimemotions.stageResults;
 
 /**
@@ -71,6 +74,9 @@ public class F_Game1 extends Fragment implements IGame {
     private SoundPlayer feedBackSoundBien, feedBackSoundMal;
 
     private StateOfGame sg;
+
+    private LogManager logMan;
+    private Log logSession;
 
     /**
      * Muestra el estado actual de este juego en la lista de estados.
@@ -118,7 +124,7 @@ public class F_Game1 extends Fragment implements IGame {
         this.wasSoundPlaying = false;
 
         this.dbc = new DataBaseController("Imagenes", "Sonidos", getActivity());
-
+        this.logMan = ((MainActivity)getActivity()).getLogMan();
 
         this.clickListener = new View.OnClickListener() {
             @Override
@@ -156,6 +162,7 @@ public class F_Game1 extends Fragment implements IGame {
         };
 
 
+        this.logSession = new Log(((MainActivity)getActivity()).getUserConf().getUserName(),System.currentTimeMillis(),((MainActivity)getActivity()).getTemporalStateGame().isEnableEEG());
     }
 
     private void setButtonsEnabled(boolean enabled) {
@@ -290,6 +297,7 @@ public class F_Game1 extends Fragment implements IGame {
             this.imagenes = this.dbc.getUrlImagen(null, null, 1);
             this.correctImages = new HashMap<Integer, Boolean>();
         } else {
+            this.logSession.addStage(new LogStage(this.respuestaCorrecta,0,this.currentGame,System.currentTimeMillis(),this.respuestaUsuario,correctImages.size()));
             if (this.respuestaCorrecta == this.respuestaUsuario) {
                 this.correctImages.put(this.indexOfCurrentImage, true);
                 result = stageResults.PLAYER_WINS;
@@ -401,10 +409,16 @@ public class F_Game1 extends Fragment implements IGame {
      * @param respuesta
      */
     public void procesarRespuesta(stageResults respuesta) {
+
         switch (respuesta) {
             case GAME_STARTED:  //Inicio del juego
                 break;
             case GAME_WON: //Fin del juego
+                if(((MainActivity) getActivity()).getTemporalStateGame().isEnableLogging()) {
+
+                    this.logMan.addLog(this.logSession);
+                    this.logMan.save();
+                }
                 if (this.sonido != null) {
                     this.sonido.destroy();
                 }
@@ -426,10 +440,12 @@ public class F_Game1 extends Fragment implements IGame {
 
                 break;
             case PLAYER_ERROR: //Respuesta incorrecta
+
                 this.feedBack(false);
                 this.reactivarAudio();
                 break;
             case PLAYER_WINS:  //Respuesta correcta
+
                 this.feedBack(true);
                 this.actualizarMarcador();
                 this.reactivarAudio();

@@ -3,6 +3,7 @@ package csim.csimemotions;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.v4.app.FragmentTransaction;
 import android.util.DisplayMetrics;
@@ -13,6 +14,9 @@ import android.widget.ImageView;
 import java.io.IOException;
 import java.io.InputStream;
 
+import csim.csimemotions.log.Log;
+import csim.csimemotions.log.LogManager;
+import csim.csimemotions.log.LogStage;
 import layout.FCenterContent;
 import layout.F_Game2;
 
@@ -30,9 +34,13 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
     protected ImageView feedbackImage;
     protected SoundPlayer feedBackSoundBien, feedBackSoundMal;
     protected String[][] imHappy, imSad, imAngry, imSurprised;
+    protected LogManager logMan;
+    protected Log logSession;
+    private LogStage logStage;
+    protected int stageNumber;
     private boolean wasSoundPlaying;
 
-
+    protected CountDownTimer cdTimer;
 
 
 
@@ -60,6 +68,14 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
         return correctEmotion;
 
     }
+
+    /**
+     * Define el objeto contador que se debe ejecutar cuando existe una cuenta atrás
+     * (modo EEG, nivel de dificultad con tiempo...)
+     */
+    protected abstract void contador();
+
+
 
     /**
      * Calcula el tamano en pixeles de una imagen, a partir de una escala relativa
@@ -112,6 +128,7 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
         this.respuestaUsuario = null;
         this.dbc = this.actividadPrincipal.getDataBaseController();
         this.sg = this.actividadPrincipal.getStateOfTheGame();
+        this.logMan = this.actividadPrincipal.getLogMan();
         this.feedbackImage = (ImageView) getActivity().findViewById(R.id.ivFeedback);
         this.feedBackSoundBien = new SoundPlayer(R.raw.feedback_bien_1);
         this.feedBackSoundMal = new SoundPlayer(R.raw.feedback_mal_1);
@@ -120,6 +137,12 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
         this.imSad = this.dbc.getUrlImagen(null,Emotions.SAD,1);
         this.imAngry = this.dbc.getUrlImagen(null,Emotions.ANGRY,1);
         this.imSurprised = this.dbc.getUrlImagen(null,Emotions.SURPRISED,1);
+
+
+        this.logSession = new Log(this.actividadPrincipal.getUserConf().getUserName(),System.currentTimeMillis(),this.actividadPrincipal.getTemporalStateGame().isEnableEEG());
+        this.stageNumber = 0;
+
+
     }
 
     /**
@@ -181,26 +204,54 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
 
     }
 
+    protected void saveStage(){
+        if(this.actividadPrincipal.getTemporalStateGame().isEnableLogging()) {
+            this.logStage = new LogStage(this.respuestaCorrecta,0,this.currentGame,System.currentTimeMillis(),this.respuestaUsuario,this.stageNumber);
+            this.logSession.addStage(this.logStage);
+        }
+    }
+
     public void procesarRespuesta(stageResults respuesta) {
+
+
         switch (respuesta) {
             case GAME_WON:
-                if (this.sonido != null) {
-                    this.sonido.destroy();
-                }
                 this.sg.chargeReward(this.currentGame);
-                FCenterContent fg = this.actividadPrincipal.getfCenter();
-                this.actividadPrincipal.getfUp().setGameMode(false);
-                this.actividadPrincipal.playSong();
-                this.actividadPrincipal.saveUserConfig();
-                fg.checkUI();
-
-                FragmentTransaction fManagerTransaction = getFragmentManager().beginTransaction();
-                //fManagerTransaction.replace(this.getId(), fg);
-                fManagerTransaction.remove(this);
-                fManagerTransaction.show(fg);
-                fManagerTransaction.commit();
+                exitGame();
                 break;
+            case PLAYER_WINS:
+                this.stageNumber++;
+                break;
+            case USER_EXIT:
+                exitGame();
+                break;
+
         }
+    }
+
+    private void exitGame(){
+        if (this.sonido != null) {
+            this.sonido.destroy();
+        }
+        if(this.actividadPrincipal.getTemporalStateGame().isEnableLogging()) {
+
+            this.logMan.addLog(this.logSession);
+            this.logMan.save();
+        }
+        this.respuestaUsuario = null;
+
+        FCenterContent fg = this.actividadPrincipal.getfCenter();
+        this.actividadPrincipal.getfUp().setGameMode(false);
+        this.actividadPrincipal.playSong();
+        this.actividadPrincipal.saveUserConfig();
+        this.actividadPrincipal.setCurrentGame(null);
+        fg.checkUI();
+
+        FragmentTransaction fManagerTransaction = getFragmentManager().beginTransaction();
+        //fManagerTransaction.replace(this.getId(), fg);
+        fManagerTransaction.remove(this);
+        fManagerTransaction.show(fg);
+        fManagerTransaction.commit();
     }
 
     protected boolean loadImageOnVisor(String imageSelected, ImageButton ib) {

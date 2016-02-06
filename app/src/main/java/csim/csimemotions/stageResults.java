@@ -19,5 +19,10 @@ public enum stageResults {
     /**
      * El jugador ha ganado
      */
-    PLAYER_WINS
+    PLAYER_WINS,
+
+    /**
+     * El juego termina
+     */
+    USER_EXIT
 }

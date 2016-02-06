@@ -8,12 +8,14 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AutoCompleteTextView;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -69,6 +71,7 @@ public class F_Game5 extends Generic_Game {
     private ViewGroup layoutButton;
     private FrameLayout flScreen;
     private float screenSize[];
+    private TextView tvEEGTimer;
 
     public F_Game5() {
         // Required empty public constructor
@@ -88,6 +91,29 @@ public class F_Game5 extends Generic_Game {
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    protected void contador() {
+        super.cdTimer = new CountDownTimer(Config.EEG_MODE_TIME, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                //mTextField.setText("seconds remaining: " + millisUntilFinished / 1000);
+                F_Game5.this.tvEEGTimer.setText(Long.toString(millisUntilFinished/1000));
+            }
+
+            public void onFinish() {
+                F_Game5.super.sonido.destroy();
+                F_Game5.super.respuestaUsuario = Emotions.NONE;
+                F_Game5.super.stageNumber++;
+                F_Game5.this.progressBar.setProgress(F_Game5.this.progressBar.getProgress() + 1);
+                F_Game5.this.procesarRespuesta(F_Game5.this.continueGame());
+                F_Game5.this.tvEEGTimer.setText(null);
+                F_Game5.this.resetPosition();
+                F_Game5.this.isPlayerEnabled = false;
+                F_Game5.this.generateSong();
+            }
+        };
     }
 
     @Override
@@ -117,30 +143,41 @@ public class F_Game5 extends Generic_Game {
         super.onActivityCreated(savedInstanceState);
         super.actividadPrincipal.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         super.currentGame = States.GAME33;
+        this.contador();
         this.senManager = (SensorManager) super.actividadPrincipal.getSystemService(Context.SENSOR_SERVICE);
 
 
+        this.tvEEGTimer = (TextView) super.actividadPrincipal.findViewById(R.id.Game5_tvTimerEEG);
+
+
         this.ocl = new View.OnClickListener() {
-            boolean isActivo = false;
+
             @Override
             public void onClick(View v) {
                 int id = v.getId();
+                boolean isEEG = F_Game5.this.actividadPrincipal.getTemporalStateGame().isEnableEEG();
 
                 switch (id){
                     case R.id.Game5_player:
-                        if(!isActivo) {
+                        if(!F_Game5.this.isPlayerEnabled) {
                             F_Game5.super.sonido.play(F_Game5.super.actividadPrincipal);
-                            isActivo = true;
                             F_Game5.this.isPlayerEnabled = true;
-                            F_Game5.this.ivPlayer.setImageResource(R.mipmap.ic_player_stop);
+                            F_Game5.this.ivPlayer.setBackgroundResource(R.mipmap.ic_player_stop);
+                            if(isEEG && F_Game5.super.cdTimer != null) {
+                                F_Game5.super.cdTimer.start();
+                            }
                         }else{
-                            F_Game5.super.sonido.destroy();
-                            isActivo = false;
-                            F_Game5.this.isPlayerEnabled = false;
-                            F_Game5.this.ivPlayer.setImageResource(R.mipmap.ic_play);
+                            if(!isEEG) {
+                                F_Game5.super.sonido.destroy();
+                                F_Game5.this.isPlayerEnabled = false;
+                                F_Game5.this.ivPlayer.setBackgroundResource(R.mipmap.ic_play);
+                            }
                         }
                         break;
+
+
                 }
+
             }
         };
 
@@ -181,23 +218,30 @@ public class F_Game5 extends Generic_Game {
                 float x = 0;
                 float y = 0;
                 if(Math.abs(event.values[0]) > 1){
-                    x = (event.values[0]*F_Game5.this.speed);//%F_Game5.this.screenSize[0] ;
-//                    if(x < 0){
-//                        x = F_Game5.this.screenSize[0] -x;
-//                    }
+                    x = (event.values[0]*F_Game5.this.speed);
+
 
                 }
 
                 if(Math.abs(event.values[1]) > 1) {
-                    y =  (event.values[1]*F_Game5.this.speed);//%F_Game5.this.screenSize[1] ;
-//                    if(y < 0){
-//                        y = F_Game5.this.screenSize[1] -y;
-//                    }
+                    y =  (event.values[1]*F_Game5.this.speed) ;
+
                 }
 
 
-                F_Game5.this.ivPlayer.setX(F_Game5.this.ivPlayer.getX()-x);
-                F_Game5.this.ivPlayer.setY(F_Game5.this.ivPlayer.getY() + y);
+                float newX, newY;
+                newX = (F_Game5.this.ivPlayer.getX()-x)%F_Game5.this.screenSize[1] ;
+                if(newX < 0){
+                    newX = F_Game5.this.screenSize[1];
+                }
+
+                newY = (F_Game5.this.ivPlayer.getY() + y)%F_Game5.this.screenSize[0];
+                if(newY < 0){
+                    newY = F_Game5.this.screenSize[0];
+                }
+
+                F_Game5.this.ivPlayer.setX(newX);
+                F_Game5.this.ivPlayer.setY(newY);
 
                 checkCollisions(F_Game5.this.ivPlayer);
 
@@ -277,15 +321,19 @@ public class F_Game5 extends Generic_Game {
         if(super.respuestaCorrecta == null){
             sr = stageResults.GAME_STARTED;
         }else{
+
             if(super.respuestaCorrecta == super.respuestaUsuario){
+                sr = stageResults.PLAYER_WINS;
                 ++this.stagesCompleted;
-                if(this.stagesCompleted < Config.LEVEL_0_NUM_OF_STAGES){
-                    sr = stageResults.PLAYER_WINS;
-                }else{
-                    sr = stageResults.GAME_WON;
-                }
+
             }else{
                 sr = stageResults.PLAYER_ERROR;
+            }
+            if(this.stagesCompleted >= Config.LEVEL_0_NUM_OF_STAGES){
+
+                super.saveStage();
+
+                sr = stageResults.GAME_WON;
             }
         }
 
@@ -309,40 +357,61 @@ public class F_Game5 extends Generic_Game {
 
     @Override
     public void procesarRespuesta(stageResults respuesta) {
+
+        boolean isCancelar = true;
         switch (respuesta){
             case GAME_WON:
+                super.sonido.destroy();
+                super.actividadPrincipal.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                 super.procesarRespuesta(respuesta);
                 break;
             case PLAYER_WINS:
+                super.procesarRespuesta(respuesta);
                 super.sonido.destroy();
                 super.feedBackSoundBien.play(super.actividadPrincipal, false);
 
-                this.generateUI();
-                this.generateSong();
+
                 this.progressBar.setProgress(this.stagesCompleted);
 
+                this.resetPosition();
 
-                if(null!=this.layoutButton) { //for safety only  as you are doing onClick
-                    this.layoutButton.removeView(this.ivPlayer);
-                    this.ivPlayer = new ImageButton(super.actividadPrincipal);
-                    this.ivPlayer.setBackgroundResource(R.mipmap.ic_play);
-                    this.layoutButton.addView(this.ivPlayer);
-                    this.ivPlayer.setLayoutParams(this.lp);
-                    this.ivPlayer.setId(R.id.Game5_player);
-                    this.ivPlayer.setOnClickListener(this.ocl);
-
-                }
                 this.isPlayerEnabled = false;
+                this.generateUI();
+                this.generateSong();
                 break;
             case PLAYER_ERROR:
-
+                super.procesarRespuesta(respuesta);
+                isCancelar = false;
                 break;
             case GAME_STARTED:
                 this.generateUI();
                 this.generateSong();
                 break;
+            case USER_EXIT:
+                super.actividadPrincipal.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                super.procesarRespuesta(respuesta);
+                break;
         }
 
+        if(this.actividadPrincipal.getTemporalStateGame().isEnableEEG() && super.cdTimer != null && isCancelar) {
+            super.cdTimer.cancel();
+            this.tvEEGTimer.setText(null);
+        }
+
+    }
+
+    private void resetPosition(){
+
+        if(null!=this.layoutButton) { //for safety only  as you are doing onClick
+            this.layoutButton.removeView(this.ivPlayer);
+            this.ivPlayer = new ImageButton(super.actividadPrincipal);
+            this.ivPlayer.setBackgroundResource(R.mipmap.ic_play);
+            this.layoutButton.addView(this.ivPlayer);
+            this.ivPlayer.setLayoutParams(this.lp);
+            this.ivPlayer.setId(R.id.Game5_player);
+            this.ivPlayer.setOnClickListener(this.ocl);
+
+        }
     }
 
     private void generateSong() {

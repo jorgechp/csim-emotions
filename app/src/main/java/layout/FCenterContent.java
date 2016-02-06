@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import csim.csimemotions.Config;
 import csim.csimemotions.F_settings_options_menu;
+import csim.csimemotions.Generic_Game;
 import csim.csimemotions.MainActivity;
 import csim.csimemotions.R;
 import csim.csimemotions.StateOfGame;
@@ -47,15 +48,17 @@ public class FCenterContent extends Fragment {
     private ImageButton btGame1;
     private ImageButton btGame2;
     private ImageButton btGame31,btGame32,btGame33;
+    private ImageButton btGame4;
     private Button btSettings;
 
     private View.OnClickListener onClickListener;
 
     private MainActivity mainActivity;
-    private FrameLayout stage1, stage2, stage3;
+    private FrameLayout stage1, stage2, stage3, stage4;
     private FrameLayout space1, space2, space3;
 
     private TextView tvTitle;
+
 
 
     public FCenterContent() {
@@ -92,27 +95,7 @@ public class FCenterContent extends Fragment {
         this.onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                switch (v.getId()) {
-                    case R.id.ibGame1:
-                        loadNewFragment(R.id.ibGame1);
-                        break;
-                    case R.id.ibGame2:
-                        loadNewFragment(R.id.ibGame2);
-                        break;
-                    case R.id.ibGame31:
-                        loadNewFragment(R.id.ibGame31);
-                        break;
-                    case R.id.ibGame32:
-                        loadNewFragment(R.id.ibGame32);
-                        break;
-                    case R.id.ibGame33:
-                        loadNewFragment(R.id.ibGame33);
-                        break;
-                    case R.id.ibSettings:
-                        loadNewFragment(R.id.ibSettings);
-                        break;
-                }
-
+                loadNewFragment(v.getId());
             }
         };
 
@@ -156,6 +139,7 @@ public class FCenterContent extends Fragment {
         btGame31 = (ImageButton) getView().findViewById(R.id.ibGame31);
         btGame32 = (ImageButton) getView().findViewById(R.id.ibGame32);
         btGame33 = (ImageButton) getView().findViewById(R.id.ibGame33);
+        btGame4 = (ImageButton) getView().findViewById(R.id.ibGame4);
         btSettings = (Button) getView().findViewById(R.id.ibSettings);
 
         this.space1 = (FrameLayout) getActivity().findViewById(R.id.flMargin1);
@@ -165,12 +149,14 @@ public class FCenterContent extends Fragment {
         this.stage1 = (FrameLayout) getActivity().findViewById(R.id.flStage1);
         this.stage2 = (FrameLayout) getActivity().findViewById(R.id.flStage2);
         this.stage3 = (FrameLayout) getActivity().findViewById(R.id.flStage3);
+        this.stage4 = (FrameLayout) getActivity().findViewById(R.id.flStage4);
 
         btGame1.setOnClickListener(this.onClickListener);
         btGame2.setOnClickListener(this.onClickListener);
         btGame31.setOnClickListener(this.onClickListener);
         btGame32.setOnClickListener(this.onClickListener);
         btGame33.setOnClickListener(this.onClickListener);
+        btGame4.setOnClickListener(this.onClickListener);
         btSettings.setOnClickListener(this.onClickListener);
 
 
@@ -263,6 +249,9 @@ public class FCenterContent extends Fragment {
             case R.id.ibGame33:
                 fg = new F_Game5();
                 break;
+            case R.id.ibGame4:
+                fg = new F_Game6();
+                break;
             case R.id.ibSettings:
                 fg = new F_Settings();
                 isGame = false;
@@ -276,6 +265,9 @@ public class FCenterContent extends Fragment {
 
         if (isGame) {
             this.mainActivity.getfUp().setGameMode(true);
+            if(F_Game1.class.isInstance(fg) == false) {
+                this.mainActivity.setCurrentGame((Generic_Game) fg);
+            }
 
         }
 
@@ -301,6 +293,10 @@ public class FCenterContent extends Fragment {
         this.resize();
     }
 
+    /**
+     * Actualiza la información de la interfaz de usuario en base a los logros obtenidos por el
+     * usuario.
+     */
     public void checkUI() {
         States estado = mainActivity.getStateOfTheGame().getEstado();
 
@@ -316,6 +312,17 @@ public class FCenterContent extends Fragment {
                 this.btGame31.setEnabled(true);
                 this.btGame32.setEnabled(true);
                 this.btGame33.setEnabled(true);
+            }
+
+            boolean isGame31Played = mainActivity.getStateOfTheGame().isGamePlayed(States.GAME31);
+            boolean isGame32Played = mainActivity.getStateOfTheGame().isGamePlayed(States.GAME32);
+            boolean isGame33Played = mainActivity.getStateOfTheGame().isGamePlayed(States.GAME33);
+
+            if(isGame31Played && isGame32Played && isGame33Played){
+                this.space3.setForeground(drawable);
+                this.stage4.setForeground(drawable);
+                this.btGame4.setEnabled(true);
+
             }
         } else {
             this.anularBotones();

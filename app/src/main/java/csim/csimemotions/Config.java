@@ -68,5 +68,20 @@ public class Config {
      */
     public static final String USER_CONFIG_FILENAME = "userConfig.data";
 
+    /**
+     * Nombre del fichero de registro de eventos de usuarios
+     */
+    public static final String USER_LOG_FILENAME = "logHistory.log";
+
+    /**
+     * Nombre del fichero de registro de eventos de usuarios, en formato CSV
+     */
+    public static final String USER_LOG_FILENAME_CSV = "logHistory.csv";
+
+    /**
+     * Establece el tiempo de cada etapa en el modo EEG
+     */
+    public static final int EEG_MODE_TIME = 6000;
+
 
 }

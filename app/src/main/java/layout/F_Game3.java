@@ -5,15 +5,14 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -42,7 +41,7 @@ public class F_Game3 extends Generic_Game {
     private HashMap<ImageButton,SoundPlayer> soundTable;
     private String[][] soundList;
     private SoundPlayer newPositionSound;
-    private Emotions emotionSelected, userEmotionSelected;
+
 
     private ImageButton ibHappy, ibSurprised, ibAngry, ibSad;
     private int numButtons;
@@ -51,24 +50,15 @@ public class F_Game3 extends Generic_Game {
     private int heightLimitsMin;
     private ProgressBar rb;
     private Thread threadSound;
-    private TextView ttTitle, ttDescription;
+    private TextView ttTitle, ttDescription, tvEEGTimer;
 
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-
-    protected class Triple{
-        ImageButton ib;
-        ObjectAnimator oa1,oa2;
-
-
-    }
-
     private OnFragmentInteractionListener mListener;
     private Triple soundButtons[];
     private FrameLayout soundLayout;
     private View.OnClickListener oclSound,oclEmotions;
-
     public F_Game3() {
         // Required empty public constructor
     }
@@ -102,6 +92,7 @@ public class F_Game3 extends Generic_Game {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         super.currentGame = States.GAME31;
+        this.contador();
         this.soundTable = new HashMap<>();
         this.isGameExecuting = true;
         this.soundLayout =  (FrameLayout) super.actividadPrincipal.findViewById(R.id.Game3_flSongTab);
@@ -116,6 +107,7 @@ public class F_Game3 extends Generic_Game {
 
         this.ttTitle = (TextView) super.actividadPrincipal.findViewById(R.id.Game31_title);
         this.ttDescription = (TextView) super.actividadPrincipal.findViewById(R.id.Game31_ttGameDescription);
+        this.tvEEGTimer = (TextView) super.actividadPrincipal.findViewById(R.id.Game31_EEGTimer);
 
         this.rb = (ProgressBar) super.actividadPrincipal.findViewById(R.id.Game31_rbProgressBar);
         this.rb.setMax(this.numButtons);
@@ -129,20 +121,31 @@ public class F_Game3 extends Generic_Game {
             @Override
             public void onClick(View v) {
                 ImageButton b = ((ImageButton)v);
+                boolean isEEG = F_Game3.this.actividadPrincipal.getTemporalStateGame().isEnableEEG();
+
+                //Si ya se ha seleccionado un botón de audio
                 if(b == F_Game3.this.selectedButton){
-                    F_Game3.this.selectedButton.setBackgroundResource(R.mipmap.ic_play);
-                    F_Game3.this.selectedButton = null;
-                    F_Game3.super.sonido.destroy();
-                    F_Game3.this.enableButtons(false);
+                   if(!isEEG) {
+                       F_Game3.this.selectedButton.setBackgroundResource(R.mipmap.ic_play);
+                       F_Game3.this.selectedButton = null;
+                       F_Game3.super.sonido.destroy();
+                       F_Game3.this.enableButtons(false);
+                   }
                 }else {
-                    F_Game3.this.setNewSelectedButton(b);
-                    if (F_Game3.super.sonido != null) {
-                        F_Game3.super.sonido.destroy();
+                    if(isEEG && F_Game3.super.cdTimer != null) {
+                        F_Game3.super.cdTimer.start();
                     }
-                    F_Game3.super.sonido = F_Game3.this.getSpForSelectedButton();
+                        F_Game3.this.setNewSelectedButton(b);
+                        if (F_Game3.super.sonido != null) {
+                            F_Game3.super.sonido.destroy();
+                        }
+                        F_Game3.super.sonido = F_Game3.this.getSpForSelectedButton();
                     F_Game3.super.sonido.play(F_Game3.super.actividadPrincipal);
-                    F_Game3.this.enableButtons(true);
+                        F_Game3.this.enableButtons(true);
+
+
                 }
+
 
             }
         };
@@ -155,18 +158,19 @@ public class F_Game3 extends Generic_Game {
                     switch (v.getId()) {
 
                         case R.id.Game3_ib_angry:
-                            F_Game3.this.userEmotionSelected = Emotions.ANGRY;
+                            F_Game3.super.respuestaUsuario = Emotions.ANGRY;
                             break;
                         case R.id.Game3_ib_happy:
-                            F_Game3.this.userEmotionSelected = Emotions.HAPPY;
+                            F_Game3.super.respuestaUsuario = Emotions.HAPPY;
                             break;
                         case R.id.Game3_ib_surprised:
-                            F_Game3.this.userEmotionSelected = Emotions.SURPRISED;
+                            F_Game3.super.respuestaUsuario = Emotions.SURPRISED;
                             break;
                         case R.id.Game3_ib_sad:
-                            F_Game3.this.userEmotionSelected = Emotions.SAD;
+                            F_Game3.super.respuestaUsuario = Emotions.SAD;
                             break;
                     }
+
                     F_Game3.this.procesarRespuesta(F_Game3.this.continueGame());
                 }
             }
@@ -199,6 +203,7 @@ public class F_Game3 extends Generic_Game {
 
         this.ttTitle.setTypeface(tfTitle);
         this.ttDescription.setTypeface(tfFontsButtons);
+
     }
 
     /**
@@ -227,7 +232,7 @@ public class F_Game3 extends Generic_Game {
                 int id = Integer.valueOf(selectedSound[2]);
                 sp = new SoundPlayer(id);
                 this.soundTable.put(this.selectedButton,sp);
-                this.emotionSelected = super.getEmotionFromString(selectedSound[1]);
+                super.respuestaCorrecta = super.getEmotionFromString(selectedSound[1]);
             }
         }
         return sp;
@@ -306,7 +311,27 @@ public class F_Game3 extends Generic_Game {
         }
     }
 
+    @Override
+    protected void contador() {
+        super.cdTimer = new CountDownTimer(Config.EEG_MODE_TIME, 1000) {
 
+            public void onTick(long millisUntilFinished) {
+                //mTextField.setText("seconds remaining: " + millisUntilFinished / 1000);
+                F_Game3.this.tvEEGTimer.setText(Long.toString(millisUntilFinished/1000));
+            }
+
+            public void onFinish() {
+                F_Game3.super.respuestaUsuario = Emotions.NONE;
+                F_Game3.super.stageNumber++;
+                F_Game3.this.rb.setProgress(F_Game3.this.rb.getProgress() + 1);
+                F_Game3.this.soundLayout.removeView(F_Game3.this.selectedButton);
+                F_Game3.this.selectedButton = null;
+                F_Game3.this.numButtons--;
+                F_Game3.this.procesarRespuesta(F_Game3.this.continueGame());
+                F_Game3.this.tvEEGTimer.setText(null);
+            }
+        };
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -325,37 +350,25 @@ public class F_Game3 extends Generic_Game {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
-
     @Override
     public stageResults continueGame() {
+        super.saveStage();
         stageResults sr = stageResults.PLAYER_ERROR;
-        if(this.emotionSelected == this.userEmotionSelected){
+        if(super.respuestaCorrecta == super.respuestaUsuario){
             --this.numButtons;
-            if(this.numButtons == 0){
-                sr = stageResults.GAME_WON;
-            }else{
-                sr = stageResults.PLAYER_WINS;
-            }
+            sr = stageResults.PLAYER_WINS;
+        }
+        if(this.numButtons <= 0){
+            sr = stageResults.GAME_WON;
         }
         return sr;
     }
 
     @Override
     public void procesarRespuesta(stageResults respuesta) {
+        if(this.actividadPrincipal.getTemporalStateGame().isEnableEEG() && super.cdTimer != null) {
+            super.cdTimer.cancel();
+        }
         switch (respuesta){
             case GAME_WON:
                 this.threadSound.interrupt();
@@ -363,19 +376,31 @@ public class F_Game3 extends Generic_Game {
                 super.procesarRespuesta(respuesta);
                 break;
             case PLAYER_ERROR:
-                super.feedBackSoundMal.play(super.actividadPrincipal,false);
-                this.userEmotionSelected = null;
-                this.selectedButton.setBackgroundResource(R.mipmap.ic_play);
-                this.selectedButton = null;
+                super.procesarRespuesta(respuesta);
+                super.feedBackSoundMal.play(super.actividadPrincipal, false);
+
+                if(this.selectedButton != null) {
+                    this.selectedButton.setBackgroundResource(R.mipmap.ic_play);
+                    this.selectedButton = null;
+                }
                 super.sonido.destroy();
+
                 break;
             case PLAYER_WINS:
+                super.procesarRespuesta(respuesta);
                 super.feedBackSoundBien.play(super.actividadPrincipal,false);
-                this.userEmotionSelected = null;
+
                 this.soundLayout.removeView(this.selectedButton);
                 this.selectedButton = null;
                 super.sonido.destroy();
                 this.rb.setProgress(this.rb.getProgress() + 1);
+
+                break;
+            case GAME_STARTED:
+
+                break;
+            case USER_EXIT:
+                super.procesarRespuesta(respuesta);
                 break;
         }
 
@@ -399,5 +424,27 @@ public class F_Game3 extends Generic_Game {
         if(this.threadSound.isInterrupted() == true) {
             this.threadSound.start();
         }
+    }
+
+    /**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     * <p>
+     * See the Android Training lesson <a href=
+     * "http://developer.android.com/training/basics/fragments/communicating.html"
+     * >Communicating with Other Fragments</a> for more information.
+     */
+    public interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        void onFragmentInteraction(Uri uri);
+    }
+
+    protected class Triple{
+        ImageButton ib;
+        ObjectAnimator oa1,oa2;
+
+
     }
 }

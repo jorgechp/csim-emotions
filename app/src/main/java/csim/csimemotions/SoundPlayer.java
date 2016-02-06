@@ -1,23 +1,39 @@
 package csim.csimemotions;
 
 import android.content.Context;
+import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
 import android.util.Log;
+
+import java.io.IOException;
 
 /**
  * Created by jorge on 23/12/15.
  * http://stackoverflow.com/questions/21043059/play-background-sound-in-android-applications
  */
 public class SoundPlayer {
-    MediaPlayer mp;
-    int idSong;
+    private MediaPlayer mp;
+    private int idSong;
+    private MediaPlayer.OnCompletionListener completionListener;
 
     public SoundPlayer(int idSong) {
         this.idSong = idSong;
     }
+    public SoundPlayer(AssetFileDescriptor descriptor) throws IOException {
+        mp = new MediaPlayer();
+        mp.setDataSource(descriptor.getFileDescriptor(), descriptor.getStartOffset(), descriptor.getLength());
+        descriptor.close();
+        mp.prepare();
+        mp.setVolume(1f, 1f);
+
+        idSong = -1; // Necesario para indicar que no es una identificacion sino un descriptor
+
+    }
 
     private void buildPlayer(Context context, boolean loop) {
-        mp = MediaPlayer.create(context, this.idSong);
+        if(idSong != -1) {
+            mp = MediaPlayer.create(context, this.idSong);
+        }
         mp.start();
 
         Log.d(Integer.toString(this.idSong), "On start");
@@ -52,6 +68,10 @@ public class SoundPlayer {
 
     public void onDestroy() {
         this.destroy();
+    }
+
+    public void setOnCompletionListener(MediaPlayer.OnCompletionListener ocl){
+        this.mp.setOnCompletionListener(ocl);
     }
 
 }

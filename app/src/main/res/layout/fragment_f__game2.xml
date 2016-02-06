@@ -55,6 +55,13 @@
                     android:id="@+id/Game2_ibPlayer"
                     android:layout_gravity="center"
                     android:background="@mipmap/ic_play" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:id="@+id/Game2_Timer"
+                    android:layout_gravity="right|center_vertical" />
             </FrameLayout>
         </LinearLayout>
 

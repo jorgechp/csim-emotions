@@ -21,6 +21,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Field;
 
+import csim.csimemotions.log.LogManager;
 import layout.FBarUp;
 import layout.FCenterContent;
 
@@ -32,12 +33,18 @@ public class MainActivity extends ActionBarActivity {
 
 
     private StateOfGame stateGame;
+    private TemporalStateOfGame tStateGame;
     private UserConfig userConf;
 
 
     private FCenterContent fCenter;
     private FBarUp fUp;
     private SoundPlayer backgroundSound;
+
+    private Generic_Game currentGame;
+
+    private LogManager logMan;
+
 
 
 
@@ -197,6 +204,13 @@ public class MainActivity extends ActionBarActivity {
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
+
+        this.tStateGame = TemporalStateOfGame.getInstance();
+        this.tStateGame.setEnableLogging(true);
+        this.tStateGame.setEnableEEG(false);
+        this.logMan = LogManager.getInstance();
+        this.logMan.setActividadPrincipal(this);
+
 
 
     }
@@ -458,9 +472,23 @@ public class MainActivity extends ActionBarActivity {
         return userConf;
     }
 
+    public LogManager getLogMan() {
+        return logMan;
+    }
+
     public void setUserConf(UserConfig userConf) {
         this.userConf = userConf;
     }
 
+    public TemporalStateOfGame getTemporalStateGame() {
+        return tStateGame;
+    }
 
+    public Generic_Game getCurrentGame() {
+        return currentGame;
+    }
+
+    public void setCurrentGame(Generic_Game currentGame) {
+        this.currentGame = currentGame;
+    }
 }

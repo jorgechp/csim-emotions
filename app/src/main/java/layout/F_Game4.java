@@ -8,6 +8,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -67,13 +68,13 @@ public class F_Game4 extends Generic_Game {
     private String[][] sonidos;
     private int numSonidos;
     private HashSet<Integer> listaSonidos;
-    private Emotions soundCategory;
-    private Emotions soundCategorySelectedByUser;
+
     private ViewGroup.LayoutParams layoutParams;
 
     private int numStagesCompleted;
 
-    private TextView tvTitle;
+    private TextView tvTitle, tvEEGTimer;
+    private boolean isTimer;
 
 
     public F_Game4() {
@@ -96,6 +97,25 @@ public class F_Game4 extends Generic_Game {
     }
 
     @Override
+    protected void contador() {
+        super.cdTimer = new CountDownTimer(Config.EEG_MODE_TIME, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                //mTextField.setText("seconds remaining: " + millisUntilFinished / 1000);
+                F_Game4.this.tvEEGTimer.setText(Long.toString(millisUntilFinished/1000));
+            }
+
+            public void onFinish() {
+                F_Game4.super.respuestaUsuario = Emotions.NONE;
+                F_Game4.super.stageNumber++;
+                F_Game4.this.progressBar.setProgress(F_Game4.this.progressBar.getProgress() + 1);
+                F_Game4.this.procesarRespuesta(F_Game4.this.continueGame());
+                F_Game4.this.tvEEGTimer.setText(null);
+            }
+        };
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -110,7 +130,8 @@ public class F_Game4 extends Generic_Game {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        this.isTimer = false;
+        this.contador();
         super.sonido = null;
         super.currentGame = States.GAME32;
 
@@ -132,7 +153,9 @@ public class F_Game4 extends Generic_Game {
         this.progressBar.setProgress(0);
         this.progressBar.setMax(Config.LEVEL_0_NUM_OF_STAGES);
 
-        this.soundCategory = null;
+        this.tvEEGTimer = (TextView) super.actividadPrincipal.findViewById(R.id.Game4_ttEEGTimer);
+
+        super.respuestaCorrecta = null;
 
         /*
         * Es necesario descontar los layouts superiores para poder adecuar el movimiento del player de layouts inferiores
@@ -235,25 +258,25 @@ public class F_Game4 extends Generic_Game {
 
                         if(x > inferiorLimitHappy[0] && x <  superiorLimitXHappy){
                             if(y > inferiorLimitHappy[1] && y < superiorLimitYHappy){
-                                F_Game4.this.soundCategorySelectedByUser = Emotions.HAPPY;
+                                F_Game4.super.respuestaUsuario = Emotions.HAPPY;
                                 isContinue = true;
                             }
                         }
                         if(x > inferiorLimitSad[0] && x <  superiorLimitXSad){
                             if(y > inferiorLimitSad[1] && y < superiorLimitYSad){
-                                F_Game4.this.soundCategorySelectedByUser = Emotions.SAD;
+                                F_Game4.super.respuestaUsuario = Emotions.SAD;
                                 isContinue = true;
                             }
                         }
                         if(x > inferiorLimitAngry[0] && x <  superiorLimitXAngry){
                             if(y > inferiorLimitAngry[1] && y < superiorLimitYAngry){
-                                F_Game4.this.soundCategorySelectedByUser = Emotions.ANGRY;
+                                F_Game4.super.respuestaUsuario = Emotions.ANGRY;
                                 isContinue = true;
                             }
                         }
                         if(x > inferiorLimitSurprised[0] && x <  superiorLimitXSurprised){
                             if(y > inferiorLimitSurprised[1] && y < superiorLimitYSurprised){
-                                F_Game4.this.soundCategorySelectedByUser = Emotions.SURPRISED;
+                                F_Game4.super.respuestaUsuario = Emotions.SURPRISED;
                                 isContinue = true;
                             }
                         }
@@ -263,7 +286,14 @@ public class F_Game4 extends Generic_Game {
                             F_Game4.super.sonido.destroy();
                         }
 
+                        if(!isTimer && F_Game4.this.actividadPrincipal.getTemporalStateGame().isEnableEEG() && F_Game4.super.cdTimer != null) {
+                            F_Game4.super.cdTimer.start();
+                            isTimer = true;
+                        }
+
+
                         break;
+
 
                     default:
                         break;
@@ -311,21 +341,56 @@ public class F_Game4 extends Generic_Game {
 
     @Override
     public void procesarRespuesta(stageResults respuesta) {
+        if(F_Game4.this.actividadPrincipal.getTemporalStateGame().isEnableEEG() && F_Game4.super.cdTimer != null) {
+            F_Game4.super.cdTimer.cancel();
+            F_Game4.this.tvEEGTimer.setText(null);
+            F_Game4.super.cdTimer = null;
+            if(F_Game4.super.sonido != null) {
+                F_Game4.super.sonido.destroy();
+            }
+            Thread t = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(1000);                 //1000 milliseconds is one second.
+                    } catch(InterruptedException ex) {
+                        Thread.currentThread().interrupt();
+                    }
+                    F_Game4.this.isTimer = false;
+                    try {
+                        super.finalize();
+                    } catch (Throwable throwable) {
+                        throwable.printStackTrace();
+                    }
+                }
+            });
+
+            t.start();
+
+        }
         boolean isGenerate = false;
         switch (respuesta){
             case GAME_WON:
+
                 super.feedBackSoundBien.play(super.actividadPrincipal, false);
                 super.procesarRespuesta(respuesta);
                 break;
             case PLAYER_ERROR:
+
+                super.procesarRespuesta(respuesta);
                 break;
             case PLAYER_WINS:
+
+                super.procesarRespuesta(respuesta);
                 super.feedBackSoundBien.play(super.actividadPrincipal, false);
                 this.progressBar.setProgress(this.numStagesCompleted);
                 isGenerate = true;
                 break;
             case GAME_STARTED:
                 isGenerate = true;
+                break;
+            case USER_EXIT:
+                super.procesarRespuesta(respuesta);
                 break;
         }
         if(isGenerate){
@@ -340,7 +405,7 @@ public class F_Game4 extends Generic_Game {
             String sonidoSeleccionado[] = this.sonidos[indexOfSelectedSound];
             int id = Integer.parseInt(sonidoSeleccionado[2]);
             super.sonido = new SoundPlayer(id);
-            this.soundCategory = super.getEmotionFromString(sonidoSeleccionado[1]);
+            super.respuestaCorrecta = super.getEmotionFromString(sonidoSeleccionado[1]);
 
 
 
@@ -348,6 +413,10 @@ public class F_Game4 extends Generic_Game {
             super.loadImageOnVisor(super.imAngry[rnd.nextInt(super.imAngry.length)][0], this.ivAngry,0.35f,0.10f);
             super.loadImageOnVisor(super.imSad[rnd.nextInt(super.imSad.length)][0], this.ivSad,0.35f,0.10f);
             super.loadImageOnVisor(super.imSurprised[rnd.nextInt(super.imSurprised.length)][0], this.ivSurprised,0.35f,0.10f);
+        }
+
+        if(F_Game4.this.actividadPrincipal.getTemporalStateGame().isEnableEEG() && F_Game4.super.cdTimer == null) {
+            F_Game4.this.contador();
         }
     }
 
@@ -361,10 +430,11 @@ public class F_Game4 extends Generic_Game {
     public stageResults continueGame() {
         stageResults result = null;
 
-        if(this.soundCategorySelectedByUser == null){
+        if(super.respuestaCorrecta == null){
             result = stageResults.GAME_STARTED;
         }else{
-            if(this.soundCategorySelectedByUser == this.soundCategory){
+            super.saveStage();
+            if(super.respuestaUsuario == super.respuestaCorrecta){
                 ++this.numStagesCompleted;
                 if(this.numStagesCompleted < Config.LEVEL_0_NUM_OF_STAGES){
                     result = stageResults.PLAYER_WINS;
@@ -385,7 +455,7 @@ public class F_Game4 extends Generic_Game {
                 this.ivPlayer.setOnTouchListener(this.otl);
             }
 
-            this.soundCategorySelectedByUser = null;
+
 
         }
 

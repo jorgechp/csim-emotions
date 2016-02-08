@@ -25,6 +25,7 @@ import java.util.Random;
 import csim.csimemotions.Config;
 import csim.csimemotions.DataBaseController;
 import csim.csimemotions.Emotions;
+import csim.csimemotions.Generic_Game;
 import csim.csimemotions.IGame;
 import csim.csimemotions.MainActivity;
 import csim.csimemotions.R;
@@ -44,16 +45,11 @@ import csim.csimemotions.stageResults;
  * Use the {@link F_Game1#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class F_Game1 extends Fragment implements IGame {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class F_Game1  extends Generic_Game {
+
     private DataBaseController dbc;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+
 
     private ImageView IV;
 
@@ -70,8 +66,7 @@ public class F_Game1 extends Fragment implements IGame {
     private View.OnClickListener clickListener;
     private ImageView feedbackImage;
 
-    private SoundPlayer sonido;
-    private SoundPlayer feedBackSoundBien, feedBackSoundMal;
+
 
     private StateOfGame sg;
 
@@ -98,16 +93,15 @@ public class F_Game1 extends Fragment implements IGame {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     *
+     *
      * @return A new instance of fragment F_Game1.
      */
     // TODO: Rename and change types and number of parameters
     public static F_Game1 newInstance(String param1, String param2) {
         F_Game1 fragment = new F_Game1();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -115,10 +109,7 @@ public class F_Game1 extends Fragment implements IGame {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
         this.respuestaUsuario = null;
         this.respuestaCorrecta = null;
         this.wasSoundPlaying = false;
@@ -165,6 +156,12 @@ public class F_Game1 extends Fragment implements IGame {
         this.logSession = new Log(((MainActivity)getActivity()).getUserConf().getUserName(),System.currentTimeMillis(),((MainActivity)getActivity()).getTemporalStateGame().isEnableEEG());
     }
 
+
+    @Override
+    protected void contador() {
+
+    }
+
     private void setButtonsEnabled(boolean enabled) {
         this.bAngry.setEnabled(enabled);
         this.bSad.setEnabled(enabled);
@@ -185,6 +182,7 @@ public class F_Game1 extends Fragment implements IGame {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+        super.dialogoAlerta.setMessage(R.string.Game1_instructions);
         super.onActivityCreated(savedInstanceState);
         this.continueGame();
 
@@ -218,13 +216,13 @@ public class F_Game1 extends Fragment implements IGame {
         this.marcador.setText("0 / " + Byte.toString(Config.LEVEL_0_NUM_OF_STAGES));
         this.marcador.setTypeface(tfFontsButtons);
 
-        this.feedBackSoundBien = new SoundPlayer(R.raw.feedback_bien_1);
-        this.feedBackSoundMal = new SoundPlayer(R.raw.feedback_mal_1);
+        super.feedBackSoundBien = new SoundPlayer(R.raw.feedback_bien_1);
+        super.feedBackSoundMal = new SoundPlayer(R.raw.feedback_mal_1);
 
-        this.sonido.play(getActivity());
+        super.sonido.play(getActivity());
 
 
-        ((MainActivity) getActivity()).stopSong();
+        super.actividadPrincipal.stopSong();
 
 
     }
@@ -386,22 +384,7 @@ public class F_Game1 extends Fragment implements IGame {
 
     }
 
-    /**
-     * Calcula el tamano en pixeles de una imagen, a partir de una escala relativa
-     *
-     * @param heigthScale
-     * @param widthScale
-     * @return int[] primer elemento, tamano de la altura, y segundo elemento, tamano de la anchura. (en pixeles)
-     */
-    private int[] setSizeOfImage(float heigthScale, float widthScale) {
-        DisplayMetrics displaymetrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
 
-        int screenHeight = Math.round(displaymetrics.heightPixels * heigthScale);
-        int screenWidth = Math.round(displaymetrics.widthPixels * widthScale);
-
-        return new int[]{screenHeight, screenWidth};
-    }
 
     /**
      * Interpreta la respuesta del fin del juego.
@@ -414,28 +397,7 @@ public class F_Game1 extends Fragment implements IGame {
             case GAME_STARTED:  //Inicio del juego
                 break;
             case GAME_WON: //Fin del juego
-                if(((MainActivity) getActivity()).getTemporalStateGame().isEnableLogging()) {
-
-                    this.logMan.addLog(this.logSession);
-                    this.logMan.save();
-                }
-                if (this.sonido != null) {
-                    this.sonido.destroy();
-                }
-                ((MainActivity) getActivity()).getStateOfTheGame().chargeReward(this.currentGame);
-                MainActivity mainActi = ((MainActivity) getActivity());
-                mainActi.playSong();
-                FCenterContent fg = mainActi.getfCenter();
-                mainActi.getfUp().setGameMode(false);
-                mainActi.saveUserConfig();
-
-                fg.checkUI();
-
-                FragmentTransaction fManagerTransaction = getFragmentManager().beginTransaction();
-                //fManagerTransaction.replace(this.getId(), fg);
-                fManagerTransaction.remove(this);
-                fManagerTransaction.show(fg);
-                fManagerTransaction.commit();
+                super.procesarRespuesta(respuesta);
 
 
                 break;
@@ -450,20 +412,13 @@ public class F_Game1 extends Fragment implements IGame {
                 this.actualizarMarcador();
                 this.reactivarAudio();
                 break;
+            case USER_EXIT:
+                super.procesarRespuesta(respuesta);
+                break;
         }
     }
 
-    /**
-     * reactiva el audio tras obtener feedback
-     */
-    private void reactivarAudio() {
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            public void run() {
-                sonido.play(getActivity());
-            }
-        }, Config.TIME_FEEDBACK);
-    }
+
 
     /**
      * Muestra feedback al jugador
@@ -506,43 +461,13 @@ public class F_Game1 extends Fragment implements IGame {
         this.marcador.setText(Integer.toString(this.correctImages.size()) + "/" + Byte.toString(Config.LEVEL_0_NUM_OF_STAGES));
     }
 
-    /**
-     * Determina el valor de la enumeracion Emotions correspondiente a la cadena de texto
-     * enviada como parámetro.
-     *
-     * @param String emotion
-     * @return Emotions
-     */
-    private Emotions getEmotionFromString(String emotion) {
-        Emotions correctEmotion = null;
 
-        switch (emotion) {
-            case "HAPPY":
-                correctEmotion = Emotions.HAPPY;
-                break;
-            case "SAD":
-                correctEmotion = Emotions.SAD;
-                break;
-            case "ANGRY":
-                correctEmotion = Emotions.ANGRY;
-                break;
-            case "SURPRISED":
-                correctEmotion = Emotions.SURPRISED;
-                break;
-            case "NONE":
-                correctEmotion = Emotions.NONE;
-                break;
-        }
-
-        return correctEmotion;
-
-    }
 
     @Override
     public void onPause() {
         super.onPause();
-        if (this.sonido.isPlaying()) {
-            this.sonido.destroy();
+        if (super.sonido.isPlaying()) {
+            super.sonido.destroy();
             this.wasSoundPlaying = true;
         }
     }
@@ -556,7 +481,7 @@ public class F_Game1 extends Fragment implements IGame {
     public void onResume() {
         super.onResume();
         if (this.wasSoundPlaying) {
-            this.sonido.play(getActivity());
+            super.sonido.play(getActivity());
             this.wasSoundPlaying = false;
         }
 

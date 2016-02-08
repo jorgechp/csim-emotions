@@ -23,7 +23,6 @@ import csim.csimemotions.F_settings_options_menu;
 import csim.csimemotions.Generic_Game;
 import csim.csimemotions.MainActivity;
 import csim.csimemotions.R;
-import csim.csimemotions.StateOfGame;
 import csim.csimemotions.States;
 
 /**
@@ -49,13 +48,13 @@ public class FCenterContent extends Fragment {
     private ImageButton btGame2;
     private ImageButton btGame31,btGame32,btGame33;
     private ImageButton btGame4;
-    private Button btSettings;
+    private Button btNextLevel;
 
     private View.OnClickListener onClickListener;
 
     private MainActivity mainActivity;
-    private FrameLayout stage1, stage2, stage3, stage4;
-    private FrameLayout space1, space2, space3;
+    private FrameLayout stage1, stage2, stage3, stage4, finalStage;
+    private FrameLayout space1, space2, space3, spaceFill;
 
     private TextView tvTitle;
 
@@ -140,16 +139,18 @@ public class FCenterContent extends Fragment {
         btGame32 = (ImageButton) getView().findViewById(R.id.ibGame32);
         btGame33 = (ImageButton) getView().findViewById(R.id.ibGame33);
         btGame4 = (ImageButton) getView().findViewById(R.id.ibGame4);
-        btSettings = (Button) getView().findViewById(R.id.ibSettings);
+        btNextLevel = (Button) getView().findViewById(R.id.ibSettings);
 
         this.space1 = (FrameLayout) getActivity().findViewById(R.id.flMargin1);
         this.space2 = (FrameLayout) getActivity().findViewById(R.id.flMargin2);
         this.space3 = (FrameLayout) getActivity().findViewById(R.id.flMargin3);
+        this.spaceFill = (FrameLayout) getActivity().findViewById(R.id.flFillLayout);
 
         this.stage1 = (FrameLayout) getActivity().findViewById(R.id.flStage1);
         this.stage2 = (FrameLayout) getActivity().findViewById(R.id.flStage2);
         this.stage3 = (FrameLayout) getActivity().findViewById(R.id.flStage3);
         this.stage4 = (FrameLayout) getActivity().findViewById(R.id.flStage4);
+        this.finalStage = (FrameLayout) getActivity().findViewById(R.id.flFinalStage);
 
         btGame1.setOnClickListener(this.onClickListener);
         btGame2.setOnClickListener(this.onClickListener);
@@ -157,7 +158,7 @@ public class FCenterContent extends Fragment {
         btGame32.setOnClickListener(this.onClickListener);
         btGame33.setOnClickListener(this.onClickListener);
         btGame4.setOnClickListener(this.onClickListener);
-        btSettings.setOnClickListener(this.onClickListener);
+        btNextLevel.setOnClickListener(this.onClickListener);
 
 
 
@@ -252,8 +253,9 @@ public class FCenterContent extends Fragment {
             case R.id.ibGame4:
                 fg = new F_Game6();
                 break;
-            case R.id.ibSettings:
-                fg = new F_Settings();
+            case R.id.ibNextLevel:
+                fg = null;
+                mainActivity.getStateOfTheGame().increaseLevel();
                 isGame = false;
                 break;
             case R.id.Settings_ivOptions:
@@ -265,9 +267,8 @@ public class FCenterContent extends Fragment {
 
         if (isGame) {
             this.mainActivity.getfUp().setGameMode(true);
-            if(F_Game1.class.isInstance(fg) == false) {
-                this.mainActivity.setCurrentGame((Generic_Game) fg);
-            }
+            this.mainActivity.setCurrentGame((Generic_Game) fg);
+
 
         }
 
@@ -324,6 +325,14 @@ public class FCenterContent extends Fragment {
                 this.btGame4.setEnabled(true);
 
             }
+
+            boolean isGame4Played = mainActivity.getStateOfTheGame().isGamePlayed(States.GAME4);
+
+            if(isGame4Played){
+                this.spaceFill.setForeground(drawable);
+                this.finalStage.setForeground(drawable);
+                this.btNextLevel.setEnabled(true);
+            }
         } else {
             this.anularBotones();
         }
@@ -331,7 +340,7 @@ public class FCenterContent extends Fragment {
 
     private void anularBotones() {
         this.btGame2.setEnabled(false);
-        this.btSettings.setEnabled(false);
+        this.btNextLevel.setEnabled(false);
 
     }
 

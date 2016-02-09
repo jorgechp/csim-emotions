@@ -89,8 +89,12 @@ public class F_Game5 extends Generic_Game {
     @Override
     protected void contadorPre() {
         super.contadorPre();
-        isEEGPreTime = true;
-        setEnableButtons(false);
+
+        if(this.actividadPrincipal.getTemporalStateGame().isEnableEEG()) {
+            isEEGPreTime = true;
+            setEnableButtons(false);
+        }
+
         super.cdTimerPre = new CountDownTimer(Config.EEG_MODE_PRE_TIME, 1000) {
 
             public void onTick(long millisUntilFinished) {

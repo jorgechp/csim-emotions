@@ -146,8 +146,8 @@ public class MainActivity extends ActionBarActivity {
 
         this.dbc = new DataBaseController("Imagenes", "Sonidos", this);
 
-        //   deleteDatabase("Imagenes");
-        //   deleteDatabase("Sonido");
+           //deleteDatabase("Imagenes");
+           //deleteDatabase("Sonido");
 
         int rowsImagenes, rowsSonidos;
         try {
@@ -176,6 +176,7 @@ public class MainActivity extends ActionBarActivity {
             }else{
                 this.stateGame = StateOfGame.getInstance();
                 this.stateGame.init();
+                this.userConf.setIdSongSelected(R.raw.eh1);
 
             }
 

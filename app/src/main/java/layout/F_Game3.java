@@ -321,7 +321,10 @@ public class F_Game3 extends Generic_Game {
     @Override
     protected void contadorPre() {
         super.contadorPre();
-        this.setVisibleButtons(false);
+
+        if(this.actividadPrincipal.getTemporalStateGame().isEnableEEG()) {
+            this.setVisibleButtons(false);
+        }
 
 
         super.cdTimerPre = new CountDownTimer(Config.EEG_MODE_PRE_TIME, 1000) {

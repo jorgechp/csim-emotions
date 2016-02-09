@@ -173,11 +173,12 @@ public class MainActivity extends ActionBarActivity {
             loadUserConfig();
             if(this.userConf.getSog() != null) {
                 this.stateGame = this.userConf.getSog();
+            }else{
+                this.stateGame = StateOfGame.getInstance();
+                this.stateGame.init();
+
             }
-          //  }else{
-          //      this.stateGame = StateOfGame.getInstance();
-          //      this.stateGame.init();
-          //  }
+
 
         } catch (NotSerializableException e) {
             e.printStackTrace();

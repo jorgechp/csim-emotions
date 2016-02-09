@@ -80,7 +80,7 @@ public class F_Game1  extends Generic_Game {
 
 
     /**
-     * Maneja el contador de la interfaz
+     * Maneja el contadorPost de la interfaz
      */
     private TextView marcador;
     private boolean wasSoundPlaying;
@@ -109,7 +109,7 @@ public class F_Game1  extends Generic_Game {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        super.currentGame = States.GAME1;
         this.respuestaUsuario = null;
         this.respuestaCorrecta = null;
         this.wasSoundPlaying = false;
@@ -158,7 +158,7 @@ public class F_Game1  extends Generic_Game {
 
 
     @Override
-    protected void contador() {
+    protected void contadorPost() {
 
     }
 
@@ -167,6 +167,18 @@ public class F_Game1  extends Generic_Game {
         this.bSad.setEnabled(enabled);
         this.bHappy.setEnabled(enabled);
         this.bCry.setEnabled(enabled);
+
+        if(!enabled) {
+            this.bAngry.setVisibility(View.INVISIBLE);
+            this.bSad.setVisibility(View.INVISIBLE);
+            this.bHappy.setVisibility(View.INVISIBLE);
+            this.bCry.setVisibility(View.INVISIBLE);
+        }else{
+            this.bAngry.setVisibility(View.VISIBLE);
+            this.bSad.setVisibility(View.VISIBLE);
+            this.bHappy.setVisibility(View.VISIBLE);
+            this.bCry.setVisibility(View.VISIBLE);
+        }
     }
 
     private void desactivarInferfaz() {
@@ -184,6 +196,8 @@ public class F_Game1  extends Generic_Game {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.dialogoAlerta.setMessage(R.string.Game1_instructions);
         super.onActivityCreated(savedInstanceState);
+
+
         this.continueGame();
 
         this.bAngry = (Button) getActivity().findViewById(R.id.btAngry);
@@ -217,7 +231,7 @@ public class F_Game1  extends Generic_Game {
         this.marcador.setTypeface(tfFontsButtons);
 
         super.feedBackSoundBien = new SoundPlayer(R.raw.feedback_bien_1);
-        super.feedBackSoundMal = new SoundPlayer(R.raw.feedback_mal_1);
+
 
         super.sonido.play(getActivity());
 
@@ -392,15 +406,11 @@ public class F_Game1  extends Generic_Game {
      * @param respuesta
      */
     public void procesarRespuesta(stageResults respuesta) {
-
+        super.procesarRespuesta(respuesta);
         switch (respuesta) {
             case GAME_STARTED:  //Inicio del juego
                 break;
-            case GAME_WON: //Fin del juego
-                super.procesarRespuesta(respuesta);
 
-
-                break;
             case PLAYER_ERROR: //Respuesta incorrecta
 
                 this.feedBack(false);
@@ -412,47 +422,13 @@ public class F_Game1  extends Generic_Game {
                 this.actualizarMarcador();
                 this.reactivarAudio();
                 break;
-            case USER_EXIT:
-                super.procesarRespuesta(respuesta);
-                break;
+
         }
     }
 
 
 
-    /**
-     * Muestra feedback al jugador
-     *
-     * @param is_correct true si ha sido correcto. false en caso contrario
-     */
-    public void feedBack(boolean is_correct) {
-        Drawable resultIcon;
-        SoundPlayer player;
-        if (is_correct) {
-            resultIcon = getResources().getDrawable(R.mipmap.ic_feedback_bien);
-            player = this.feedBackSoundBien;
-        } else {
-            resultIcon = getResources().getDrawable(R.mipmap.ic_feedback_mal);
-            player = this.feedBackSoundMal;
-        }
-        this.feedbackImage.setImageDrawable(resultIcon);
 
-        player.play(getActivity(), false);
-        this.feedbackImage.setVisibility(View.VISIBLE);
-
-
-        /**
-         * TODO: Aunque no es deseable realizar un Thread.sleep(10000);
-         * el resultado utilizando handler es poco intuitivo para el usuario
-         */
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            public void run() {
-                F_Game1.this.feedbackImage.setVisibility(View.INVISIBLE);
-            }
-        }, Config.TIME_FEEDBACK);
-
-    }
 
     /**
      * Actualiza los datos del marcador

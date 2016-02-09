@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="Game1_instructions">Vas a escuchar una serie de canciones y verás, al mismo tiempo, una foto de la persona que las está escuchando. Indica cómo se siente esa persona.</string>
+    <string name="Game2_instructions">Selecciona el botón reproducir (►). Se reproducirá una canción y se mostrarán unas caras con diferentes expresiones. Intenta adivinar qué persona está escuchando la canción que se escucha. Si quieres parar la canción, pulsa el botón pausa (❚❚).</string>
+    <string name="Game3_instructions">¿Ves todos esos reproductores que se mueven (►)?. Si capturas uno, se reproducirá una canción. Trata de identificar quién está escuchando esa canción. Puedes parar la música pulsando nuevamente en el reproductor.</string>
+    <string name="Game4_instructions">Selecciona con tu dedo el reproductor (►) pero... ¡No lo sueltes!. Si lo arrastras por la pantalla se escuchará música, si dejas de arrastrarlo, la música se parará. Lleva el reproductor hacia la persona que está escuchando esta canción.</string>
+    <string name="Game5_instructions">Primero, pulsa en el reproductor (►) y se convertirá en un cuadrado (■). Ahora has de balancear tu tablet o tu móvil para que el cuadrado llegue hasta la persona que está escuchando la canción.</string>
+    <string name="Game6_instructions">Vas a poder leer y escuchar un cuento, ¡atento a la historia!. Cuando  pare la narración debes seleccionar el rostro que muestre mejor lo que está sintiendo el personaje del cuento.</string>
+</resources>

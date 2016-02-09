@@ -2,12 +2,11 @@ package layout;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,14 +15,11 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Random;
 
 import csim.csimemotions.Config;
 import csim.csimemotions.Emotions;
 import csim.csimemotions.Generic_Game;
-import csim.csimemotions.IGame;
 import csim.csimemotions.R;
 import csim.csimemotions.SoundPlayer;
 import csim.csimemotions.States;
@@ -37,7 +33,7 @@ import csim.csimemotions.stageResults;
  * Use the {@link F_Game2#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class F_Game2 extends Generic_Game implements IGame {
+public class F_Game2 extends Generic_Game  {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -92,8 +88,14 @@ public class F_Game2 extends Generic_Game implements IGame {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+        /**
+         * DialogAlert se crea en Generic_game
+         */
+        super.dialogoAlerta.setMessage(getString(R.string.Game2_instructions));
+
+
         super.onActivityCreated(savedInstanceState);
-        this.contador();
+
 
         this.ibPlayer = (ImageButton) getActivity().findViewById(R.id.Game2_ibPlayer);
 
@@ -138,7 +140,9 @@ public class F_Game2 extends Generic_Game implements IGame {
                             }
                         }
                         if(isEEG) {
-                            F_Game2.super.cdTimer.start();
+                            F_Game2.this.setEnableButtons(false);
+                            F_Game2.super.cdTimerPre.start();
+
                         }
                         break;
                     case R.id.Game2_ibAngry:
@@ -177,6 +181,9 @@ public class F_Game2 extends Generic_Game implements IGame {
         Typeface tfTitle = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Action_Man_Bold.ttf");
         this.tvTitle.setTypeface(tfTitle);
 
+        this.contadorPre();
+        this.contadorPost();
+
     }
 
     private void newStage() {
@@ -213,10 +220,34 @@ public class F_Game2 extends Generic_Game implements IGame {
         }
     }
 
+    @Override
+    protected void contadorPre() {
+        super.contadorPre();
+        this.setEnableButtons(false);
+
+
+        super.cdTimerPre = new CountDownTimer(Config.EEG_MODE_PRE_TIME, 1000) {
+
+
+
+
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            public void onFinish() {
+                F_Game2.this.setEnableButtons(true);
+
+                F_Game2.super.cdTimerPost.start();
+            }
+        };
+    }
+
+
 
     @Override
-    protected void contador() {
-        super.cdTimer = new CountDownTimer(Config.EEG_MODE_TIME, 1000) {
+    protected void contadorPost() {
+        super.cdTimerPost = new CountDownTimer(Config.EEG_MODE_TIME, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 //mTextField.setText("seconds remaining: " + millisUntilFinished / 1000);
@@ -232,6 +263,8 @@ public class F_Game2 extends Generic_Game implements IGame {
             }
         };
     }
+
+
 
     public void onAttach(Context context) {
         super.onAttach(getActivity());
@@ -328,8 +361,8 @@ public class F_Game2 extends Generic_Game implements IGame {
      */
     @Override
     public void procesarRespuesta(stageResults respuesta) {
-        if(this.actividadPrincipal.getTemporalStateGame().isEnableEEG() && super.cdTimer != null) {
-            super.cdTimer.cancel();
+        if(this.actividadPrincipal.getTemporalStateGame().isEnableEEG() && super.cdTimerPost != null) {
+            super.cdTimerPost.cancel();
         }
         super.procesarRespuesta(respuesta);
         switch (respuesta) {
@@ -344,7 +377,7 @@ public class F_Game2 extends Generic_Game implements IGame {
                 this.feedBack(false);
                 break;
             case PLAYER_WINS:  //Respuesta correcta
-
+                this.tvEEGTimer.setText(null);
                 this.feedBack(true);
                 this.actualizarMarcador();
                 break;

@@ -44,6 +44,16 @@ public class Config {
     public static final byte LEVEL_3_TIME = 35;
 
     /**
+     * Establece el tiempo de cada etapa en el modo EEG
+     */
+    public static final int EEG_MODE_TIME = 6000;
+
+    /**
+     * Establece el tiempo, en el modo EEG, previo al inicio de la evaluación
+     */
+    public static final int EEG_MODE_PRE_TIME = 7000;
+
+    /**
      * Tiempo de muestra del feedback. en milisegundos
      */
     public static final short TIME_FEEDBACK = 4000;
@@ -78,10 +88,12 @@ public class Config {
      */
     public static final String USER_LOG_FILENAME_CSV = "logHistory.csv";
 
+
+
     /**
-     * Establece el tiempo de cada etapa en el modo EEG
+     * Dirección web de la interfaz de comunicación con la web
      */
-    public static final int EEG_MODE_TIME = 6000;
+    public static final String DATABASE_URL = "http://csimemotions.webcindario.com/";
 
 
 }

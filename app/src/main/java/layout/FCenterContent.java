@@ -139,7 +139,7 @@ public class FCenterContent extends Fragment {
         btGame32 = (ImageButton) getView().findViewById(R.id.ibGame32);
         btGame33 = (ImageButton) getView().findViewById(R.id.ibGame33);
         btGame4 = (ImageButton) getView().findViewById(R.id.ibGame4);
-        btNextLevel = (Button) getView().findViewById(R.id.ibSettings);
+        btNextLevel = (Button) getView().findViewById(R.id.ibNextLevel);
 
         this.space1 = (FrameLayout) getActivity().findViewById(R.id.flMargin1);
         this.space2 = (FrameLayout) getActivity().findViewById(R.id.flMargin2);
@@ -255,7 +255,12 @@ public class FCenterContent extends Fragment {
                 break;
             case R.id.ibNextLevel:
                 fg = null;
-                mainActivity.getStateOfTheGame().increaseLevel();
+                byte levelActual = mainActivity.getStateOfTheGame().getLevelActual();
+                mainActivity.getStateOfTheGame().setLevelActual( ++levelActual );
+                isGame = false;
+                break;
+            case R.id.ibPreferenciasGames:
+                fg = new F_Settings();
                 isGame = false;
                 break;
             case R.id.Settings_ivOptions:
@@ -332,6 +337,7 @@ public class FCenterContent extends Fragment {
                 this.spaceFill.setForeground(drawable);
                 this.finalStage.setForeground(drawable);
                 this.btNextLevel.setEnabled(true);
+                this.mainActivity.getStateOfTheGame().increaseLevel();
             }
         } else {
             this.anularBotones();

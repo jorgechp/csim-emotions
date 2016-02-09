@@ -19,13 +19,15 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 
 import csim.csimemotions.Config;
 import csim.csimemotions.MainActivity;
-
+import csim.csimemotions.communication.HttpCom;
 
 
 /**
@@ -34,6 +36,7 @@ import csim.csimemotions.MainActivity;
 public class LogManager {
     private Queue<Log> sessionLog;
     private MainActivity actividadPrincipal;
+    private HttpCom comunicadorWeb;
     private static LogManager ourInstance = new LogManager();
 
     public static LogManager getInstance() {
@@ -42,6 +45,7 @@ public class LogManager {
 
     private LogManager() {
         sessionLog = new LinkedList();
+        comunicadorWeb = new HttpCom(Config.DATABASE_URL);
     }
 
     public void addLog(Log l){
@@ -138,6 +142,32 @@ public class LogManager {
         return null;
     }
     private void saveDataBase() {
+        Map<String,String> params = new HashMap<String, String>();
+        ArrayList<String[]> listaStages = null;
+        int stageNumber = 0;
+
+        params.put("uploadLog","0");
+
+        while(this.sessionLog.size() > 0){
+            listaStages = this.sessionLog.poll().getList();
+            for(String[] stage : listaStages){
+                params.put("idUser_"+stageNumber,stage[0]);
+                params.put("timestamp_"+stageNumber,stage[1]);
+                params.put("isEEG_"+stageNumber,stage[2]);
+                params.put("game_"+stageNumber,stage[3]);
+                params.put("stage_"+stageNumber,stage[4]);
+                params.put("difficulty_"+stageNumber,stage[5]);
+                params.put("correctAnswer_"+stageNumber,stage[6]);
+                params.put("userAnswer_"+stageNumber,stage[7]);
+                params.put("timestampStage_"+stageNumber,stage[8]);
+                ++stageNumber;
+            }
+
+        }
+
+        params.put("numberOfStages",Integer.toString(stageNumber));
+
+        this.comunicadorWeb.communicate(params);
 
     }
     /*

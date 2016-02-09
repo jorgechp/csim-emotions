@@ -1,8 +1,6 @@
 package layout;
 
-import android.animation.ObjectAnimator;
 import android.graphics.Bitmap;
-import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -14,17 +12,12 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RatingBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -75,6 +68,7 @@ public class F_Game4 extends Generic_Game {
 
     private TextView tvTitle, tvEEGTimer;
     private boolean isTimer;
+    private boolean isEEGpreTime;
 
 
     public F_Game4() {
@@ -96,9 +90,47 @@ public class F_Game4 extends Generic_Game {
         return fragment;
     }
 
+
     @Override
-    protected void contador() {
-        super.cdTimer = new CountDownTimer(Config.EEG_MODE_TIME, 1000) {
+    protected void contadorPre() {
+        super.contadorPre();
+        isEEGpreTime = true;
+        this.setVisibleButtons(false);
+
+
+        super.cdTimerPre = new CountDownTimer(Config.EEG_MODE_PRE_TIME, 1000) {
+
+
+
+
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            public void onFinish() {
+                F_Game4.this.setVisibleButtons(true);
+                F_Game4.super.cdTimerPost.start();
+                isEEGpreTime = false;
+            }
+        };
+    }
+
+    private void setVisibleButtons(boolean isEnabled) {
+        int mode = View.VISIBLE;
+        if(!isEnabled){
+            mode = View.INVISIBLE;
+        }
+
+        this.ivHappy.setVisibility(mode);
+        this.ivSad.setVisibility(mode);
+        this.ivAngry.setVisibility(mode);
+        this.ivSurprised.setVisibility(mode);
+    }
+
+    @Override
+    protected void contadorPost() {
+
+        super.cdTimerPost = new CountDownTimer(Config.EEG_MODE_TIME, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 //mTextField.setText("seconds remaining: " + millisUntilFinished / 1000);
@@ -111,6 +143,7 @@ public class F_Game4 extends Generic_Game {
                 F_Game4.this.progressBar.setProgress(F_Game4.this.progressBar.getProgress() + 1);
                 F_Game4.this.procesarRespuesta(F_Game4.this.continueGame());
                 F_Game4.this.tvEEGTimer.setText(null);
+
             }
         };
     }
@@ -118,6 +151,7 @@ public class F_Game4 extends Generic_Game {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        super.currentGame = States.GAME32;
 
     }
 
@@ -129,11 +163,13 @@ public class F_Game4 extends Generic_Game {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+        super.dialogoAlerta.setMessage(R.string.Game4_instructions);
         super.onActivityCreated(savedInstanceState);
         this.isTimer = false;
-        this.contador();
+        this.isEEGpreTime = false;
+
         super.sonido = null;
-        super.currentGame = States.GAME32;
+
 
         this.ivPlayer = (ImageView) super.actividadPrincipal.findViewById(R.id.Game4_ivPlayer);
         this.layoutParams = this.ivPlayer.getLayoutParams();
@@ -256,28 +292,30 @@ public class F_Game4 extends Generic_Game {
                         //mParams.topMargin = y-350;
                         //F_Game4.this.ivPlayer.setLayoutParams(mParams);
 
-                        if(x > inferiorLimitHappy[0] && x <  superiorLimitXHappy){
-                            if(y > inferiorLimitHappy[1] && y < superiorLimitYHappy){
-                                F_Game4.super.respuestaUsuario = Emotions.HAPPY;
-                                isContinue = true;
+                        if(!isEEGpreTime) {
+                            if (x > inferiorLimitHappy[0] && x < superiorLimitXHappy) {
+                                if (y > inferiorLimitHappy[1] && y < superiorLimitYHappy) {
+                                    F_Game4.super.respuestaUsuario = Emotions.HAPPY;
+                                    isContinue = true;
+                                }
                             }
-                        }
-                        if(x > inferiorLimitSad[0] && x <  superiorLimitXSad){
-                            if(y > inferiorLimitSad[1] && y < superiorLimitYSad){
-                                F_Game4.super.respuestaUsuario = Emotions.SAD;
-                                isContinue = true;
+                            if (x > inferiorLimitSad[0] && x < superiorLimitXSad) {
+                                if (y > inferiorLimitSad[1] && y < superiorLimitYSad) {
+                                    F_Game4.super.respuestaUsuario = Emotions.SAD;
+                                    isContinue = true;
+                                }
                             }
-                        }
-                        if(x > inferiorLimitAngry[0] && x <  superiorLimitXAngry){
-                            if(y > inferiorLimitAngry[1] && y < superiorLimitYAngry){
-                                F_Game4.super.respuestaUsuario = Emotions.ANGRY;
-                                isContinue = true;
+                            if (x > inferiorLimitAngry[0] && x < superiorLimitXAngry) {
+                                if (y > inferiorLimitAngry[1] && y < superiorLimitYAngry) {
+                                    F_Game4.super.respuestaUsuario = Emotions.ANGRY;
+                                    isContinue = true;
+                                }
                             }
-                        }
-                        if(x > inferiorLimitSurprised[0] && x <  superiorLimitXSurprised){
-                            if(y > inferiorLimitSurprised[1] && y < superiorLimitYSurprised){
-                                F_Game4.super.respuestaUsuario = Emotions.SURPRISED;
-                                isContinue = true;
+                            if (x > inferiorLimitSurprised[0] && x < superiorLimitXSurprised) {
+                                if (y > inferiorLimitSurprised[1] && y < superiorLimitYSurprised) {
+                                    F_Game4.super.respuestaUsuario = Emotions.SURPRISED;
+                                    isContinue = true;
+                                }
                             }
                         }
 
@@ -286,8 +324,10 @@ public class F_Game4 extends Generic_Game {
                             F_Game4.super.sonido.destroy();
                         }
 
-                        if(!isTimer && F_Game4.this.actividadPrincipal.getTemporalStateGame().isEnableEEG() && F_Game4.super.cdTimer != null) {
-                            F_Game4.super.cdTimer.start();
+                        if(!isTimer && F_Game4.this.actividadPrincipal.getTemporalStateGame().isEnableEEG() && F_Game4.super.cdTimerPre != null&& F_Game4.super.cdTimerPost != null) {
+                            F_Game4.this.setVisibleButtons(false);
+                            isEEGpreTime = true;
+                            F_Game4.super.cdTimerPre.start();
                             isTimer = true;
                         }
 
@@ -320,6 +360,10 @@ public class F_Game4 extends Generic_Game {
             }
         };
 
+        this.contadorPre();
+        this.contadorPost();
+
+
         this.ivPlayer.setOnTouchListener(this.otl);
         this.procesarRespuesta(this.continueGame());
     }
@@ -341,10 +385,10 @@ public class F_Game4 extends Generic_Game {
 
     @Override
     public void procesarRespuesta(stageResults respuesta) {
-        if(F_Game4.this.actividadPrincipal.getTemporalStateGame().isEnableEEG() && F_Game4.super.cdTimer != null) {
-            F_Game4.super.cdTimer.cancel();
+        if(F_Game4.this.actividadPrincipal.getTemporalStateGame().isEnableEEG() && F_Game4.super.cdTimerPost != null) {
+            F_Game4.super.cdTimerPost.cancel();
             F_Game4.this.tvEEGTimer.setText(null);
-            F_Game4.super.cdTimer = null;
+            F_Game4.super.cdTimerPost = null;
             if(F_Game4.super.sonido != null) {
                 F_Game4.super.sonido.destroy();
             }
@@ -415,8 +459,8 @@ public class F_Game4 extends Generic_Game {
             super.loadImageOnVisor(super.imSurprised[rnd.nextInt(super.imSurprised.length)][0], this.ivSurprised,0.35f,0.10f);
         }
 
-        if(F_Game4.this.actividadPrincipal.getTemporalStateGame().isEnableEEG() && F_Game4.super.cdTimer == null) {
-            F_Game4.this.contador();
+        if(F_Game4.this.actividadPrincipal.getTemporalStateGame().isEnableEEG() && F_Game4.super.cdTimerPost == null) {
+            F_Game4.this.contadorPost();
         }
     }
 

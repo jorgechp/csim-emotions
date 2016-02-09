@@ -25,4 +25,15 @@ dependencies {
     compile files('libs/opencsv-3.6.jar')
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'com.android.support:support-v4:21.0.3'
+    compile files('libs/android-async-http-1.4.9.jar')
+    compile files('libs/android-async-http-1.4.9.jar')
 }
+
+//android.packagingOptions {
+  //  pickFirst 'META-INF/LICENSE.txt'
+    //pickFirst 'META-INF/DEPENDENCIES'
+    //pickFirst 'META-INF/NOTICE'
+    //pickFirst 'META-INF/NOTICE.txt'
+    //pickFirst 'META-INF/LICENSE'
+  //  pickFirst 'META-INF/LICENSE.txt'
+//}

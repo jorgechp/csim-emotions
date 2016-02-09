@@ -1,6 +1,8 @@
 package csim.csimemotions;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -8,8 +10,10 @@ import android.os.Handler;
 import android.support.v4.app.FragmentTransaction;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,7 +22,6 @@ import csim.csimemotions.log.Log;
 import csim.csimemotions.log.LogManager;
 import csim.csimemotions.log.LogStage;
 import layout.FCenterContent;
-import layout.F_Game2;
 
 /**
  * Created by jorge on 5/01/16.
@@ -32,15 +35,17 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
     protected SoundPlayer sonido;
     protected Emotions respuestaCorrecta, respuestaUsuario;
     protected ImageView feedbackImage;
-    protected SoundPlayer feedBackSoundBien, feedBackSoundMal;
+    protected SoundPlayer feedBackSoundBien;
     protected String[][] imHappy, imSad, imAngry, imSurprised;
     protected LogManager logMan;
     protected Log logSession;
     private LogStage logStage;
+
     protected int stageNumber;
     private boolean wasSoundPlaying;
-
-    protected CountDownTimer cdTimer;
+    protected AlertDialog.Builder dialogoAlerta;
+    protected boolean isDialogAlert;
+    protected CountDownTimer cdTimerPre, cdTimerPost;
 
 
 
@@ -70,10 +75,20 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
     }
 
     /**
-     * Define el objeto contador que se debe ejecutar cuando existe una cuenta atrás
+     * Define el objeto contadorPost que se debe ejecutar cuando existe una cuenta atrás
      * (modo EEG, nivel de dificultad con tiempo...)
      */
-    protected abstract void contador();
+    protected abstract void contadorPost();
+
+    /**
+     * Define el objeto contador que se debe ejecutar previamente a la cuenta atrás
+     * en el modo EEG.
+     */
+    protected void contadorPre(){
+        if(! this.actividadPrincipal.getTemporalStateGame().isEnableEEG()){
+            return;
+        }
+    }
 
 
 
@@ -118,12 +133,33 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
         super.onCreate(savedInstanceState);
         this.actividadPrincipal = (MainActivity) getActivity();
         this.actividadPrincipal.stopSong();
+        this.isDialogAlert = true;
+        this.dialogoAlerta = new AlertDialog.Builder(this.actividadPrincipal);
+        this.dialogoAlerta.setNeutralButton(getString(R.string.GameDialog_OK), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+
+                Toast.makeText(Generic_Game.this.actividadPrincipal, getString(R.string.GameDialog_letsPlay), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        this.dialogoAlerta.setPositiveButton(getString(R.string.GameDialog_OKSave), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+
+                Toast.makeText(Generic_Game.this.actividadPrincipal, getString(R.string.GameDialog_letsPlay), Toast.LENGTH_SHORT).show();
+                actividadPrincipal.getStateOfTheGame().addNoHelpDialog(currentGame);
+            }
+        });
+
+        this.dialogoAlerta.setIcon(R.mipmap.ic_gamealert_info);
+        this.dialogoAlerta.setTitle(R.string.GameDialog_title);
+
 
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        this.actividadPrincipal.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         this.respuestaCorrecta = null;
         this.respuestaUsuario = null;
         this.dbc = this.actividadPrincipal.getDataBaseController();
@@ -131,7 +167,7 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
         this.logMan = this.actividadPrincipal.getLogMan();
         this.feedbackImage = (ImageView) getActivity().findViewById(R.id.ivFeedback);
         this.feedBackSoundBien = new SoundPlayer(R.raw.feedback_bien_1);
-        this.feedBackSoundMal = new SoundPlayer(R.raw.feedback_mal_1);
+
 
         this.imHappy = this.dbc.getUrlImagen(null, Emotions.HAPPY, 1);
         this.imSad = this.dbc.getUrlImagen(null,Emotions.SAD,1);
@@ -141,6 +177,13 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
 
         this.logSession = new Log(this.actividadPrincipal.getUserConf().getUserName(),System.currentTimeMillis(),this.actividadPrincipal.getTemporalStateGame().isEnableEEG());
         this.stageNumber = 0;
+
+
+        if(this.isDialogAlert && !this.actividadPrincipal.getStateOfTheGame().isDialogNoHelp(currentGame)) {
+            this.dialogoAlerta.show();
+        }
+
+
 
 
     }
@@ -153,17 +196,18 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
     @Override
     public void feedBack(boolean is_correct) {
         Drawable resultIcon;
-        SoundPlayer player;
+        SoundPlayer player = null;
         if (is_correct) {
             resultIcon = getResources().getDrawable(R.mipmap.ic_feedback_bien);
             player = this.feedBackSoundBien;
+            player.play(getActivity(), false);
         } else {
             resultIcon = getResources().getDrawable(R.mipmap.ic_feedback_mal);
-            player = this.feedBackSoundMal;
+
         }
         this.feedbackImage.setImageDrawable(resultIcon);
 
-        player.play(getActivity(), false);
+
         this.feedbackImage.setVisibility(View.VISIBLE);
 
 
@@ -213,10 +257,13 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
 
     public void procesarRespuesta(stageResults respuesta) {
 
-
+        if(this.sonido != null) {
+            this.sonido.destroy();
+        }
         switch (respuesta) {
             case GAME_WON:
                 this.sg.chargeReward(this.currentGame);
+                this.actividadPrincipal.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                 exitGame();
                 break;
             case PLAYER_WINS:

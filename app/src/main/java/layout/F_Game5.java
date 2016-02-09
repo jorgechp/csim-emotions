@@ -9,27 +9,19 @@ import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.AutoCompleteTextView;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 
 import csim.csimemotions.Config;
 import csim.csimemotions.Emotions;
@@ -72,6 +64,7 @@ public class F_Game5 extends Generic_Game {
     private FrameLayout flScreen;
     private float screenSize[];
     private TextView tvEEGTimer;
+    private boolean isEEGPreTime;
 
     public F_Game5() {
         // Required empty public constructor
@@ -94,8 +87,38 @@ public class F_Game5 extends Generic_Game {
     }
 
     @Override
-    protected void contador() {
-        super.cdTimer = new CountDownTimer(Config.EEG_MODE_TIME, 1000) {
+    protected void contadorPre() {
+        super.contadorPre();
+        isEEGPreTime = true;
+        setEnableButtons(false);
+        super.cdTimerPre = new CountDownTimer(Config.EEG_MODE_PRE_TIME, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            public void onFinish() {
+                F_Game5.this.setEnableButtons(true);
+                isEEGPreTime = false;
+                F_Game5.super.cdTimerPost.start();
+            }
+        };
+    }
+
+    private void setEnableButtons(boolean isEnabled) {
+        int modo = View.INVISIBLE;
+        if (isEnabled == true) {
+            modo = View.VISIBLE;
+        }
+        this.iv1.setVisibility(modo);
+        this.iv2.setVisibility(modo);
+        this.iv3.setVisibility(modo);
+        this.iv4.setVisibility(modo);
+    }
+
+    @Override
+    protected void contadorPost() {
+        super.cdTimerPost = new CountDownTimer(Config.EEG_MODE_TIME, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 //mTextField.setText("seconds remaining: " + millisUntilFinished / 1000);
@@ -119,6 +142,7 @@ public class F_Game5 extends Generic_Game {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        super.currentGame = States.GAME33;
 
     }
 
@@ -140,10 +164,13 @@ public class F_Game5 extends Generic_Game {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+        super.dialogoAlerta.setMessage(R.string.Game5_instructions);
         super.onActivityCreated(savedInstanceState);
-        super.actividadPrincipal.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        super.currentGame = States.GAME33;
-        this.contador();
+
+
+
+        this.isEEGPreTime = false;
+
         this.senManager = (SensorManager) super.actividadPrincipal.getSystemService(Context.SENSOR_SERVICE);
 
 
@@ -163,8 +190,10 @@ public class F_Game5 extends Generic_Game {
                             F_Game5.super.sonido.play(F_Game5.super.actividadPrincipal);
                             F_Game5.this.isPlayerEnabled = true;
                             F_Game5.this.ivPlayer.setBackgroundResource(R.mipmap.ic_player_stop);
-                            if(isEEG && F_Game5.super.cdTimer != null) {
-                                F_Game5.super.cdTimer.start();
+                            if(isEEG && F_Game5.super.cdTimerPre != null) {
+                                F_Game5.this.setEnableButtons(false);
+                                isEEGPreTime = true;
+                                F_Game5.super.cdTimerPre.start();
                             }
                         }else{
                             if(!isEEG) {
@@ -248,6 +277,9 @@ public class F_Game5 extends Generic_Game {
             }
 
             private void checkCollisions(ImageButton ib) {
+                if(F_Game5.this.actividadPrincipal.getTemporalStateGame().isEnableEEG() && isEEGPreTime){
+                    return;
+                }
                 boolean isCollision = false;
                 int location[] = new int[2];
                 ib.getLocationInWindow(location);
@@ -304,7 +336,8 @@ public class F_Game5 extends Generic_Game {
                 }
             }
         });
-
+        this.contadorPre();
+        this.contadorPost();
 
     }
 
@@ -362,7 +395,7 @@ public class F_Game5 extends Generic_Game {
         switch (respuesta){
             case GAME_WON:
                 super.sonido.destroy();
-                super.actividadPrincipal.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
                 super.procesarRespuesta(respuesta);
                 break;
             case PLAYER_WINS:
@@ -380,7 +413,7 @@ public class F_Game5 extends Generic_Game {
                 this.generateSong();
                 break;
             case PLAYER_ERROR:
-                super.procesarRespuesta(respuesta);
+
                 isCancelar = false;
                 break;
             case GAME_STARTED:
@@ -388,13 +421,13 @@ public class F_Game5 extends Generic_Game {
                 this.generateSong();
                 break;
             case USER_EXIT:
-                super.actividadPrincipal.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
                 super.procesarRespuesta(respuesta);
                 break;
         }
 
-        if(this.actividadPrincipal.getTemporalStateGame().isEnableEEG() && super.cdTimer != null && isCancelar) {
-            super.cdTimer.cancel();
+        if(this.actividadPrincipal.getTemporalStateGame().isEnableEEG() && super.cdTimerPost != null && isCancelar) {
+            super.cdTimerPost.cancel();
             this.tvEEGTimer.setText(null);
         }
 

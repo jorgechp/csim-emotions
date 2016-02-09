@@ -85,14 +85,17 @@ public class F_Game3 extends Generic_Game {
         super.onCreate(savedInstanceState);
         this.numButtons = Config.LEVEL_0_NUM_OF_STAGES / 2 + 1;
         this.soundButtons = new Triple[this.numButtons];
+        super.currentGame = States.GAME31;
 
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+        super.dialogoAlerta.setMessage(getString(R.string.Game3_instructions));
         super.onActivityCreated(savedInstanceState);
-        super.currentGame = States.GAME31;
-        this.contador();
+
+
+
         this.soundTable = new HashMap<>();
         this.isGameExecuting = true;
         this.soundLayout =  (FrameLayout) super.actividadPrincipal.findViewById(R.id.Game3_flSongTab);
@@ -132,8 +135,9 @@ public class F_Game3 extends Generic_Game {
                        F_Game3.this.enableButtons(false);
                    }
                 }else {
-                    if(isEEG && F_Game3.super.cdTimer != null) {
-                        F_Game3.super.cdTimer.start();
+                    if(isEEG && F_Game3.super.cdTimerPost != null) {
+                        F_Game3.this.setVisibleButtons(false);
+                        F_Game3.super.cdTimerPre.start();
                     }
                         F_Game3.this.setNewSelectedButton(b);
                         if (F_Game3.super.sonido != null) {
@@ -203,6 +207,9 @@ public class F_Game3 extends Generic_Game {
 
         this.ttTitle.setTypeface(tfTitle);
         this.ttDescription.setTypeface(tfFontsButtons);
+
+        this.contadorPre();
+        this.contadorPost();
 
     }
 
@@ -312,8 +319,42 @@ public class F_Game3 extends Generic_Game {
     }
 
     @Override
-    protected void contador() {
-        super.cdTimer = new CountDownTimer(Config.EEG_MODE_TIME, 1000) {
+    protected void contadorPre() {
+        super.contadorPre();
+        this.setVisibleButtons(false);
+
+
+        super.cdTimerPre = new CountDownTimer(Config.EEG_MODE_PRE_TIME, 1000) {
+
+
+
+
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            public void onFinish() {
+                F_Game3.this.setVisibleButtons(true);
+                F_Game3.super.cdTimerPost.start();
+            }
+        };
+    }
+
+    private void setVisibleButtons(boolean isEnabled) {
+        int mode = View.VISIBLE;
+        if(!isEnabled){
+            mode = View.INVISIBLE;
+        }
+
+        this.ibSad.setVisibility(mode);
+        this.ibHappy.setVisibility(mode);
+        this.ibSurprised.setVisibility(mode);
+        this.ibAngry.setVisibility(mode);
+    }
+
+    @Override
+    protected void contadorPost() {
+        super.cdTimerPost = new CountDownTimer(Config.EEG_MODE_TIME, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 //mTextField.setText("seconds remaining: " + millisUntilFinished / 1000);
@@ -366,8 +407,8 @@ public class F_Game3 extends Generic_Game {
 
     @Override
     public void procesarRespuesta(stageResults respuesta) {
-        if(this.actividadPrincipal.getTemporalStateGame().isEnableEEG() && super.cdTimer != null) {
-            super.cdTimer.cancel();
+        if(this.actividadPrincipal.getTemporalStateGame().isEnableEEG() && super.cdTimerPost != null) {
+            super.cdTimerPost.cancel();
         }
         switch (respuesta){
             case GAME_WON:
@@ -377,7 +418,7 @@ public class F_Game3 extends Generic_Game {
                 break;
             case PLAYER_ERROR:
                 super.procesarRespuesta(respuesta);
-                super.feedBackSoundMal.play(super.actividadPrincipal, false);
+
 
                 if(this.selectedButton != null) {
                     this.selectedButton.setBackgroundResource(R.mipmap.ic_play);

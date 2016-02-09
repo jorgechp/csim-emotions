@@ -45,6 +45,12 @@
     <string name="Settings_eeg_ok">Aceptar</string>
     <string name="Settings_eeg_cancel">Cancelar</string>
     <string name="Settings_eeg_title">¿Cómo deseas llamarte?</string>
+    <string name="GameDialog_OK">Aceptar</string>
+    <string name="GameDialog_OKSave">No repetir este mensaje</string>
+    <string name="GameDialog_letsPlay">¡A jugar!</string>
+    <string name="GameDialog_title">Instrucciones</string>
     <string name="Game6_title">¡Lee y escucha el cuento!. Después, relaciona lo que pasa con lo que siente cada persona</string>
+    <string name="fCenterContent_newLevel">Siguiente nivel</string> />
+
     />
 </resources>

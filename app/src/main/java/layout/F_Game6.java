@@ -110,16 +110,19 @@ public class F_Game6 extends Generic_Game {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        super.currentGame = States.GAME4;
 
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        //Impedir que la pantalla entre en modo reposo
-        super.actividadPrincipal.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        super.isDialogAlert = false;
 
-        super.currentGame = States.GAME4;
+        super.onActivityCreated(savedInstanceState);
+
+
+
+
         this.contentTale = new LinkedList<Pair<String,Emotions>>();
         this.soundsStage = new LinkedList<AssetFileDescriptor>();
         this.completeSounds = new LinkedList<AssetFileDescriptor>();
@@ -256,7 +259,7 @@ public class F_Game6 extends Generic_Game {
     }
 
     @Override
-    protected void contador() {
+    protected void contadorPost() {
 
     }
 
@@ -333,8 +336,6 @@ public class F_Game6 extends Generic_Game {
                 break;
             case GAME_WON:
             case USER_EXIT:
-                //Suprimir la restricción de entrada en modo reposo de la pantalla
-                super.actividadPrincipal.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                 this.completeSounds = null;
 
 

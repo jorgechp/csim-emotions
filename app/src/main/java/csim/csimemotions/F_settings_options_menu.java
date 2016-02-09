@@ -16,6 +16,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import csim.csimemotions.communication.HttpCom;
 import layout.FCenterContent;
 
 
@@ -260,6 +261,8 @@ public class F_settings_options_menu extends Fragment {
                         if(text.length() > 0 ) {
                             userConfig.setUserName(text);
                             F_settings_options_menu.this.actividadPrincipal.saveUserConfig();
+
+
                         }
                         break;
                 }

@@ -4,7 +4,7 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="title_activity_game">Game</string>
@@ -16,7 +16,7 @@
     <string name="emotion_happy">Feliz</string>
     <string name="game1_title">¿Cómo se está sintiendo?</string>
     <string name="Game1_description">Selecciona la emoción que está sintiendo la persona de la imagen.</string>
-    <string name="emotion_surprised">Sorprendido</string>
+    <string name="emotion_fear">Miedo</string>
     <string name="game2_title">¿Quién está escuchando ésta canción?</string>
     <string name="Game2_tvPlayIndicator">¡¡Reproduce la canción!! >> </string>
     <string name="Settings_optionsText">Adáptame</string>
@@ -50,7 +50,9 @@
     <string name="GameDialog_letsPlay">¡A jugar!</string>
     <string name="GameDialog_title">Instrucciones</string>
     <string name="Game6_title">¡Lee y escucha el cuento!. Después, relaciona lo que pasa con lo que siente cada persona</string>
-    <string name="fCenterContent_newLevel">Siguiente nivel</string> />
+    <string name="fCenterContent_newLevel">Siguiente nivel</string>
+    <string name="fCentercontent_backLevel">Anterior nivel</string>
+    />
 
     />
 </resources>

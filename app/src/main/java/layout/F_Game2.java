@@ -3,7 +3,6 @@ package layout;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.net.Uri;
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
@@ -17,7 +16,6 @@ import android.widget.TextView;
 
 import java.util.Random;
 
-import csim.csimemotions.Config;
 import csim.csimemotions.Emotions;
 import csim.csimemotions.Generic_Game;
 import csim.csimemotions.R;
@@ -34,12 +32,7 @@ import csim.csimemotions.stageResults;
  * create an instance of this fragment.
  */
 public class F_Game2 extends Generic_Game  {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
 
 
     private OnFragmentInteractionListener mListener;
@@ -106,7 +99,7 @@ public class F_Game2 extends Generic_Game  {
         F_Game2.this.setEnableButtons(false);
 
         this.progessb = (ProgressBar) getActivity().findViewById(R.id.Game2_pbProgress);
-        this.progessb.setMax(Config.LEVEL_0_NUM_OF_STAGES);
+        this.progessb.setMax(super.maxNumStages);
         this.actualizarMarcador();
 
         this.procesarRespuesta(this.continueGame());
@@ -126,24 +119,29 @@ public class F_Game2 extends Generic_Game  {
                 boolean isUserEmotion = false;
                 switch (id) {
                     case R.id.Game2_ibPlayer:
-                        boolean isEEG = F_Game2.this.actividadPrincipal.getTemporalStateGame().isEnableEEG();
+                        boolean isPreTime = maxTimePre != -1;
                         if (F_Game2.this.isSoundPlaying == false) {
                             F_Game2.super.sonido.play(getActivity());
                             F_Game2.this.isSoundPlaying = true;
                             F_Game2.this.setEnableButtons(true);
                             F_Game2.this.ibPlayer.setBackgroundResource(R.drawable.ic_pause_vector);
+                            if(maxTimePost != -1 && !isPreTime){
+
+                                F_Game2.super.cdTimerPost.start();
+                            }else if(isPreTime){
+                                F_Game2.this.setEnableButtons(false);
+                                F_Game2.super.cdTimerPre.start();
+                            }
                         } else {
-                            if(!isEEG) {
+                            if(!isPreTime) {
                                 F_Game2.this.ibPlayer.setBackgroundResource(R.mipmap.ic_play);
                                 F_Game2.this.isSoundPlaying = false;
                                 F_Game2.super.sonido.pause();
+                                F_Game2.super.cdTimerPost.cancel();
                             }
                         }
-                        if(isEEG) {
-                            F_Game2.this.setEnableButtons(false);
-                            F_Game2.super.cdTimerPre.start();
 
-                        }
+
                         break;
                     case R.id.Game2_ibAngry:
                         F_Game2.this.respuestaUsuario = Emotions.ANGRY;
@@ -158,7 +156,7 @@ public class F_Game2 extends Generic_Game  {
                         isUserEmotion = true;
                         break;
                     case R.id.Game2_ibSurprised:
-                        F_Game2.this.respuestaUsuario = Emotions.SURPRISED;
+                        F_Game2.this.respuestaUsuario = Emotions.FEAR;
                         isUserEmotion = true;
                         break;
                 }
@@ -213,7 +211,7 @@ public class F_Game2 extends Generic_Game  {
         return inflater.inflate(R.layout.fragment_f__game2, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
+
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -226,7 +224,7 @@ public class F_Game2 extends Generic_Game  {
         this.setEnableButtons(false);
 
 
-        super.cdTimerPre = new CountDownTimer(Config.EEG_MODE_PRE_TIME, 1000) {
+        super.cdTimerPre = new CountDownTimer(super.maxTimePre, 1000) {
 
 
 
@@ -247,7 +245,7 @@ public class F_Game2 extends Generic_Game  {
 
     @Override
     protected void contadorPost() {
-        super.cdTimerPost = new CountDownTimer(Config.EEG_MODE_TIME, 1000) {
+        super.cdTimerPost = new CountDownTimer(super.maxTimePost, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 //mTextField.setText("seconds remaining: " + millisUntilFinished / 1000);
@@ -297,12 +295,12 @@ public class F_Game2 extends Generic_Game  {
             this.imagenesHappy = super.dbc.getUrlImagen(null, Emotions.HAPPY, 1); // 1 es la dificultad
             this.imagenesSad = super.dbc.getUrlImagen(null, Emotions.SAD, 1); // 1 es la dificultad
             this.imagenesAngry = super.dbc.getUrlImagen(null, Emotions.ANGRY, 1); // 1 es la dificultad
-            this.imagenesSurprised = super.dbc.getUrlImagen(null, Emotions.SURPRISED, 1); // 1 es la dificultad
+            this.imagenesSurprised = super.dbc.getUrlImagen(null, Emotions.FEAR, 1); // 1 es la dificultad
 
             this.numRowsHappy = super.dbc.getNumRowsImagenes(Emotions.HAPPY);
             this.numRowsSad = super.dbc.getNumRowsImagenes(Emotions.SAD);
             this.numRowsAngry = super.dbc.getNumRowsImagenes(Emotions.ANGRY);
-            this.numRowsSurprised = super.dbc.getNumRowsImagenes(Emotions.SURPRISED);
+            this.numRowsSurprised = super.dbc.getNumRowsImagenes(Emotions.FEAR);
 
             this.numSonidos = super.dbc.getNumRowsSonidos();
             this.sonidos = super.dbc.getUrlSonido(null, null);
@@ -315,7 +313,7 @@ public class F_Game2 extends Generic_Game  {
             } else {
                 result = stageResults.PLAYER_ERROR;
             }
-            if (Config.LEVEL_0_NUM_OF_STAGES < this.stageNum) {
+            if (super.maxNumStages < this.stageNum) {
                 result = stageResults.GAME_WON;
             }
 
@@ -361,8 +359,11 @@ public class F_Game2 extends Generic_Game  {
      */
     @Override
     public void procesarRespuesta(stageResults respuesta) {
-        if(this.actividadPrincipal.getTemporalStateGame().isEnableEEG() && super.cdTimerPost != null) {
+        if(super.maxTimePost != -1 && super.cdTimerPost != null) {
             super.cdTimerPost.cancel();
+        }
+        if(super.maxTimePre != -1 && super.cdTimerPre != null) {
+            super.cdTimerPre.cancel();
         }
         super.procesarRespuesta(respuesta);
         switch (respuesta) {
@@ -399,7 +400,7 @@ public class F_Game2 extends Generic_Game  {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
+
         void onFragmentInteraction(Uri uri);
     }
 

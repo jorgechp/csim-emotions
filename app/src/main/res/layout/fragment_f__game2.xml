@@ -8,18 +8,21 @@
     <!-- TODO: Update blank fragment layout -->
 
     <LinearLayout
+        android:scaleType="fitXY"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/Game2_flMusicPlay">
 
         <FrameLayout
+            android:scaleType="fitXY"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|top"
             android:id="@+id/Game2_flTitleContainer">
 
             <TextView
+                android:scaleType="fitXY"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
@@ -32,16 +35,19 @@
         </FrameLayout>
 
         <LinearLayout
+            android:scaleType="fitXY"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/Game2_llAudioPlayerContainer">
 
             <FrameLayout
+                android:scaleType="fitXY"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <TextView
+                    android:scaleType="fitXY"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
@@ -50,6 +56,7 @@
                     android:layout_gravity="left|center_vertical" />
 
                 <ImageButton
+                    android:scaleType="fitXY"
                     android:layout_width="94dp"
                     android:layout_height="94dp"
                     android:id="@+id/Game2_ibPlayer"
@@ -57,6 +64,7 @@
                     android:background="@mipmap/ic_play" />
 
                 <TextView
+                    android:scaleType="fitXY"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
@@ -66,41 +74,55 @@
         </LinearLayout>
 
         <FrameLayout
+            android:scaleType="fitXY"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/Game2_flImagesSelectorContainer">
 
             <RelativeLayout
+                android:scaleType="fitXY"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center">
 
                 <ImageButton
+                    android:scaleType="fitXY"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/Game2_ibHappy"
-                    android:src="@mipmap/ic_settings" />
+                    android:src="@mipmap/ic_settings"
+                    android:layout_marginRight="@dimen/Settings_margin_bottom"
+                    android:layout_marginLeft="@dimen/Settings_margin_bottom" />
 
                 <ImageButton
+                    android:scaleType="fitXY"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/Game2_ibSad"
                     android:src="@mipmap/ic_settings"
-                    android:layout_toRightOf="@+id/Game2_ibHappy" />
+                    android:layout_toRightOf="@+id/Game2_ibHappy"
+                    android:layout_marginLeft="@dimen/Settings_margin_bottom"
+                    android:layout_marginRight="@dimen/Settings_margin_bottom" />
 
                 <ImageButton
+                    android:scaleType="fitXY"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/Game2_ibAngry"
                     android:src="@mipmap/ic_settings"
-                    android:layout_toRightOf="@+id/Game2_ibSad" />
+                    android:layout_toRightOf="@+id/Game2_ibSad"
+                    android:layout_marginLeft="@dimen/Settings_margin_bottom"
+                    android:layout_marginRight="@dimen/Settings_margin_bottom" />
 
                 <ImageButton
+                    android:scaleType="fitXY"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/Game2_ibSurprised"
                     android:src="@mipmap/ic_settings"
-                    android:layout_toRightOf="@+id/Game2_ibAngry" />
+                    android:layout_toRightOf="@+id/Game2_ibAngry"
+                    android:layout_marginLeft="@dimen/Settings_margin_bottom"
+                    android:layout_marginRight="@dimen/Settings_margin_bottom" />
             </RelativeLayout>
 
         </FrameLayout>
@@ -108,12 +130,14 @@
     </LinearLayout>
 
     <FrameLayout
+        android:scaleType="fitXY"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/Game2_flIBar"
         android:layout_gravity="bottom">
 
         <ProgressBar
+
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

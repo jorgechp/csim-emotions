@@ -55,8 +55,8 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/emotion_surprised"
-            android:id="@+id/btCry"
+            android:text="@string/emotion_fear"
+            android:id="@+id/Game1_btFear"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/btAngry"
             android:layout_toEndOf="@+id/btAngry"

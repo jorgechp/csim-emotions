@@ -7,8 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +24,6 @@ import csim.csimemotions.Config;
 import csim.csimemotions.DataBaseController;
 import csim.csimemotions.Emotions;
 import csim.csimemotions.Generic_Game;
-import csim.csimemotions.IGame;
 import csim.csimemotions.MainActivity;
 import csim.csimemotions.R;
 import csim.csimemotions.SoundPlayer;
@@ -62,7 +59,7 @@ public class F_Game1  extends Generic_Game {
     private Map<Integer, Boolean> correctImages;
     private int indexOfCurrentImage;
 
-    private Button bHappy, bSad, bAngry, bCry;
+    private Button bHappy, bSad, bAngry, btFear;
     private View.OnClickListener clickListener;
     private ImageView feedbackImage;
 
@@ -97,8 +94,8 @@ public class F_Game1  extends Generic_Game {
      *
      * @return A new instance of fragment F_Game1.
      */
-    // TODO: Rename and change types and number of parameters
-    public static F_Game1 newInstance(String param1, String param2) {
+
+    public static F_Game1 newInstance() {
         F_Game1 fragment = new F_Game1();
         Bundle args = new Bundle();
 
@@ -125,8 +122,8 @@ public class F_Game1  extends Generic_Game {
                     case R.id.btAngry:
                         F_Game1.this.respuestaUsuario = Emotions.ANGRY;
                         break;
-                    case R.id.btCry:
-                        F_Game1.this.respuestaUsuario = Emotions.SURPRISED;
+                    case R.id.Game1_btFear:
+                        F_Game1.this.respuestaUsuario = Emotions.FEAR;
                         break;
                     case R.id.btHappy:
                         F_Game1.this.respuestaUsuario = Emotions.HAPPY;
@@ -166,18 +163,18 @@ public class F_Game1  extends Generic_Game {
         this.bAngry.setEnabled(enabled);
         this.bSad.setEnabled(enabled);
         this.bHappy.setEnabled(enabled);
-        this.bCry.setEnabled(enabled);
+        this.btFear.setEnabled(enabled);
 
         if(!enabled) {
             this.bAngry.setVisibility(View.INVISIBLE);
             this.bSad.setVisibility(View.INVISIBLE);
             this.bHappy.setVisibility(View.INVISIBLE);
-            this.bCry.setVisibility(View.INVISIBLE);
+            this.btFear.setVisibility(View.INVISIBLE);
         }else{
             this.bAngry.setVisibility(View.VISIBLE);
             this.bSad.setVisibility(View.VISIBLE);
             this.bHappy.setVisibility(View.VISIBLE);
-            this.bCry.setVisibility(View.VISIBLE);
+            this.btFear.setVisibility(View.VISIBLE);
         }
     }
 
@@ -201,7 +198,7 @@ public class F_Game1  extends Generic_Game {
         this.continueGame();
 
         this.bAngry = (Button) getActivity().findViewById(R.id.btAngry);
-        this.bCry = (Button) getActivity().findViewById(R.id.btCry);
+        this.btFear = (Button) getActivity().findViewById(R.id.Game1_btFear);
         this.bHappy = (Button) getActivity().findViewById(R.id.btHappy);
         this.bSad = (Button) getActivity().findViewById(R.id.btSad);
         this.feedbackImage = (ImageView) getActivity().findViewById(R.id.ivFeedback);
@@ -211,7 +208,7 @@ public class F_Game1  extends Generic_Game {
         this.marcador = (TextView) getActivity().findViewById(R.id.Game1Marcador);
 
         this.bAngry.setOnClickListener(this.clickListener);
-        this.bCry.setOnClickListener(this.clickListener);
+        this.btFear.setOnClickListener(this.clickListener);
         this.bHappy.setOnClickListener(this.clickListener);
         this.bSad.setOnClickListener(this.clickListener);
 
@@ -222,12 +219,12 @@ public class F_Game1  extends Generic_Game {
 
         Typeface tfFontsButtons = Typeface.createFromAsset(getActivity().getAssets(), "fonts/AndikaNewBasic-B.ttf");
         this.bAngry.setTypeface(tfFontsButtons);
-        this.bCry.setTypeface(tfFontsButtons);
+        this.btFear.setTypeface(tfFontsButtons);
         this.bHappy.setTypeface(tfFontsButtons);
         this.bSad.setTypeface(tfFontsButtons);
 
 
-        this.marcador.setText("0 / " + Byte.toString(Config.LEVEL_0_NUM_OF_STAGES));
+        this.marcador.setText("0 / " + super.maxNumStages);
         this.marcador.setTypeface(tfFontsButtons);
 
         super.feedBackSoundBien = new SoundPlayer(R.raw.feedback_bien_1);
@@ -278,7 +275,7 @@ public class F_Game1  extends Generic_Game {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
+
         void onFragmentInteraction(Uri uri);
     }
 
@@ -321,7 +318,7 @@ public class F_Game1  extends Generic_Game {
 
         int numPruebasSuperadas = this.correctImages.size();
         //Se comprueba si el juego ha finalizado
-        if (this.numRows > numPruebasSuperadas && Config.LEVEL_0_NUM_OF_STAGES > numPruebasSuperadas) {
+        if (this.numRows > numPruebasSuperadas && super.maxNumStages > numPruebasSuperadas) {
             //Si no ha finalizado, se selecciona aleatoriamente una nueva imagen
 
             do {
@@ -434,7 +431,7 @@ public class F_Game1  extends Generic_Game {
      * Actualiza los datos del marcador
      */
     private void actualizarMarcador() {
-        this.marcador.setText(Integer.toString(this.correctImages.size()) + "/" + Byte.toString(Config.LEVEL_0_NUM_OF_STAGES));
+        this.marcador.setText(Integer.toString(this.correctImages.size()) + "/" + super.maxNumStages);
     }
 
 

@@ -16,7 +16,6 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import csim.csimemotions.communication.HttpCom;
 import layout.FCenterContent;
 
 
@@ -245,7 +244,7 @@ public class F_settings_options_menu extends Fragment {
                         break;
                     case R.id.OptionsSettings_ib_playerSurprised:
                         F_settings_options_menu.this.ib_playerSurprised.setImageResource(R.color.color_disabled_element);
-                        F_settings_options_menu.this.userSelectedEmotion = Emotions.SURPRISED;
+                        F_settings_options_menu.this.userSelectedEmotion = Emotions.FEAR;
                         break;
                 }
                 F_settings_options_menu.this.loadMusicDatabase();

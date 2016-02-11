@@ -48,7 +48,7 @@ public class FCenterContent extends Fragment {
     private ImageButton btGame2;
     private ImageButton btGame31,btGame32,btGame33;
     private ImageButton btGame4;
-    private Button btNextLevel;
+    private Button btNextLevel, btBackLevel;
 
     private View.OnClickListener onClickListener;
 
@@ -140,6 +140,9 @@ public class FCenterContent extends Fragment {
         btGame33 = (ImageButton) getView().findViewById(R.id.ibGame33);
         btGame4 = (ImageButton) getView().findViewById(R.id.ibGame4);
         btNextLevel = (Button) getView().findViewById(R.id.ibNextLevel);
+        btBackLevel = (Button) getView().findViewById(R.id.ibBackLevel);
+
+
 
         this.space1 = (FrameLayout) getActivity().findViewById(R.id.flMargin1);
         this.space2 = (FrameLayout) getActivity().findViewById(R.id.flMargin2);
@@ -159,6 +162,7 @@ public class FCenterContent extends Fragment {
         btGame33.setOnClickListener(this.onClickListener);
         btGame4.setOnClickListener(this.onClickListener);
         btNextLevel.setOnClickListener(this.onClickListener);
+        btBackLevel.setOnClickListener(this.onClickListener);
 
 
 
@@ -233,6 +237,7 @@ public class FCenterContent extends Fragment {
         FragmentTransaction fManagerTransaction = getFragmentManager().beginTransaction();
         Fragment fg = null;
         boolean isGame = true;
+        byte levelActual;
 
         switch (stat) {
             case R.id.ibGame1:
@@ -255,8 +260,16 @@ public class FCenterContent extends Fragment {
                 break;
             case R.id.ibNextLevel:
                 fg = null;
-                byte levelActual = mainActivity.getStateOfTheGame().getLevelActual();
+                levelActual= mainActivity.getStateOfTheGame().getLevelActual();
                 mainActivity.getStateOfTheGame().setLevelActual( ++levelActual );
+                isGame = false;
+                checkUI();
+                break;
+            case R.id.ibBackLevel:
+                fg = null;
+                levelActual = mainActivity.getStateOfTheGame().getLevelActual();
+                mainActivity.getStateOfTheGame().setLevelActual( --levelActual );
+                checkUI();
                 isGame = false;
                 break;
             case R.id.ibPreferenciasGames:
@@ -305,6 +318,7 @@ public class FCenterContent extends Fragment {
      */
     public void checkUI() {
         States estado = mainActivity.getStateOfTheGame().getEstado();
+        this.btBackLevel.setVisibility(View.INVISIBLE);
 
         if (mainActivity.getStateOfTheGame().isGamePlayed(States.GAME1)) { // Se ha superado el GAME1
             Drawable drawable = new ColorDrawable(Config.COLOR_CLOSED_STAGES);
@@ -338,6 +352,10 @@ public class FCenterContent extends Fragment {
                 this.finalStage.setForeground(drawable);
                 this.btNextLevel.setEnabled(true);
                 this.mainActivity.getStateOfTheGame().increaseLevel();
+                if(mainActivity.getStateOfTheGame().getLevelActual() != 0){
+                    this.btBackLevel.setVisibility(View.VISIBLE);
+                }
+
             }
         } else {
             this.anularBotones();

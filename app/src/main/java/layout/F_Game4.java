@@ -22,7 +22,7 @@ import android.widget.TextView;
 import java.util.HashSet;
 import java.util.Random;
 
-import csim.csimemotions.Config;
+
 import csim.csimemotions.Emotions;
 import csim.csimemotions.Generic_Game;
 import csim.csimemotions.R;
@@ -100,12 +100,7 @@ public class F_Game4 extends Generic_Game {
             this.setVisibleButtons(false);
         }
 
-
-        super.cdTimerPre = new CountDownTimer(Config.EEG_MODE_PRE_TIME, 1000) {
-
-
-
-
+        super.cdTimerPre = new CountDownTimer(super.maxTimePre, 1000) {
             public void onTick(long millisUntilFinished) {
 
             }
@@ -133,7 +128,7 @@ public class F_Game4 extends Generic_Game {
     @Override
     protected void contadorPost() {
 
-        super.cdTimerPost = new CountDownTimer(Config.EEG_MODE_TIME, 1000) {
+        super.cdTimerPost = new CountDownTimer(super.maxTimePost, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 //mTextField.setText("seconds remaining: " + millisUntilFinished / 1000);
@@ -190,7 +185,7 @@ public class F_Game4 extends Generic_Game {
         this.llGame = (LinearLayout) super.actividadPrincipal.findViewById(R.id.Game4_llGameLayout);
         this.progressBar = (ProgressBar) super.actividadPrincipal.findViewById(R.id.Game4_progressBar);
         this.progressBar.setProgress(0);
-        this.progressBar.setMax(Config.LEVEL_0_NUM_OF_STAGES);
+        this.progressBar.setMax(super.maxNumStages);
 
         this.tvEEGTimer = (TextView) super.actividadPrincipal.findViewById(R.id.Game4_ttEEGTimer);
 
@@ -316,7 +311,7 @@ public class F_Game4 extends Generic_Game {
                             }
                             if (x > inferiorLimitSurprised[0] && x < superiorLimitXSurprised) {
                                 if (y > inferiorLimitSurprised[1] && y < superiorLimitYSurprised) {
-                                    F_Game4.super.respuestaUsuario = Emotions.SURPRISED;
+                                    F_Game4.super.respuestaUsuario = Emotions.FEAR;
                                     isContinue = true;
                                 }
                             }
@@ -331,6 +326,9 @@ public class F_Game4 extends Generic_Game {
                             F_Game4.this.setVisibleButtons(false);
                             isEEGpreTime = true;
                             F_Game4.super.cdTimerPre.start();
+                            isTimer = true;
+                        }else if(!isTimer &&  maxTimePost != -1){
+                            F_Game4.super.cdTimerPost.start();
                             isTimer = true;
                         }
 
@@ -388,33 +386,48 @@ public class F_Game4 extends Generic_Game {
 
     @Override
     public void procesarRespuesta(stageResults respuesta) {
+        //Este hilo es necesario para que no se reinicie el tiempo
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(1000);                 //1000 milliseconds is one second.
+                } catch(InterruptedException ex) {
+                    Thread.currentThread().interrupt();
+                }
+                F_Game4.this.isTimer = false;
+                try {
+                    super.finalize();
+                } catch (Throwable throwable) {
+                    throwable.printStackTrace();
+                }
+            }
+        });
         if(F_Game4.this.actividadPrincipal.getTemporalStateGame().isEnableEEG() && F_Game4.super.cdTimerPost != null) {
+
             F_Game4.super.cdTimerPost.cancel();
             F_Game4.this.tvEEGTimer.setText(null);
             F_Game4.super.cdTimerPost = null;
             if(F_Game4.super.sonido != null) {
                 F_Game4.super.sonido.destroy();
             }
-            Thread t = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Thread.sleep(1000);                 //1000 milliseconds is one second.
-                    } catch(InterruptedException ex) {
-                        Thread.currentThread().interrupt();
-                    }
-                    F_Game4.this.isTimer = false;
-                    try {
-                        super.finalize();
-                    } catch (Throwable throwable) {
-                        throwable.printStackTrace();
-                    }
-                }
-            });
+
 
             t.start();
 
+        }else   if( F_Game4.super.cdTimerPost != null){
+            cdTimerPost.cancel();
+            if(t.isAlive() == false) {
+                t.start();
+            }
         }
+        if( F_Game4.super.cdTimerPre != null){
+            cdTimerPre.cancel();
+            if(t.isAlive() == false) {
+                t.start();
+            }
+        }
+
         boolean isGenerate = false;
         switch (respuesta){
             case GAME_WON:
@@ -483,7 +496,7 @@ public class F_Game4 extends Generic_Game {
             super.saveStage();
             if(super.respuestaUsuario == super.respuestaCorrecta){
                 ++this.numStagesCompleted;
-                if(this.numStagesCompleted < Config.LEVEL_0_NUM_OF_STAGES){
+                if(this.numStagesCompleted < maxNumStages){
                     result = stageResults.PLAYER_WINS;
                 }else{
                     result = stageResults.GAME_WON;

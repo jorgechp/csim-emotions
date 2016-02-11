@@ -12,7 +12,6 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -25,7 +24,6 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
 
-import csim.csimemotions.Config;
 import csim.csimemotions.Emotions;
 import csim.csimemotions.Generic_Game;
 import csim.csimemotions.R;
@@ -180,7 +178,7 @@ public class F_Game6 extends Generic_Game {
                         F_Game6.this.respuestaUsuario = Emotions.HAPPY;
                         break;
                     case R.id.Game6_ibSurprised:
-                        F_Game6.this.respuestaUsuario = Emotions.SURPRISED;
+                        F_Game6.this.respuestaUsuario = Emotions.FEAR;
                         break;
                     case R.id.Game6_ibContinue:
                         if(F_Game6.this.isTramaFinalizada == false) {
@@ -517,7 +515,7 @@ public class F_Game6 extends Generic_Game {
                             emotion = Emotions.HAPPY;
                             break;
                         case 'U': // Surprise
-                            emotion = Emotions.SURPRISED;
+                            emotion = Emotions.FEAR;
                             break;
 
                     }

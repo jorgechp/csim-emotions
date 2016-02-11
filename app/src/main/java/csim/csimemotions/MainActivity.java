@@ -412,8 +412,8 @@ public class MainActivity extends ActionBarActivity {
                 case "a":
                     category = Emotions.ANGRY;
                     break;
-                case "su":
-                    category = Emotions.SURPRISED;
+                case "af":
+                    category = Emotions.FEAR;
                     break;
                 case "sa":
                     category = Emotions.SAD;
@@ -441,17 +441,14 @@ public class MainActivity extends ActionBarActivity {
                     case 'a':
                         category = Emotions.ANGRY;
                         break;
-                    case 'f':
-                        category = Emotions.ANGRY;
-                        break;
                     case 'h':
                         category = Emotions.HAPPY;
                         break;
                     case 's':
                         category = Emotions.SAD;
                         break;
-                    case 'u':
-                        category = Emotions.SURPRISED;
+                    case 'f':
+                        category = Emotions.FEAR;
                         break;
                     default:
                         category = Emotions.NONE;

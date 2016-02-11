@@ -21,32 +21,35 @@ public class Config {
      * Numero de pruebas en el nivel 3
      */
     public static final byte LEVEL_3_NUM_OF_STAGES = 30;
-
+    /**
+     * Numero de pruebas en el modo EEG
+     */
+    public static final byte LEVEL_EEG_NUM_OF_STAGES = 5;
 
     /**
      * Tiempo maximo de la prueba completa, nivel 0
      */
-    public static final byte LEVEL_0_TIME = -1;
+    public static final int LEVEL_0_TIME = -1;
 
     /**
      * Tiempo maximo de la prueba completa, nivel 1
      */
-    public static final byte LEVEL_1_TIME = 60;
+    public static final int LEVEL_1_TIME = 60000;
 
     /**
      * Tiempo maximo de la prueba completa, nivel 2
      */
-    public static final byte LEVEL_2_TIME = 40;
+    public static final int LEVEL_2_TIME = 40000;
 
     /**
      * Tiempo maximo de la prueba completa, nivel 3
      */
-    public static final byte LEVEL_3_TIME = 35;
+    public static final int LEVEL_3_TIME = 35000;
 
     /**
      * Establece el tiempo de cada etapa en el modo EEG
      */
-    public static final int EEG_MODE_TIME = 6000;
+    public static final int EEG_MODE_TIME = 7000;
 
     /**
      * Establece el tiempo, en el modo EEG, previo al inicio de la evaluación

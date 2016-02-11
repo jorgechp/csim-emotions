@@ -18,7 +18,7 @@ import android.widget.TextView;
 import java.util.HashMap;
 import java.util.Random;
 
-import csim.csimemotions.Config;
+
 import csim.csimemotions.Emotions;
 import csim.csimemotions.Generic_Game;
 import csim.csimemotions.R;
@@ -83,7 +83,7 @@ public class F_Game3 extends Generic_Game {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.numButtons = Config.LEVEL_0_NUM_OF_STAGES / 2 + 1;
+        this.numButtons = super.maxNumStages / 2 + 1;
         this.soundButtons = new Triple[this.numButtons];
         super.currentGame = States.GAME31;
 
@@ -133,11 +133,20 @@ public class F_Game3 extends Generic_Game {
                        F_Game3.this.selectedButton = null;
                        F_Game3.super.sonido.destroy();
                        F_Game3.this.enableButtons(false);
+                       if(maxTimePost != -1){
+                           cdTimerPost.cancel();
+                       }
+                       if(maxTimePre != -1){
+                           cdTimerPre.cancel();
+                       }
                    }
                 }else {
                     if(isEEG && F_Game3.super.cdTimerPost != null) {
                         F_Game3.this.setVisibleButtons(false);
                         F_Game3.super.cdTimerPre.start();
+                    }
+                    else if(maxTimePost != -1){
+                        F_Game3.super.cdTimerPost.start();
                     }
                         F_Game3.this.setNewSelectedButton(b);
                         if (F_Game3.super.sonido != null) {
@@ -168,7 +177,7 @@ public class F_Game3 extends Generic_Game {
                             F_Game3.super.respuestaUsuario = Emotions.HAPPY;
                             break;
                         case R.id.Game3_ib_surprised:
-                            F_Game3.super.respuestaUsuario = Emotions.SURPRISED;
+                            F_Game3.super.respuestaUsuario = Emotions.FEAR;
                             break;
                         case R.id.Game3_ib_sad:
                             F_Game3.super.respuestaUsuario = Emotions.SAD;
@@ -327,7 +336,7 @@ public class F_Game3 extends Generic_Game {
         }
 
 
-        super.cdTimerPre = new CountDownTimer(Config.EEG_MODE_PRE_TIME, 1000) {
+        super.cdTimerPre = new CountDownTimer(super.maxTimePre, 1000) {
 
 
 
@@ -357,7 +366,7 @@ public class F_Game3 extends Generic_Game {
 
     @Override
     protected void contadorPost() {
-        super.cdTimerPost = new CountDownTimer(Config.EEG_MODE_TIME, 1000) {
+        super.cdTimerPost = new CountDownTimer(super.maxTimePost, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 //mTextField.setText("seconds remaining: " + millisUntilFinished / 1000);
@@ -366,11 +375,17 @@ public class F_Game3 extends Generic_Game {
 
             public void onFinish() {
                 F_Game3.super.respuestaUsuario = Emotions.NONE;
-                F_Game3.super.stageNumber++;
-                F_Game3.this.rb.setProgress(F_Game3.this.rb.getProgress() + 1);
-                F_Game3.this.soundLayout.removeView(F_Game3.this.selectedButton);
-                F_Game3.this.selectedButton = null;
-                F_Game3.this.numButtons--;
+
+
+                if(actividadPrincipal.getTemporalStateGame().isEnableEEG()) {
+                    F_Game3.this.rb.setProgress(F_Game3.this.rb.getProgress() + 1);
+                    F_Game3.this.soundLayout.removeView(F_Game3.this.selectedButton);
+                    F_Game3.this.selectedButton = null;
+                    F_Game3.this.numButtons--;
+
+                }
+
+
                 F_Game3.this.procesarRespuesta(F_Game3.this.continueGame());
                 F_Game3.this.tvEEGTimer.setText(null);
             }
@@ -418,6 +433,7 @@ public class F_Game3 extends Generic_Game {
                 this.threadSound.interrupt();
                 super.feedBackSoundBien.play(super.actividadPrincipal, false);
                 super.procesarRespuesta(respuesta);
+                F_Game3.super.stageNumber++;
                 break;
             case PLAYER_ERROR:
                 super.procesarRespuesta(respuesta);

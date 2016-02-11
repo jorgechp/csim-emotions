@@ -93,7 +93,7 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/OptionsSettings_ib_playerSurprised"
                             android:layout_toRightOf="@+id/OptionsSettings_ib_playerAngry"
-                            android:background="@drawable/af26sus"
+                            android:background="@drawable/af26fa"
                             android:layout_marginRight="@dimen/Settings_playerSelection_margin_right"
                             android:clickable="true" />
 

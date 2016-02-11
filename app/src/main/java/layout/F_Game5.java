@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
 
-import csim.csimemotions.Config;
+
 import csim.csimemotions.Emotions;
 import csim.csimemotions.Generic_Game;
 import csim.csimemotions.R;
@@ -52,7 +52,7 @@ public class F_Game5 extends Generic_Game {
     private ImageButton iv1, iv2,iv3,iv4;
     private ImageButton ivPlayer;
     private ProgressBar progressBar;
-    private int stagesCompleted;
+
     private byte speed;
     private ViewGroup.LayoutParams lp;
     private String[][] sonidos;
@@ -65,6 +65,7 @@ public class F_Game5 extends Generic_Game {
     private float screenSize[];
     private TextView tvEEGTimer;
     private boolean isEEGPreTime;
+    private boolean isResponseRegistered;
 
     public F_Game5() {
         // Required empty public constructor
@@ -95,7 +96,7 @@ public class F_Game5 extends Generic_Game {
             setEnableButtons(false);
         }
 
-        super.cdTimerPre = new CountDownTimer(Config.EEG_MODE_PRE_TIME, 1000) {
+        super.cdTimerPre = new CountDownTimer(maxTimePre, 1000) {
 
             public void onTick(long millisUntilFinished) {
 
@@ -122,7 +123,7 @@ public class F_Game5 extends Generic_Game {
 
     @Override
     protected void contadorPost() {
-        super.cdTimerPost = new CountDownTimer(Config.EEG_MODE_TIME, 1000) {
+        super.cdTimerPost = new CountDownTimer(super.maxTimePost, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 //mTextField.setText("seconds remaining: " + millisUntilFinished / 1000);
@@ -132,8 +133,7 @@ public class F_Game5 extends Generic_Game {
             public void onFinish() {
                 F_Game5.super.sonido.destroy();
                 F_Game5.super.respuestaUsuario = Emotions.NONE;
-                F_Game5.super.stageNumber++;
-                F_Game5.this.progressBar.setProgress(F_Game5.this.progressBar.getProgress() + 1);
+
                 F_Game5.this.procesarRespuesta(F_Game5.this.continueGame());
                 F_Game5.this.tvEEGTimer.setText(null);
                 F_Game5.this.resetPosition();
@@ -171,6 +171,7 @@ public class F_Game5 extends Generic_Game {
         super.dialogoAlerta.setMessage(R.string.Game5_instructions);
         super.onActivityCreated(savedInstanceState);
 
+        isResponseRegistered = false;
 
 
         this.isEEGPreTime = false;
@@ -180,6 +181,12 @@ public class F_Game5 extends Generic_Game {
 
         this.tvEEGTimer = (TextView) super.actividadPrincipal.findViewById(R.id.Game5_tvTimerEEG);
 
+        this.iv1 = (ImageButton) super.actividadPrincipal.findViewById(R.id.Game5_ib1);
+        this.iv2 = (ImageButton) super.actividadPrincipal.findViewById(R.id.Game5_ib2);
+        this.iv3 = (ImageButton) super.actividadPrincipal.findViewById(R.id.Game5_ib3);
+        this.iv4 = (ImageButton) super.actividadPrincipal.findViewById(R.id.Game5_ib4);
+
+        this.ivPlayer = (ImageButton) super.actividadPrincipal.findViewById(R.id.Game5_player);
 
         this.ocl = new View.OnClickListener() {
 
@@ -199,11 +206,18 @@ public class F_Game5 extends Generic_Game {
                                 isEEGPreTime = true;
                                 F_Game5.super.cdTimerPre.start();
                             }
+                            else if(maxTimePre != -1){
+                                F_Game5.super.cdTimerPre.start();
+                            }else if(maxTimePost != -1){
+                                F_Game5.super.cdTimerPost.start();
+                            }
                         }else{
                             if(!isEEG) {
                                 F_Game5.super.sonido.destroy();
                                 F_Game5.this.isPlayerEnabled = false;
                                 F_Game5.this.ivPlayer.setBackgroundResource(R.mipmap.ic_play);
+                                F_Game5.super.cdTimerPre.cancel();
+                                F_Game5.super.cdTimerPost.cancel();
                             }
                         }
                         break;
@@ -216,20 +230,15 @@ public class F_Game5 extends Generic_Game {
 
 
 
-        this.iv1 = (ImageButton) super.actividadPrincipal.findViewById(R.id.Game5_ib1);
-        this.iv2 = (ImageButton) super.actividadPrincipal.findViewById(R.id.Game5_ib2);
-        this.iv3 = (ImageButton) super.actividadPrincipal.findViewById(R.id.Game5_ib3);
-        this.iv4 = (ImageButton) super.actividadPrincipal.findViewById(R.id.Game5_ib4);
 
-        this.ivPlayer = (ImageButton) super.actividadPrincipal.findViewById(R.id.Game5_player);
 
         this.ttTitle = (TextView) super.actividadPrincipal.findViewById(R.id.Game5_tvTitle);
 
         this.progressBar = (ProgressBar) super.actividadPrincipal.findViewById(R.id.Game5_progressBar);
 
         this.flScreen = (FrameLayout) super.actividadPrincipal.findViewById(R.id.Game5_flScreen);
-        this.stagesCompleted = 0;
-        this.speed = (byte) (this.stagesCompleted + 2); //TODO cambiar esto por el nivel de dificultad del juego
+
+        this.speed = (byte) (super.stageNumber + 2); //TODO cambiar esto por el nivel de dificultad del juego
 
         this.lp = this.ivPlayer.getLayoutParams();
 
@@ -284,6 +293,9 @@ public class F_Game5 extends Generic_Game {
                 if(F_Game5.this.actividadPrincipal.getTemporalStateGame().isEnableEEG() && isEEGPreTime){
                     return;
                 }
+                if(isResponseRegistered){
+                    return;
+                }
                 boolean isCollision = false;
                 int location[] = new int[2];
                 ib.getLocationInWindow(location);
@@ -302,7 +314,9 @@ public class F_Game5 extends Generic_Game {
                 }
 
                 if(isCollision){
+                    isResponseRegistered = true;
                     F_Game5.this.procesarRespuesta(F_Game5.this.continueGame());
+
                 }
             }
 
@@ -323,7 +337,7 @@ public class F_Game5 extends Generic_Game {
 
         Typeface tfTitle = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Action_Man_Bold.ttf");
         this.ttTitle.setTypeface(tfTitle);
-        this.progressBar.setMax(Config.LEVEL_0_NUM_OF_STAGES);
+        this.progressBar.setMax(maxNumStages);
         this.progressBar.setProgress(0);
         this.procesarRespuesta(this.continueGame());
         this.layoutButton = (ViewGroup) this.ivPlayer.getParent();
@@ -361,12 +375,13 @@ public class F_Game5 extends Generic_Game {
 
             if(super.respuestaCorrecta == super.respuestaUsuario){
                 sr = stageResults.PLAYER_WINS;
-                ++this.stagesCompleted;
+
+
 
             }else{
                 sr = stageResults.PLAYER_ERROR;
             }
-            if(this.stagesCompleted >= Config.LEVEL_0_NUM_OF_STAGES){
+            if(super.stageNumber >= maxNumStages){
 
                 super.saveStage();
 
@@ -395,29 +410,27 @@ public class F_Game5 extends Generic_Game {
     @Override
     public void procesarRespuesta(stageResults respuesta) {
 
+        boolean isCollision = false;
         boolean isCancelar = true;
         switch (respuesta){
             case GAME_WON:
                 super.sonido.destroy();
-
                 super.procesarRespuesta(respuesta);
+                isCollision = true;
                 break;
             case PLAYER_WINS:
                 super.procesarRespuesta(respuesta);
-                super.sonido.destroy();
                 super.feedBackSoundBien.play(super.actividadPrincipal, false);
-
-
-                this.progressBar.setProgress(this.stagesCompleted);
-
-                this.resetPosition();
-
-                this.isPlayerEnabled = false;
-                this.generateUI();
-                this.generateSong();
+                processSelection();
+                isCollision = true;
                 break;
             case PLAYER_ERROR:
-
+                isCollision = true;
+                if(this.actividadPrincipal.getTemporalStateGame().isEnableEEG()) {
+                    processSelection();
+                    break;
+                }
+                isResponseRegistered = false;
                 isCancelar = false;
                 break;
             case GAME_STARTED:
@@ -427,6 +440,9 @@ public class F_Game5 extends Generic_Game {
             case USER_EXIT:
 
                 super.procesarRespuesta(respuesta);
+                if(feedBackSoundBien != null) {
+                    super.feedBackSoundBien.destroy();
+                }
                 break;
         }
 
@@ -434,9 +450,35 @@ public class F_Game5 extends Generic_Game {
             super.cdTimerPost.cancel();
             this.tvEEGTimer.setText(null);
         }
+        if(super.cdTimerPost != null ){
+            super.cdTimerPost.cancel();
+        }
+
+        if(super.cdTimerPre != null ){
+            super.cdTimerPre.cancel();
+        }
+
+
 
     }
 
+    private void processSelection(){
+        super.sonido.destroy();
+
+
+
+        ++super.stageNumber;
+        this.progressBar.setProgress(this.progressBar.getProgress() + 1);
+
+
+
+        this.resetPosition();
+
+        this.isPlayerEnabled = false;
+        this.generateUI();
+        this.generateSong();
+        isResponseRegistered = false;
+    }
     private void resetPosition(){
 
         if(null!=this.layoutButton) { //for safety only  as you are doing onClick
@@ -480,7 +522,7 @@ public class F_Game5 extends Generic_Game {
         selectedButton = listaIm.get(selectedView);
         super.loadImageOnVisor(super.imSurprised[rnd.nextInt(super.imSurprised.length)][0], listaIm.get(selectedView), 0.15f, 0.08f);
         listaIm.remove(selectedView);
-        this.iButtonEmotionsRelations.put(selectedButton, Emotions.SURPRISED);
+        this.iButtonEmotionsRelations.put(selectedButton, Emotions.FEAR);
 
         selectedView = rnd.nextInt(listaIm.size());
         selectedButton = listaIm.get(selectedView);

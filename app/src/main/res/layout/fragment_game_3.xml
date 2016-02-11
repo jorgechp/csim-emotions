@@ -112,7 +112,7 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/Game3_ib_surprised"
                             android:layout_toRightOf="@+id/Game3_ib_angry"
-                            android:src="@drawable/af26sus" />
+                            android:src="@drawable/af26fa" />
                     </RelativeLayout>
                 </FrameLayout>
             </LinearLayout>

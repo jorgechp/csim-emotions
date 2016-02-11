@@ -46,7 +46,9 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
     protected AlertDialog.Builder dialogoAlerta;
     protected boolean isDialogAlert;
     protected CountDownTimer cdTimerPre, cdTimerPost;
-
+    protected long maxTimePre;
+    protected long maxTimePost;
+    protected int maxNumStages;
 
 
     protected Emotions getEmotionFromString(String emotion) {
@@ -62,8 +64,8 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
             case "ANGRY":
                 correctEmotion = Emotions.ANGRY;
                 break;
-            case "SURPRISED":
-                correctEmotion = Emotions.SURPRISED;
+            case "FEAR":
+                correctEmotion = Emotions.FEAR;
                 break;
             case "NONE":
                 correctEmotion = Emotions.NONE;
@@ -133,6 +135,7 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
         super.onCreate(savedInstanceState);
         this.actividadPrincipal = (MainActivity) getActivity();
         this.actividadPrincipal.stopSong();
+        this.generarDificultad();
         this.isDialogAlert = true;
         this.dialogoAlerta = new AlertDialog.Builder(this.actividadPrincipal);
         this.dialogoAlerta.setNeutralButton(getString(R.string.GameDialog_OK), new DialogInterface.OnClickListener() {
@@ -156,6 +159,42 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
 
     }
 
+    /**
+     * Establece el tiempo límite de cada juego
+     */
+    protected void generarDificultad(){
+        StateOfGame sog = this.actividadPrincipal.getStateOfTheGame();
+        int dificultad = sog.getLevelActual();
+        long timePre = -1;
+        long timePos = Config.LEVEL_0_TIME;
+        int numStages = Config.LEVEL_0_NUM_OF_STAGES;
+
+        switch (dificultad){
+            case 1:
+                timePos = Config.LEVEL_1_TIME;
+                numStages = Config.LEVEL_1_NUM_OF_STAGES;
+                break;
+            case 2:
+                timePos = Config.LEVEL_2_TIME;
+                numStages = Config.LEVEL_2_NUM_OF_STAGES;
+                break;
+            case 3:
+                timePos = Config.LEVEL_3_TIME;
+                numStages = Config.LEVEL_3_NUM_OF_STAGES;
+                break;
+        }
+
+        if(actividadPrincipal.getTemporalStateGame().isEnableEEG()){
+            timePre = Config.EEG_MODE_PRE_TIME;
+            timePos = Config.EEG_MODE_TIME;
+            numStages = Config.LEVEL_EEG_NUM_OF_STAGES;
+        }
+
+        this.maxTimePre = timePre;
+        this.maxTimePost = timePos;
+        this.maxNumStages = numStages;
+    }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -172,7 +211,7 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
         this.imHappy = this.dbc.getUrlImagen(null, Emotions.HAPPY, 1);
         this.imSad = this.dbc.getUrlImagen(null,Emotions.SAD,1);
         this.imAngry = this.dbc.getUrlImagen(null,Emotions.ANGRY,1);
-        this.imSurprised = this.dbc.getUrlImagen(null,Emotions.SURPRISED,1);
+        this.imSurprised = this.dbc.getUrlImagen(null,Emotions.FEAR,1);
 
 
         this.logSession = new Log(this.actividadPrincipal.getUserConf().getUserName(),System.currentTimeMillis(),this.actividadPrincipal.getTemporalStateGame().isEnableEEG());

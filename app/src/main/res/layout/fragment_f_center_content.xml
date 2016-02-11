@@ -45,6 +45,14 @@
                     android:id="@+id/ibGame1"
                     android:layout_gravity="center"
                     android:background="@mipmap/ic_game_1_easy" />
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/fCentercontent_backLevel"
+                    android:id="@+id/ibBackLevel"
+                    android:layout_gravity="left|bottom" />
             </FrameLayout>
 
             <FrameLayout

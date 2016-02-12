@@ -107,8 +107,8 @@ public class F_Game1  extends Generic_Game {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.currentGame = States.GAME1;
-        this.respuestaUsuario = null;
-        this.respuestaCorrecta = null;
+        super.respuestaUsuario = null;
+        super.respuestaCorrecta = null;
         this.wasSoundPlaying = false;
 
         this.dbc = new DataBaseController("Imagenes", "Sonidos", getActivity());
@@ -120,16 +120,16 @@ public class F_Game1  extends Generic_Game {
                 int id = v.getId();
                 switch (id) {
                     case R.id.btAngry:
-                        F_Game1.this.respuestaUsuario = Emotions.ANGRY;
+                        F_Game1.super.respuestaUsuario = Emotions.ANGRY;
                         break;
                     case R.id.Game1_btFear:
-                        F_Game1.this.respuestaUsuario = Emotions.FEAR;
+                        F_Game1.super.respuestaUsuario = Emotions.FEAR;
                         break;
                     case R.id.btHappy:
-                        F_Game1.this.respuestaUsuario = Emotions.HAPPY;
+                        F_Game1.super.respuestaUsuario = Emotions.HAPPY;
                         break;
                     case R.id.btSad:
-                        F_Game1.this.respuestaUsuario = Emotions.SAD;
+                        F_Game1.super.respuestaUsuario = Emotions.SAD;
                         break;
                 }
 
@@ -150,7 +150,7 @@ public class F_Game1  extends Generic_Game {
         };
 
 
-        this.logSession = new Log(((MainActivity)getActivity()).getUserConf().getUserName(),System.currentTimeMillis(),((MainActivity)getActivity()).getTemporalStateGame().isEnableEEG());
+        super.logSession = new Log(((MainActivity)getActivity()).getUserConf().getUserName(),System.currentTimeMillis(),((MainActivity)getActivity()).getTemporalStateGame().isEnableEEG());
     }
 
 
@@ -230,7 +230,7 @@ public class F_Game1  extends Generic_Game {
         super.feedBackSoundBien = new SoundPlayer(R.raw.feedback_bien_1);
 
 
-        super.sonido.play(getActivity());
+        //super.sonido.play(getActivity());
 
 
         super.actividadPrincipal.stopSong();
@@ -301,19 +301,19 @@ public class F_Game1  extends Generic_Game {
         //Comprobar si ha empezado el juego
 
 
-        if (this.respuestaCorrecta == null || this.respuestaUsuario == null) {
+        if (super.respuestaCorrecta == null || super.respuestaUsuario == null) {
             this.numRows = this.dbc.getNumRowsImagenes();
             this.imagenes = this.dbc.getUrlImagen(null, null, 1);
             this.correctImages = new HashMap<Integer, Boolean>();
         } else {
-            this.logSession.addStage(new LogStage(this.respuestaCorrecta,0,this.currentGame,System.currentTimeMillis(),this.respuestaUsuario,correctImages.size()));
-            if (this.respuestaCorrecta == this.respuestaUsuario) {
+            super.logSession.addStage(new LogStage(super.respuestaCorrecta,0,this.currentGame,System.currentTimeMillis(),super.respuestaUsuario,correctImages.size()));
+            if (super.respuestaCorrecta == super.respuestaUsuario) {
                 this.correctImages.put(this.indexOfCurrentImage, true);
                 result = stageResults.PLAYER_WINS;
             } else {
                 result = stageResults.PLAYER_ERROR;
             }
-            sonido.destroy();
+//            sonido.destroy();
         }
 
         int numPruebasSuperadas = this.correctImages.size();
@@ -330,15 +330,15 @@ public class F_Game1  extends Generic_Game {
 
             //Establecer nuevos marcadores
             Emotions correctEmotion = this.getEmotionFromString(imageSelected[1]);
-            this.respuestaCorrecta = correctEmotion;
+            super.respuestaCorrecta = correctEmotion;
             this.indexOfCurrentImage = newImage;
 
 
             //Ahora, se elige aleatoriamente una imagen cuya emocion coincida con la de la imagen
             //elegida
 
-            int numSonidos = this.dbc.getNumRowsSonidos(correctEmotion);
-            newSound = rnd.nextInt(numSonidos);
+     //       int numSonidos = this.dbc.getNumRowsSonidos(correctEmotion);
+     //       newSound = rnd.nextInt(numSonidos);
 
             /**
              * como la lista de sonidos a descargar siempre depende de la emocion escogida en la imagen
@@ -346,11 +346,11 @@ public class F_Game1  extends Generic_Game {
              * ocurre con las imagenes.
              **/
 
-            String[][] sonidos = this.dbc.getUrlSonido(null, correctEmotion);
-            String[] sonidoEscogido = sonidos[newSound];
-            int id = Integer.parseInt(sonidoEscogido[2]);
+     //       String[][] sonidos = this.dbc.getUrlSonido(null, correctEmotion);
+     //       String[] sonidoEscogido = sonidos[newSound];
+     //       int id = Integer.parseInt(sonidoEscogido[2]);
 
-            sonido = new SoundPlayer(id);
+    //        sonido = new SoundPlayer(id);
 
 
         } else {
@@ -404,6 +404,7 @@ public class F_Game1  extends Generic_Game {
      */
     public void procesarRespuesta(stageResults respuesta) {
         super.procesarRespuesta(respuesta);
+
         switch (respuesta) {
             case GAME_STARTED:  //Inicio del juego
                 break;
@@ -411,13 +412,13 @@ public class F_Game1  extends Generic_Game {
             case PLAYER_ERROR: //Respuesta incorrecta
 
                 this.feedBack(false);
-                this.reactivarAudio();
+     //           this.reactivarAudio();
                 break;
             case PLAYER_WINS:  //Respuesta correcta
 
                 this.feedBack(true);
                 this.actualizarMarcador();
-                this.reactivarAudio();
+    //            this.reactivarAudio();
                 break;
 
         }
@@ -439,10 +440,10 @@ public class F_Game1  extends Generic_Game {
     @Override
     public void onPause() {
         super.onPause();
-        if (super.sonido.isPlaying()) {
-            super.sonido.destroy();
-            this.wasSoundPlaying = true;
-        }
+     //   if (super.sonido.isPlaying()) {
+     //       super.sonido.destroy();
+      //      this.wasSoundPlaying = true;
+      //  }
     }
 
     @Override
@@ -454,7 +455,7 @@ public class F_Game1  extends Generic_Game {
     public void onResume() {
         super.onResume();
         if (this.wasSoundPlaying) {
-            super.sonido.play(getActivity());
+        //    super.sonido.play(getActivity());
             this.wasSoundPlaying = false;
         }
 

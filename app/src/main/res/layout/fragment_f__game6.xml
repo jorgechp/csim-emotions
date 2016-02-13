@@ -32,12 +32,6 @@
                 android:textSize="@dimen/gameTitle"
                 android:textAlignment="center" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:id="@+id/Game6_counter"
-                android:layout_gravity="bottom|right" />
         </LinearLayout>
 
         <FrameLayout

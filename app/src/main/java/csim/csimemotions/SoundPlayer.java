@@ -2,7 +2,9 @@ package csim.csimemotions;
 
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.os.Handler;
 import android.util.Log;
 
 import java.io.IOException;
@@ -20,7 +22,9 @@ public class SoundPlayer {
         this.idSong = idSong;
     }
     public SoundPlayer(AssetFileDescriptor descriptor) throws IOException {
+
         mp = new MediaPlayer();
+        mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
         mp.setDataSource(descriptor.getFileDescriptor(), descriptor.getStartOffset(), descriptor.getLength());
         descriptor.close();
         mp.prepare();
@@ -33,12 +37,21 @@ public class SoundPlayer {
     private void buildPlayer(Context context, boolean loop) {
         if(idSong != -1) {
             mp = MediaPlayer.create(context, this.idSong);
+            mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
         }
         mp.start();
 
         Log.d(Integer.toString(this.idSong), "On start");
         mp.setLooping(loop);
         mp.start();
+        mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            public void onCompletion(MediaPlayer mp) {
+                mp.release();
+
+            }
+
+            ;
+        });
     }
 
     public void play(Context context) {

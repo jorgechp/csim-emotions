@@ -39,7 +39,7 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.18"
+            android:layout_weight="0.3"
             android:clipChildren="false"
             android:clipToPadding="false"
             >
@@ -91,18 +91,12 @@
                     android:layout_marginRight="@dimen/Settings_margin_bottom" />
             </RelativeLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:id="@+id/Game4_ttEEGTimer"
-                android:layout_gravity="right|center_vertical" />
         </FrameLayout>
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.04"
+            android:layout_weight="0.01"
             android:background="#6a3131"
             android:clipChildren="false"
             android:clipToPadding="false"
@@ -111,7 +105,7 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.68"
+            android:layout_weight="0.60"
             android:clipChildren="false"
             android:clipToPadding="false">
 

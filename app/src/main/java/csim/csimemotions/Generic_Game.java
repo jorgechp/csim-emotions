@@ -399,4 +399,8 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
         return false;
 
     }
+
+    public void backButtonPressed(){
+        this.procesarRespuesta(stageResults.USER_EXIT);
+    }
 }

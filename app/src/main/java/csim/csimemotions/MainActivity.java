@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -146,8 +147,8 @@ public class MainActivity extends ActionBarActivity {
 
         this.dbc = new DataBaseController("Imagenes", "Sonidos", this);
 
-           //deleteDatabase("Imagenes");
-           //deleteDatabase("Sonido");
+          // deleteDatabase("Imagenes");
+          // deleteDatabase("Sonido");
 
         int rowsImagenes, rowsSonidos;
         try {
@@ -489,5 +490,16 @@ public class MainActivity extends ActionBarActivity {
 
     public void setCurrentGame(Generic_Game currentGame) {
         this.currentGame = currentGame;
+    }
+
+
+
+    @Override
+    public void onBackPressed() {
+        if(this.currentGame != null){
+            this.currentGame.backButtonPressed();
+        }else{
+            this.finish();
+        }
     }
 }

@@ -28,12 +28,6 @@
                 android:textSize="@dimen/gameTitle"
                 android:textColor="@id/GameTitles" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:id="@+id/Game5_tvTimerEEG"
-                android:layout_gravity="right|bottom" />
         </FrameLayout>
 
         <FrameLayout

@@ -63,7 +63,7 @@ public class F_Game5 extends Generic_Game {
     private ViewGroup layoutButton;
     private FrameLayout flScreen;
     private float screenSize[];
-    private TextView tvEEGTimer;
+
     private boolean isEEGPreTime;
     private boolean isResponseRegistered;
 
@@ -127,7 +127,7 @@ public class F_Game5 extends Generic_Game {
 
             public void onTick(long millisUntilFinished) {
                 //mTextField.setText("seconds remaining: " + millisUntilFinished / 1000);
-                F_Game5.this.tvEEGTimer.setText(Long.toString(millisUntilFinished/1000));
+
             }
 
             public void onFinish() {
@@ -135,7 +135,7 @@ public class F_Game5 extends Generic_Game {
                 F_Game5.super.respuestaUsuario = Emotions.NONE;
 
                 F_Game5.this.procesarRespuesta(F_Game5.this.continueGame());
-                F_Game5.this.tvEEGTimer.setText(null);
+
                 F_Game5.this.resetPosition();
                 F_Game5.this.isPlayerEnabled = false;
                 F_Game5.this.generateSong();
@@ -179,7 +179,7 @@ public class F_Game5 extends Generic_Game {
         this.senManager = (SensorManager) super.actividadPrincipal.getSystemService(Context.SENSOR_SERVICE);
 
 
-        this.tvEEGTimer = (TextView) super.actividadPrincipal.findViewById(R.id.Game5_tvTimerEEG);
+
 
         this.iv1 = (ImageButton) super.actividadPrincipal.findViewById(R.id.Game5_ib1);
         this.iv2 = (ImageButton) super.actividadPrincipal.findViewById(R.id.Game5_ib2);
@@ -448,7 +448,7 @@ public class F_Game5 extends Generic_Game {
 
         if(this.actividadPrincipal.getTemporalStateGame().isEnableEEG() && super.cdTimerPost != null && isCancelar) {
             super.cdTimerPost.cancel();
-            this.tvEEGTimer.setText(null);
+
         }
         if(super.cdTimerPost != null ){
             super.cdTimerPost.cancel();

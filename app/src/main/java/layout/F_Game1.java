@@ -302,8 +302,9 @@ public class F_Game1  extends Generic_Game {
 
 
         if (super.respuestaCorrecta == null || super.respuestaUsuario == null) {
-            this.numRows = this.dbc.getNumRowsImagenes();
+
             this.imagenes = this.dbc.getUrlImagen(null, null, 1);
+            this.numRows = imagenes.length;
             this.correctImages = new HashMap<Integer, Boolean>();
         } else {
             super.logSession.addStage(new LogStage(super.respuestaCorrecta,0,this.currentGame,System.currentTimeMillis(),super.respuestaUsuario,correctImages.size()));

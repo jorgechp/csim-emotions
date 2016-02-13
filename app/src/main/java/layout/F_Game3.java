@@ -50,10 +50,10 @@ public class F_Game3 extends Generic_Game {
     private int heightLimitsMin;
     private ProgressBar rb;
     private Thread threadSound;
-    private TextView ttTitle, ttDescription, tvEEGTimer;
+    private TextView ttTitle, ttDescription;
 
 
-    // TODO: Rename parameter arguments, choose names that match
+
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private OnFragmentInteractionListener mListener;
     private Triple soundButtons[];
@@ -71,7 +71,7 @@ public class F_Game3 extends Generic_Game {
      *
      * @return A new instance of fragment F_Game3.
      */
-    // TODO: Rename and change types and number of parameters
+
     public static F_Game3 newInstance() {
         F_Game3 fragment = new F_Game3();
         Bundle args = new Bundle();
@@ -110,7 +110,7 @@ public class F_Game3 extends Generic_Game {
 
         this.ttTitle = (TextView) super.actividadPrincipal.findViewById(R.id.Game31_title);
         this.ttDescription = (TextView) super.actividadPrincipal.findViewById(R.id.Game31_ttGameDescription);
-        this.tvEEGTimer = (TextView) super.actividadPrincipal.findViewById(R.id.Game31_EEGTimer);
+
 
         this.rb = (ProgressBar) super.actividadPrincipal.findViewById(R.id.Game31_rbProgressBar);
         this.rb.setMax(this.numButtons);
@@ -295,9 +295,11 @@ public class F_Game3 extends Generic_Game {
                                         ibt.ib.setTranslationY((r.nextInt(F_Game3.this.heightLimitsMax) + coordenadas[0] + F_Game3.this.heightLimitsMin) % F_Game3.this.heightLimitsMax);
                                         ibt.ib.setTranslationX((r.nextInt(F_Game3.this.widthLimitsMax) + coordenadas[1] + F_Game3.this.widthtLimitsMin) % F_Game3.this.widthLimitsMax);
 
-                                        if (F_Game3.this.selectedButton == null) {
-                                            F_Game3.this.newPositionSound.play(F_Game3.super.actividadPrincipal, false);
-                                        }
+
+                                    }
+                                    if (F_Game3.this.selectedButton == null) {
+                                        F_Game3.this.newPositionSound.play(F_Game3.super.actividadPrincipal, false);
+
                                     }
                                 }
                             }
@@ -320,7 +322,6 @@ public class F_Game3 extends Generic_Game {
         return inflater.inflate(R.layout.fragment_game_3, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -370,7 +371,7 @@ public class F_Game3 extends Generic_Game {
 
             public void onTick(long millisUntilFinished) {
                 //mTextField.setText("seconds remaining: " + millisUntilFinished / 1000);
-                F_Game3.this.tvEEGTimer.setText(Long.toString(millisUntilFinished/1000));
+
             }
 
             public void onFinish() {
@@ -387,7 +388,7 @@ public class F_Game3 extends Generic_Game {
 
 
                 F_Game3.this.procesarRespuesta(F_Game3.this.continueGame());
-                F_Game3.this.tvEEGTimer.setText(null);
+
             }
         };
     }
@@ -497,7 +498,7 @@ public class F_Game3 extends Generic_Game {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
+
         void onFragmentInteraction(Uri uri);
     }
 

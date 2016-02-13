@@ -96,7 +96,7 @@ public class F_Game6 extends Generic_Game {
 
      * @return A new instance of fragment F_Game6.
      */
-    // TODO: Rename and change types and number of parameters
+
     public static F_Game6 newInstance() {
         F_Game6 fragment = new F_Game6();
         Bundle args = new Bundle();
@@ -249,7 +249,7 @@ public class F_Game6 extends Generic_Game {
         return inflater.inflate(R.layout.fragment_f__game6, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
+
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -465,7 +465,7 @@ public class F_Game6 extends Generic_Game {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
+
         void onFragmentInteraction(Uri uri);
     }
 

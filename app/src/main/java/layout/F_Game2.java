@@ -48,7 +48,7 @@ public class F_Game2 extends Generic_Game  {
     private ProgressBar progessb;
     private ImageButton ibPlayer;
     private TextView tvTitle;
-    private TextView tvEEGTimer;
+
 
 
     public F_Game2() {
@@ -61,7 +61,7 @@ public class F_Game2 extends Generic_Game  {
      *
      * @return A new instance of fragment F_Game2.
      */
-    // TODO: Rename and change types and number of parameters
+
     public static F_Game2 newInstance() {
         F_Game2 fragment = new F_Game2();
         Bundle args = new Bundle();
@@ -107,7 +107,7 @@ public class F_Game2 extends Generic_Game  {
         this.ibPlayer.setScaleType(ImageView.ScaleType.FIT_XY);
 
         this.tvTitle = (TextView) getActivity().findViewById(R.id.game2TVTitle);
-        this.tvEEGTimer = (TextView) getActivity().findViewById(R.id.Game2_Timer);
+
 
 
         clickListener = new View.OnClickListener() {
@@ -249,7 +249,7 @@ public class F_Game2 extends Generic_Game  {
 
             public void onTick(long millisUntilFinished) {
                 //mTextField.setText("seconds remaining: " + millisUntilFinished / 1000);
-                F_Game2.this.tvEEGTimer.setText(Long.toString(millisUntilFinished/1000));
+
             }
 
             public void onFinish() {
@@ -257,7 +257,7 @@ public class F_Game2 extends Generic_Game  {
                 F_Game2.this.stageNum++;
                 F_Game2.this.actualizarMarcador();
                 F_Game2.this.newStage();
-                F_Game2.this.tvEEGTimer.setText(null);
+
             }
         };
     }
@@ -327,19 +327,19 @@ public class F_Game2 extends Generic_Game  {
 
         newImage = rnd.nextInt(this.numRowsHappy);
         imageSelected = this.imagenesHappy[newImage];
-        super.loadImageOnVisor(imageSelected[0], this.ibHappy);
+        super.loadImageOnVisor(imageSelected[0], this.ibHappy,0.43f,0.21f);
 
         newImage = rnd.nextInt(this.numRowsAngry);
         imageSelected = this.imagenesAngry[newImage];
-        super.loadImageOnVisor(imageSelected[0], this.ibAngry);
+        super.loadImageOnVisor(imageSelected[0], this.ibAngry,0.43f,0.21f);
 
         newImage = rnd.nextInt(this.numRowsSad);
         imageSelected = this.imagenesSad[newImage];
-        super.loadImageOnVisor(imageSelected[0], this.ibSad);
+        super.loadImageOnVisor(imageSelected[0], this.ibSad,0.43f,0.21f);
 
         newImage = rnd.nextInt(this.numRowsSurprised);
         imageSelected = this.imagenesSurprised[newImage];
-        super.loadImageOnVisor(imageSelected[0], this.ibSuprised);
+        super.loadImageOnVisor(imageSelected[0], this.ibSuprised,0.43f,0.21f);
 
 
         Emotions correctEmotion = this.getEmotionFromString(sonidoEscogido[1]);
@@ -378,7 +378,7 @@ public class F_Game2 extends Generic_Game  {
                 this.feedBack(false);
                 break;
             case PLAYER_WINS:  //Respuesta correcta
-                this.tvEEGTimer.setText(null);
+
                 this.feedBack(true);
                 this.actualizarMarcador();
                 break;

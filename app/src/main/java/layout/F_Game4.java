@@ -66,7 +66,7 @@ public class F_Game4 extends Generic_Game {
 
     private int numStagesCompleted;
 
-    private TextView tvTitle, tvEEGTimer;
+    private TextView tvTitle;
     private boolean isTimer;
     private boolean isEEGpreTime;
 
@@ -81,7 +81,7 @@ public class F_Game4 extends Generic_Game {
      *
      * @return A new instance of fragment F_Game4.
      */
-    // TODO: Rename and change types and number of parameters
+
     public static F_Game4 newInstance() {
         F_Game4 fragment = new F_Game4();
         Bundle args = new Bundle();
@@ -132,7 +132,7 @@ public class F_Game4 extends Generic_Game {
 
             public void onTick(long millisUntilFinished) {
                 //mTextField.setText("seconds remaining: " + millisUntilFinished / 1000);
-                F_Game4.this.tvEEGTimer.setText(Long.toString(millisUntilFinished/1000));
+
             }
 
             public void onFinish() {
@@ -140,7 +140,7 @@ public class F_Game4 extends Generic_Game {
                 F_Game4.super.stageNumber++;
                 F_Game4.this.progressBar.setProgress(F_Game4.this.progressBar.getProgress() + 1);
                 F_Game4.this.procesarRespuesta(F_Game4.this.continueGame());
-                F_Game4.this.tvEEGTimer.setText(null);
+
 
             }
         };
@@ -187,7 +187,7 @@ public class F_Game4 extends Generic_Game {
         this.progressBar.setProgress(0);
         this.progressBar.setMax(super.maxNumStages);
 
-        this.tvEEGTimer = (TextView) super.actividadPrincipal.findViewById(R.id.Game4_ttEEGTimer);
+
 
         super.respuestaCorrecta = null;
 
@@ -206,10 +206,14 @@ public class F_Game4 extends Generic_Game {
 
         this.otl = new View.OnTouchListener() {
 
+
+
+
             int inferiorLimitHappy[] = new int[2];
             int inferiorLimitSad[] = new int[2];
             int inferiorLimitAngry[] = new int[2];
             int inferiorLimitSurprised[] = new int[2];
+            int inferiorLimitllGame[] = new int[2];
 
 
 
@@ -221,6 +225,8 @@ public class F_Game4 extends Generic_Game {
             int superiorLimitYAngry;
             int superiorLimitXSurprised;
             int superiorLimitYSurprised;
+            int superiorLimitllXGame ;
+            int superiorLimitllYGame;
 
             boolean isConfigured = false;
 
@@ -317,6 +323,25 @@ public class F_Game4 extends Generic_Game {
                             }
                         }
 
+                        if(y < 50){
+                            F_Game4.this.ivPlayer.setY(50);
+                        }
+                        if(x < 50){
+                            F_Game4.this.ivPlayer.setX(50);
+                        }
+
+
+                        if(x> superiorLimitllXGame -50){
+                            x = superiorLimitllXGame -50;
+                            F_Game4.this.ivPlayer.setX(x);
+                        }
+                        if(y> superiorLimitllYGame-110){
+                            y = superiorLimitllYGame - 110;
+                            F_Game4.this.ivPlayer.setY(y);
+                        }
+
+
+
                         if(isContinue){
                             F_Game4.this.procesarRespuesta(F_Game4.this.continueGame());
                             F_Game4.super.sonido.destroy();
@@ -347,6 +372,8 @@ public class F_Game4 extends Generic_Game {
                 F_Game4.this.ivSad.getLocationInWindow(inferiorLimitSad);
                 F_Game4.this.ivAngry.getLocationInWindow(inferiorLimitAngry);
                 F_Game4.this.ivSurprised.getLocationInWindow(inferiorLimitSurprised);
+                F_Game4.this.llGame.getLocationInWindow(inferiorLimitllGame);
+
 
                 superiorLimitXHappy = inferiorLimitHappy[0] + F_Game4.this.ivHappy.getMeasuredWidth();
                 superiorLimitYHappy = inferiorLimitHappy[1] + F_Game4.this.ivHappy.getMeasuredHeight();
@@ -357,7 +384,9 @@ public class F_Game4 extends Generic_Game {
                 superiorLimitXSurprised = inferiorLimitSurprised[0] + F_Game4.this.ivSurprised.getMeasuredWidth();
                 superiorLimitYSurprised = inferiorLimitSurprised[1] + F_Game4.this.ivSurprised.getMeasuredHeight();
 
-                isConfigured = true;
+                superiorLimitllXGame = inferiorLimitllGame[0] + F_Game4.this.llGame.getMeasuredWidth();
+                superiorLimitllYGame = inferiorLimitllGame[1] + F_Game4.this.llGame.getMeasuredHeight();
+
             }
         };
 
@@ -377,7 +406,7 @@ public class F_Game4 extends Generic_Game {
         return inflater.inflate(R.layout.fragment_game4, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
+
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -406,7 +435,7 @@ public class F_Game4 extends Generic_Game {
         if(F_Game4.this.actividadPrincipal.getTemporalStateGame().isEnableEEG() && F_Game4.super.cdTimerPost != null) {
 
             F_Game4.super.cdTimerPost.cancel();
-            F_Game4.this.tvEEGTimer.setText(null);
+
             F_Game4.super.cdTimerPost = null;
             if(F_Game4.super.sonido != null) {
                 F_Game4.super.sonido.destroy();
@@ -469,10 +498,10 @@ public class F_Game4 extends Generic_Game {
 
 
 
-            super.loadImageOnVisor(super.imHappy[rnd.nextInt(super.imHappy.length)][0], this.ivHappy,0.35f,0.10f);
-            super.loadImageOnVisor(super.imAngry[rnd.nextInt(super.imAngry.length)][0], this.ivAngry,0.35f,0.10f);
-            super.loadImageOnVisor(super.imSad[rnd.nextInt(super.imSad.length)][0], this.ivSad,0.35f,0.10f);
-            super.loadImageOnVisor(super.imSurprised[rnd.nextInt(super.imSurprised.length)][0], this.ivSurprised,0.35f,0.10f);
+            super.loadImageOnVisor(super.imHappy[rnd.nextInt(super.imHappy.length)][0], this.ivHappy,0.45f,0.13f);
+            super.loadImageOnVisor(super.imAngry[rnd.nextInt(super.imAngry.length)][0], this.ivAngry,0.45f,0.13f);
+            super.loadImageOnVisor(super.imSad[rnd.nextInt(super.imSad.length)][0], this.ivSad,0.45f,0.13f);
+            super.loadImageOnVisor(super.imSurprised[rnd.nextInt(super.imSurprised.length)][0], this.ivSurprised,0.45f,0.13f);
         }
 
         if(F_Game4.this.actividadPrincipal.getTemporalStateGame().isEnableEEG() && F_Game4.super.cdTimerPost == null) {
@@ -533,7 +562,7 @@ public class F_Game4 extends Generic_Game {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
+
         void onFragmentInteraction(Uri uri);
     }
 }

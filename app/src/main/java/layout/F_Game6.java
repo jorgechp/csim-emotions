@@ -199,6 +199,7 @@ public class F_Game6 extends Generic_Game {
         this.oCompletionListener = new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
+                //
                 F_Game6.super.sonido.destroy();
                 if(F_Game6.this.soundsStage.size() > 0) {
                     try {
@@ -206,8 +207,10 @@ public class F_Game6 extends Generic_Game {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    F_Game6.super.sonido.play(F_Game6.super.actividadPrincipal,false);
+
+                    F_Game6.super.sonido.play(F_Game6.super.actividadPrincipal, false);
                     F_Game6.super.sonido.setOnCompletionListener(this);
+
                 }else{
 
                     if(F_Game6.this.sonidoIdle != -1){
@@ -331,6 +334,7 @@ public class F_Game6 extends Generic_Game {
                 break;
             case PLAYER_ERROR:
                 super.saveStage();
+                super.sonido.play(super.actividadPrincipal);
                 break;
             case GAME_WON:
             case USER_EXIT:
@@ -351,10 +355,10 @@ public class F_Game6 extends Generic_Game {
 
                 try {
                     AssetFileDescriptor soundPoll = this.soundsStage.poll();
-                    if (soundPoll != null && super.sonido == null) {
+                    if (soundPoll != null) {
                         super.sonido = new SoundPlayer(soundPoll);
-                        super.sonido.setOnCompletionListener(this.oCompletionListener);
                         super.sonido.play(super.actividadPrincipal, false);
+                        super.sonido.setOnCompletionListener(this.oCompletionListener);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();

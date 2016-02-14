@@ -87,4 +87,10 @@ public class SoundPlayer {
         this.mp.setOnCompletionListener(ocl);
     }
 
+    public void release(){
+        this.mp.release();
+    }
+
+
+
 }

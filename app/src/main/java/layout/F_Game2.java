@@ -292,15 +292,15 @@ public class F_Game2 extends Generic_Game  {
 
         if (super.respuestaCorrecta == null || super.respuestaUsuario == null) {
 
-            this.imagenesHappy = super.dbc.getUrlImagen(null, Emotions.HAPPY, 1); // 1 es la dificultad
-            this.imagenesSad = super.dbc.getUrlImagen(null, Emotions.SAD, 1); // 1 es la dificultad
-            this.imagenesAngry = super.dbc.getUrlImagen(null, Emotions.ANGRY, 1); // 1 es la dificultad
-            this.imagenesSurprised = super.dbc.getUrlImagen(null, Emotions.FEAR, 1); // 1 es la dificultad
+            this.imagenesHappy = super.dbc.getUrlImagen(null, Emotions.HAPPY, actividadPrincipal.getStateOfTheGame().getLevelActual());
+            this.imagenesSad = super.dbc.getUrlImagen(null, Emotions.SAD, actividadPrincipal.getStateOfTheGame().getLevelActual());
+            this.imagenesAngry = super.dbc.getUrlImagen(null, Emotions.ANGRY, actividadPrincipal.getStateOfTheGame().getLevelActual());
+            this.imagenesSurprised = super.dbc.getUrlImagen(null, Emotions.FEAR, actividadPrincipal.getStateOfTheGame().getLevelActual());
 
-            this.numRowsHappy = super.dbc.getNumRowsImagenes(Emotions.HAPPY);
-            this.numRowsSad = super.dbc.getNumRowsImagenes(Emotions.SAD);
-            this.numRowsAngry = super.dbc.getNumRowsImagenes(Emotions.ANGRY);
-            this.numRowsSurprised = super.dbc.getNumRowsImagenes(Emotions.FEAR);
+            this.numRowsHappy = super.dbc.getNumRowsImagenes(Emotions.HAPPY,actividadPrincipal.getStateOfTheGame().getLevelActual());
+            this.numRowsSad = super.dbc.getNumRowsImagenes(Emotions.SAD,actividadPrincipal.getStateOfTheGame().getLevelActual());
+            this.numRowsAngry = super.dbc.getNumRowsImagenes(Emotions.ANGRY,actividadPrincipal.getStateOfTheGame().getLevelActual());
+            this.numRowsSurprised = super.dbc.getNumRowsImagenes(Emotions.FEAR,actividadPrincipal.getStateOfTheGame().getLevelActual());
 
             this.numSonidos = super.dbc.getNumRowsSonidos();
             this.sonidos = super.dbc.getUrlSonido(null, null);

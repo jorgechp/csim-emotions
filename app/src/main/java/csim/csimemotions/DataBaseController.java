@@ -94,7 +94,7 @@ public class DataBaseController implements IPersistencia {
             if (consultaWhere.length() > 0) {
                 consultaWhere += " AND ";
             }
-            consultaWhere += "dificultad = '" + dificultad + "'";
+            consultaWhere += "dificultad <= '" + dificultad + "'";
         }
 
         String selectQuery = (consultaWhere.length() == 0) ? (consultaStart) : (consultaStart + " WHERE " + consultaWhere);
@@ -170,8 +170,8 @@ public class DataBaseController implements IPersistencia {
         return c.getCount();
     }
 
-    public int getNumRowsImagenes(Emotions category) {
-        Cursor c = db.query(this.nombreImagenes, this.camposImagenes, "categoriaEmocion LIKE '" + category.name() + "'", null, null, null, null);
+    public int getNumRowsImagenes(Emotions category, int dificultad) {
+        Cursor c = db.query(this.nombreImagenes, this.camposImagenes, "categoriaEmocion LIKE '" + category.name() + "' AND dificultad <= "+dificultad, null, null, null, null);
         return c.getCount();
     }
 

@@ -170,15 +170,15 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
         int numStages = Config.LEVEL_0_NUM_OF_STAGES;
 
         switch (dificultad){
-            case 1:
+            case 2:
                 timePos = Config.LEVEL_1_TIME;
                 numStages = Config.LEVEL_1_NUM_OF_STAGES;
                 break;
-            case 2:
+            case 3:
                 timePos = Config.LEVEL_2_TIME;
                 numStages = Config.LEVEL_2_NUM_OF_STAGES;
                 break;
-            case 3:
+            case 4:
                 timePos = Config.LEVEL_3_TIME;
                 numStages = Config.LEVEL_3_NUM_OF_STAGES;
                 break;
@@ -208,10 +208,10 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
         this.feedBackSoundBien = new SoundPlayer(R.raw.feedback_bien_1);
 
 
-        this.imHappy = this.dbc.getUrlImagen(null, Emotions.HAPPY, 1);
-        this.imSad = this.dbc.getUrlImagen(null,Emotions.SAD,1);
-        this.imAngry = this.dbc.getUrlImagen(null,Emotions.ANGRY,1);
-        this.imSurprised = this.dbc.getUrlImagen(null,Emotions.FEAR,1);
+        this.imHappy = this.dbc.getUrlImagen(null, Emotions.HAPPY, actividadPrincipal.getStateOfTheGame().getLevelActual());
+        this.imSad = this.dbc.getUrlImagen(null,Emotions.SAD,actividadPrincipal.getStateOfTheGame().getLevelActual());
+        this.imAngry = this.dbc.getUrlImagen(null,Emotions.ANGRY,actividadPrincipal.getStateOfTheGame().getLevelActual());
+        this.imSurprised = this.dbc.getUrlImagen(null,Emotions.FEAR,actividadPrincipal.getStateOfTheGame().getLevelActual());
 
 
         this.logSession = new Log(this.actividadPrincipal.getUserConf().getUserName(),System.currentTimeMillis(),this.actividadPrincipal.getTemporalStateGame().isEnableEEG());

@@ -352,7 +352,7 @@ public class FCenterContent extends Fragment {
                 this.finalStage.setForeground(drawable);
                 this.btNextLevel.setEnabled(true);
                 this.mainActivity.getStateOfTheGame().increaseLevel();
-                if(mainActivity.getStateOfTheGame().getLevelActual() != 0){
+                if(mainActivity.getStateOfTheGame().getLevelActual() != 1){
                     this.btBackLevel.setVisibility(View.VISIBLE);
                 }
 

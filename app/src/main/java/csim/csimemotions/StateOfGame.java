@@ -50,8 +50,8 @@ public class StateOfGame implements Serializable{
     }
 
     private void iniciarEstado(){
-        this.level = 0;
-        this.levelActual = 0;
+        this.level = 1;
+        this.levelActual = 1;
     }
     public void init() {
         iniciarEstado();

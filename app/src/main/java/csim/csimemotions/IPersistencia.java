@@ -25,6 +25,8 @@ public interface IPersistencia {
 
     public int getNumRowsImagenes();
 
+    public int getNumRowsImagenes(Emotions category, int dificultad);
+
     public int getNumRowsSonidos();
 
     public int getNumRowsSonidos(Emotions category);

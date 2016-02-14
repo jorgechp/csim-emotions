@@ -348,23 +348,25 @@ public class F_Game6 extends Generic_Game {
 
         if(generarSiguienteTrama() == false) {
             generateImages();
-            try {
-                AssetFileDescriptor soundPoll = this.soundsStage.poll();
-                if (soundPoll != null) {
-                    super.sonido = new SoundPlayer(soundPoll);
-                    super.sonido.setOnCompletionListener(this.oCompletionListener);
-                    super.sonido.play(super.actividadPrincipal, false);
+
+                try {
+                    AssetFileDescriptor soundPoll = this.soundsStage.poll();
+                    if (soundPoll != null && super.sonido == null) {
+                        super.sonido = new SoundPlayer(soundPoll);
+                        super.sonido.setOnCompletionListener(this.oCompletionListener);
+                        super.sonido.play(super.actividadPrincipal, false);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
 
 
-            if (this.respuestaCorrecta != null) {
-                generateSound();
+                if (this.respuestaCorrecta != null) {
+                    generateSound();
 
 
-            }
+                }
+
         }else{
             isTramaFinalizada = true;
             this.procesarRespuesta(this.continueGame());
@@ -514,7 +516,7 @@ public class F_Game6 extends Generic_Game {
                         case 'H':
                             emotion = Emotions.HAPPY;
                             break;
-                        case 'U': // Surprise
+                        case 'U': // Fear
                             emotion = Emotions.FEAR;
                             break;
 

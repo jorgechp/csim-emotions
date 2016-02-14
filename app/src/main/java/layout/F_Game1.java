@@ -303,7 +303,7 @@ public class F_Game1  extends Generic_Game {
 
         if (super.respuestaCorrecta == null || super.respuestaUsuario == null) {
 
-            this.imagenes = this.dbc.getUrlImagen(null, null, 1);
+            this.imagenes = this.dbc.getUrlImagen(null, null, actividadPrincipal.getStateOfTheGame().getLevelActual());
             this.numRows = imagenes.length;
             this.correctImages = new HashMap<Integer, Boolean>();
         } else {

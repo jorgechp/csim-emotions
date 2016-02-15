@@ -18,6 +18,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 import csim.csimemotions.Config;
 import csim.csimemotions.F_settings_options_menu;
 import csim.csimemotions.Generic_Game;
@@ -34,14 +37,9 @@ import csim.csimemotions.States;
  * create an instance of this fragment.
  */
 public class FCenterContent extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+
+
 
     private OnFragmentInteractionListener mListener;
     private ImageButton btGame1;
@@ -55,6 +53,8 @@ public class FCenterContent extends Fragment {
     private MainActivity mainActivity;
     private FrameLayout stage1, stage2, stage3, stage4, finalStage;
     private FrameLayout space1, space2, space3, spaceFill;
+
+    private Queue<Integer> arcadeQueue;
 
     private TextView tvTitle;
 
@@ -72,7 +72,7 @@ public class FCenterContent extends Fragment {
      *
      * @return A new instance of fragment FCenterContent.
      */
-    // TODO: Rename and change types and number of parameters
+
     public static FCenterContent newInstance() {
         FCenterContent fragment = new FCenterContent();
         Bundle args = new Bundle();
@@ -87,6 +87,8 @@ public class FCenterContent extends Fragment {
         mainActivity = ((MainActivity) (getActivity()));
         mainActivity.setfCenter(this);
         mainActivity.getStateOfTheGame();
+
+        arcadeQueue = new LinkedList<>();
 
 
 
@@ -109,7 +111,7 @@ public class FCenterContent extends Fragment {
         return inflater.inflate(R.layout.fragment_f_center_content, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
+
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -217,6 +219,10 @@ public class FCenterContent extends Fragment {
         mListener = null;
     }
 
+    public void emptyArcadeQueue() {
+        this.arcadeQueue.clear();
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -228,10 +234,35 @@ public class FCenterContent extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
+
         void onFragmentInteraction(Uri uri);
     }
 
+    /**
+     * Inserta en la cola de fragment los juegos en el orden en el que han de ser ejecutados
+     */
+    public void startArcadeMode(){
+        this.arcadeQueue.add(R.id.ibGame1);
+        this.arcadeQueue.add(R.id.ibGame2);
+        this.arcadeQueue.add(R.id.ibGame31);
+        this.arcadeQueue.add(R.id.ibGame32);
+        this.arcadeQueue.add(R.id.ibGame33);
+        this.arcadeQueue.add(R.id.ibGame4);
+
+
+
+    }
+
+    /**
+     * Carga el siguiente juego en la cola de arcade
+     */
+
+    public void processateArcadeMode(){
+        if(this.arcadeQueue.size() != 0){
+            this.loadNewFragment(this.arcadeQueue.poll());
+        }
+
+    }
     public Fragment loadNewFragment(int stat) {
 
         FragmentTransaction fManagerTransaction = getFragmentManager().beginTransaction();
@@ -295,6 +326,7 @@ public class FCenterContent extends Fragment {
             fManagerTransaction.hide(this);
             fManagerTransaction.addToBackStack(this.getTag());
             //fManagerTransaction.remove(this);
+
             fManagerTransaction.commit();
         }
         return fg;

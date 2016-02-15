@@ -218,9 +218,9 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
         this.stageNumber = 0;
 
 
-        if(this.isDialogAlert && !this.actividadPrincipal.getStateOfTheGame().isDialogNoHelp(currentGame)) {
-            this.dialogoAlerta.show();
-        }
+        //if(this.isDialogAlert && !this.actividadPrincipal.getStateOfTheGame().isDialogNoHelp(currentGame)) {
+            //this.dialogoAlerta.show();
+        //}
 
 
 
@@ -251,7 +251,6 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
 
 
         /**
-         * TODO: Aunque no es deseable realizar un Thread.sleep(10000);
          * el resultado utilizando handler es poco intuitivo para el usuario
          */
         Handler handler = new Handler();
@@ -304,6 +303,7 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
                 this.sg.chargeReward(this.currentGame);
                 this.actividadPrincipal.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                 exitGame();
+               // actividadPrincipal.getfCenter().processateArcadeMode();
                 break;
             case PLAYER_WINS:
                 this.stageNumber++;
@@ -337,7 +337,9 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
         //fManagerTransaction.replace(this.getId(), fg);
         fManagerTransaction.remove(this);
         fManagerTransaction.show(fg);
+        actividadPrincipal.getfCenter().processateArcadeMode();
         fManagerTransaction.commit();
+
     }
 
     protected boolean loadImageOnVisor(String imageSelected, ImageButton ib) {
@@ -401,6 +403,7 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
     }
 
     public void backButtonPressed(){
+        this.actividadPrincipal.getfCenter().emptyArcadeQueue();
         this.procesarRespuesta(stageResults.USER_EXIT);
     }
 }

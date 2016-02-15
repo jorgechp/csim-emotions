@@ -27,7 +27,7 @@ public class FBarUp extends Fragment {
     private OnFragmentInteractionListener mListener;
 
 
-    private ImageButton ibSettingsGames, ibSettings;
+    private ImageButton ibSettingsGames, ibSettings, ibSteps;
     private View.OnClickListener onclick;
     private boolean isSettings, isSettingsOptions;
     private MainActivity actividadPrincipal;
@@ -35,6 +35,7 @@ public class FBarUp extends Fragment {
     private F_settings_options_menu fgSettingsOptions;
     private FCenterContent fCenterContent;
     private boolean isGameMode;
+
 
     public FBarUp() {
         // Required empty public constructor
@@ -56,7 +57,7 @@ public class FBarUp extends Fragment {
      *
      * @return A new instance of fragment FBarUp.
      */
-    // TODO: Rename and change types and number of parameters
+
     public static FBarUp newInstance() {
         FBarUp fragment = new FBarUp();
         Bundle args = new Bundle();
@@ -111,11 +112,19 @@ public class FBarUp extends Fragment {
 
         this.ibSettingsGames = (ImageButton) getActivity().findViewById(R.id.ibPreferenciasGames);
         this.ibSettings = (ImageButton) getActivity().findViewById(R.id.ibPreferencias);
+        this.ibSteps = (ImageButton) getActivity().findViewById(R.id.ibArcadeMode);
         this.onclick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 switch (v.getId()){
+                    case R.id.ibArcadeMode:
+                        actividadPrincipal.getfCenter().emptyArcadeQueue();
+                        actividadPrincipal.getfCenter().startArcadeMode();
+                        actividadPrincipal.getfCenter().processateArcadeMode();
+
+
+                        break;
                     case R.id.ibPreferencias:
                         FBarUp.this.loadSettings();
                         FBarUp.this.ibSettings.setVisibility(View.INVISIBLE);
@@ -123,6 +132,7 @@ public class FBarUp extends Fragment {
 
                         break;
                     case R.id.ibPreferenciasGames:
+                        actividadPrincipal.getfCenter().emptyArcadeQueue();
                         if(FBarUp.this.isGameMode){
                             FBarUp.this.actividadPrincipal.getCurrentGame().procesarRespuesta(stageResults.USER_EXIT);
                         }else {
@@ -135,6 +145,7 @@ public class FBarUp extends Fragment {
                                 FBarUp.this.isSettings = false;
                             }
                         }
+
                         break;
                 }
 
@@ -142,6 +153,8 @@ public class FBarUp extends Fragment {
         };
         this.ibSettingsGames.setOnClickListener(this.onclick);
         this.ibSettings.setOnClickListener(this.onclick);
+        this.ibSteps.setOnClickListener(this.onclick);
+
         this.actividadPrincipal = (MainActivity) getActivity();
         this.actividadPrincipal.setfUp(this);
         this.fCenterContent = this.actividadPrincipal.getfCenter();
@@ -161,6 +174,7 @@ public class FBarUp extends Fragment {
             this.fgSettingsOptions.retornar();
             isSettingsOptions = false;
             this.ibSettings.setVisibility(View.INVISIBLE);
+            this.ibSteps.setVisibility(View.INVISIBLE);
 
         }else {
             this.fgSettings.retornar();
@@ -168,7 +182,7 @@ public class FBarUp extends Fragment {
     }
 
 
-    // TODO: Rename method, update argument and hook method into UI event
+
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -203,7 +217,7 @@ public class FBarUp extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
+
         void onFragmentInteraction(Uri uri);
     }
 

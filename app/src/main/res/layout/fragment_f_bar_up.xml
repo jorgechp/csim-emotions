@@ -23,6 +23,13 @@
             android:id="@+id/ibPreferencias"
             android:background="@mipmap/ic_settings"
             android:layout_toRightOf="@+id/ibPreferenciasGames" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ibArcadeMode"
+            android:background="@mipmap/ic_step"
+            android:layout_toRightOf="@+id/ibPreferencias" />
     </RelativeLayout>
 
 </FrameLayout>

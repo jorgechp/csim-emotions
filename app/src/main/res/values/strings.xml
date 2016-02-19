@@ -52,6 +52,20 @@
     <string name="Game6_title">¡Lee y escucha el cuento!. Después, relaciona lo que pasa con lo que siente cada persona</string>
     <string name="fCenterContent_newLevel">Siguiente nivel</string>
     <string name="fCentercontent_backLevel">Anterior nivel</string>
+    <string name="FAbout_descriptionText1">Un videojuego creado por:</string>
+    <string name="FAbout_AuthorName">Jorge Chamorro Padial</string>
+    <string name="FAbout_mail">jorgechp@gmail.com</string>
+    <string name="FAbout_descriptionText2">Como Trabajo de Fin de Máster para el Máster de Sistemas Cognitivos y Medios Interactivos</string>
+    <string name="FAbout_descriptionText3">Supervisado por:</string>
+    <string name="FAbout_Supervisor1">Rafael Ramirez-Melendez</string>
+    <string name="FAbout_Supervisor2">Davinia Hernández-Leo</string>
+    <string name="FAbout_descriptionText4">Agradecimientos</string>
+    <string name="FAbout_descriptionText5">Derechos de autor</string>
+    <string name="FAbout_freepiks_rights">Designed by Freepik</string>
+    <string name="FAbout_icons8_rights">Designed by icons8 (Creative Commons Attribution-NoDerivs 3.0 Unported)</string>
+    <string name="FAbout_Description6">Éste videojuego se encuentra licenciado, a excepción de los iconos y sonidos anteriormente mencionados, bajo una licencia:</string>
+    <string name="FAbout_LicenseSound">FeedBack: positive sound: Limetoe  badass victory</string>
+    <string name="FAbout_Fonts">Este programa utiliza las fuentes Action_Man_Bold y AndikaNewBasic </string>
     />
 
     />

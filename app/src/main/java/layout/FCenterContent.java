@@ -312,6 +312,11 @@ public class FCenterContent extends Fragment {
                 this.mainActivity.getfUp().setFgSettingsOptions((F_settings_options_menu) fg);
                 isGame = false;
                 break;
+            case R.id.Settings_ivAbout:
+                fg = new F_About();
+                this.mainActivity.getfUp().setFgSettingsOptions((F_About) fg);
+                isGame = false;
+                break;
         }
 
         if (isGame) {

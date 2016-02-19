@@ -28,19 +28,14 @@ import csim.csimemotions.R;
  * create an instance of this fragment.
  */
 public class F_Settings extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+
+
 
     private OnFragmentInteractionListener mListener;
     private View.OnClickListener ocl;
 
-    private ImageView ivCustomize, ivExport;
+    private ImageView ivCustomize, ivExport, ivAbout;
     private MainActivity actividadPrincipal;
 
 
@@ -56,27 +51,20 @@ public class F_Settings extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+
      * @return A new instance of fragment F_Settings.
      */
-    // TODO: Rename and change types and number of parameters
+
     public static F_Settings newInstance(String param1, String param2) {
         F_Settings fragment = new F_Settings();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
@@ -86,7 +74,7 @@ public class F_Settings extends Fragment {
         return inflater.inflate(R.layout.fragment_f__settings, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
+
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -111,6 +99,7 @@ public class F_Settings extends Fragment {
         super.onActivityCreated(savedInstanceState);
         this.ivCustomize = (ImageView) getActivity().findViewById(R.id.Settings_ivOptions);
         this.ivExport = (ImageView) getActivity().findViewById(R.id.Settings_ivExport);
+        this.ivAbout = (ImageView) getActivity().findViewById(R.id.Settings_ivAbout);
         this.actividadPrincipal = (MainActivity) getActivity();
         this.tvEEG = (TextView) getActivity().findViewById(R.id.Settings_tvEEG);
 
@@ -129,6 +118,10 @@ public class F_Settings extends Fragment {
                 switch (v.getId()) {
                     case R.id.Settings_ivOptions:
                         F_Settings.this.loadCustomSettings();
+                        F_Settings.this.actividadPrincipal.getfUp().enableSettingsButton();
+                        break;
+                    case R.id.Settings_ivAbout:
+                        F_Settings.this.loadAbout();
                         F_Settings.this.actividadPrincipal.getfUp().enableSettingsButton();
                         break;
                     case R.id.Settings_ivExport:
@@ -183,9 +176,15 @@ public class F_Settings extends Fragment {
         };
         this.ivCustomize.setOnClickListener(this.ocl);
         this.ivExport.setOnClickListener(this.ocl);
+        this.ivAbout.setOnClickListener(this.ocl);
 
         this.ivEEG.setOnClickListener(this.ocl);
 
+    }
+
+    private void loadAbout() {
+        this.actividadPrincipal.getfCenter().loadNewFragment(R.id.Settings_ivAbout);
+        this.actividadPrincipal.getfUp().setIsSettingsOptions(false);
     }
 
     private void loadCustomSettings() {
@@ -228,7 +227,7 @@ public class F_Settings extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
+
         void onFragmentInteraction(Uri uri);
     }
 }

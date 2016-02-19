@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 
 import csim.csimemotions.F_settings_options_menu;
+import csim.csimemotions.IRetornable;
 import csim.csimemotions.MainActivity;
 import csim.csimemotions.R;
 import csim.csimemotions.stageResults;
@@ -32,7 +33,7 @@ public class FBarUp extends Fragment {
     private boolean isSettings, isSettingsOptions;
     private MainActivity actividadPrincipal;
     private F_Settings fgSettings;
-    private F_settings_options_menu fgSettingsOptions;
+    private IRetornable fgSettingsOptions;
     private FCenterContent fCenterContent;
     private boolean isGameMode;
 
@@ -41,7 +42,7 @@ public class FBarUp extends Fragment {
         // Required empty public constructor
     }
 
-    public void setFgSettingsOptions(F_settings_options_menu fgSettingsOptions) {
+    public void setFgSettingsOptions(IRetornable fgSettingsOptions) {
         this.fgSettingsOptions = fgSettingsOptions;
     }
 

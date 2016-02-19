@@ -335,7 +335,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/imageView15"
                     android:layout_gravity="center"
-                    android:background="@drawable/gplv3logo" />
+                    android:background="@drawable/byncsa" />
             </FrameLayout>
 
         </LinearLayout>

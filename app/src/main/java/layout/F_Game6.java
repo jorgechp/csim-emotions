@@ -324,7 +324,7 @@ public class F_Game6 extends Generic_Game {
 
         switch (respuesta){
             case PLAYER_WINS:
-                super.sonido.destroy();
+                //super.sonido.destroy();
                 ++super.stageNumber;
                 this.enableEmotionButtons(false);
                 super.saveStage();

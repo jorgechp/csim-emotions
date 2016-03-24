@@ -392,6 +392,11 @@ public class FCenterContent extends Fragment {
                 if(mainActivity.getStateOfTheGame().getLevelActual() != 1){
                     this.btBackLevel.setVisibility(View.VISIBLE);
                 }
+                if (mainActivity.getStateOfTheGame().getLevelActual() == 3) {
+                    this.btNextLevel.setVisibility(View.INVISIBLE);
+                } else {
+                    this.btNextLevel.setVisibility(View.VISIBLE);
+                }
 
             }
         } else {

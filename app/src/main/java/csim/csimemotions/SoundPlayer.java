@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.os.Handler;
 import android.util.Log;
 
 import java.io.IOException;
@@ -17,6 +16,7 @@ public class SoundPlayer {
     private MediaPlayer mp;
     private int idSong;
     private MediaPlayer.OnCompletionListener completionListener;
+
 
     public SoundPlayer(int idSong) {
         this.idSong = idSong;
@@ -35,6 +35,7 @@ public class SoundPlayer {
     }
 
     private void buildPlayer(Context context, boolean loop) {
+
         if(idSong != -1) {
             mp = MediaPlayer.create(context, this.idSong);
             mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -66,8 +67,16 @@ public class SoundPlayer {
         mp.pause();
     }
     public void destroy() {
-        if (mp != null) {
-            mp.stop();
+        try {
+            if (mp != null && mp.isPlaying()) {
+
+                mp.stop();
+                mp.release();
+                mp = new MediaPlayer();
+
+            }
+        } catch (IllegalStateException e) {
+            mp.release();
         }
     }
 

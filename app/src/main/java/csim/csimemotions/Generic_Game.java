@@ -295,7 +295,7 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
 
     public void procesarRespuesta(stageResults respuesta) {
 
-        if(this.sonido != null) {
+        if (this.sonido != null && this.sonido.isPlaying()) {
             this.sonido.destroy();
         }
         switch (respuesta) {

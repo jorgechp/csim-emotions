@@ -10,33 +10,33 @@ import android.os.Environment;
 import com.opencsv.CSVWriter;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 
+
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 
-import csim.csimemotions.Config;
+
+
 import csim.csimemotions.MainActivity;
-import csim.csimemotions.communication.HttpCom;
+
 
 
 /**
  * Created by jorge on 26/01/16.
  */
 public class LogManager {
-    private Queue<Log> sessionLog;
+    private LinkedList<Log> sessionLog;
     private MainActivity actividadPrincipal;
-    private HttpCom comunicadorWeb;
+    //private HttpCom comunicadorWeb;
     private static LogManager ourInstance = new LogManager();
 
     public static LogManager getInstance() {
@@ -45,7 +45,7 @@ public class LogManager {
 
     private LogManager() {
         sessionLog = new LinkedList();
-        comunicadorWeb = new HttpCom(Config.DATABASE_URL);
+       // comunicadorWeb = new HttpCom(Config.DATABASE_URL);
     }
 
     public void addLog(Log l){
@@ -56,69 +56,18 @@ public class LogManager {
         this.actividadPrincipal = actividadPrincipal;
     }
 
-    private void serialize(){
-        if(this.sessionLog.size() > 0) {
-            FileOutputStream fos = null;
-            try {
-                fos = this.actividadPrincipal.openFileOutput(Config.USER_LOG_FILENAME, Context.MODE_PRIVATE);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            ObjectOutputStream os = null;
-            try {
-                os = new ObjectOutputStream(fos);
-                os.writeObject(this.sessionLog);
-                os.close();
-                fos.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-
-            }
-        }
-
-    }
-
-    private Queue loadSerialization(){
-        boolean notFile = false;
-        FileInputStream fis = null;
-        Queue recoveredQueue = null;
-        try {
-            fis = this.actividadPrincipal.openFileInput(Config.USER_LOG_FILENAME);
-        } catch (FileNotFoundException e) {
-            notFile = true;
-        }
-
-        if(!notFile) {
-            try {
-                ObjectInputStream is = new ObjectInputStream(fis);
-                recoveredQueue = (Queue<Log>) is.readObject();
-                is.close();
-                fis.close();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return recoveredQueue;
-
-    }
-    private void mixQueues(Queue q){
-        while(this.sessionLog.size() > 0){
-            q.add(this.sessionLog.poll());
-        }
-        this.sessionLog = q;
-    }
-
 
     private File saveAsCSV(){
         List<String[]> list = null;
         Log l = null;
         try {
             String root = Environment.getExternalStorageDirectory().toString();
-            File myDir = new File(root + "/csim_emotions_csv/");
+            Timestamp tm = new Timestamp(System.currentTimeMillis());
+            String dir = new SimpleDateFormat("MMdd").format(tm);
+
+            File myDir = new File(root + "/csim_emotions_csv/"+dir);
             myDir.mkdirs();
-            String fname = "log" +".csv";
+            String fname = "log_"+tm.toString()+".csv";
             File fileOutPut = new File (myDir, fname);
             if (!fileOutPut.exists()) {
                 fileOutPut.createNewFile();
@@ -158,7 +107,7 @@ public class LogManager {
                 params.put("stage_"+stageNumber,stage[4]);
                 params.put("difficulty_"+stageNumber,stage[5]);
                 params.put("correctAnswer_"+stageNumber,stage[6]);
-                params.put("userAnswer_"+stageNumber,stage[7]);
+                params.put("userAnswer_" + stageNumber, stage[7]);
                 params.put("timestampStage_"+stageNumber,stage[8]);
                 ++stageNumber;
             }
@@ -167,7 +116,7 @@ public class LogManager {
 
         params.put("numberOfStages",Integer.toString(stageNumber));
 
-        this.comunicadorWeb.communicate(params);
+        //this.comunicadorWeb.communicate(params);
 
     }
     /*
@@ -184,7 +133,7 @@ public class LogManager {
         this.save();
         File f = this.saveAsCSV();
         this.sessionLog.clear();
-        serialize();
+        //serialize();
         Intent i = null;
 
         i = new Intent();
@@ -197,20 +146,7 @@ public class LogManager {
     }
 
     public void save(){
-        Queue q = this.loadSerialization();
-        if(q != null){
-            this.mixQueues(q);
-        }
-
-        if(this.isNetworkAvailable()){
-            this.saveDataBase();
-
-        }else{
-            this.serialize();
-        }
-
-
-
+        this.saveAsCSV();
     }
 
 

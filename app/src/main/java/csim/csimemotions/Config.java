@@ -8,11 +8,11 @@ public class Config {
     /**
      * Numero de pruebas en el nivel 0
      */
-    public static final byte LEVEL_0_NUM_OF_STAGES = 4;
+    public static final byte LEVEL_0_NUM_OF_STAGES = 7;
     /**
      * Numero de pruebas en el nivel 1
      */
-    public static final byte LEVEL_1_NUM_OF_STAGES = 10;
+    public static final byte LEVEL_1_NUM_OF_STAGES = 7;
     /**
      * Numero de pruebas en el nivel 2
      */
@@ -89,7 +89,7 @@ public class Config {
     /**
      * Nombre del fichero de registro de eventos de usuarios, en formato CSV
      */
-    public static final String USER_LOG_FILENAME_CSV = "logHistory.csv";
+    public static final String USER_LOG_FOLDER_CSV = "CSIM";
 
 
 

@@ -294,12 +294,14 @@ public class FCenterContent extends Fragment {
                 levelActual= mainActivity.getStateOfTheGame().getLevelActual();
                 mainActivity.getStateOfTheGame().setLevelActual( ++levelActual );
                 isGame = false;
+                this.rebootUI();
                 checkUI();
                 break;
             case R.id.ibBackLevel:
                 fg = null;
                 levelActual = mainActivity.getStateOfTheGame().getLevelActual();
                 mainActivity.getStateOfTheGame().setLevelActual( --levelActual );
+                this.rebootUI();
                 checkUI();
                 isGame = false;
                 break;
@@ -357,16 +359,18 @@ public class FCenterContent extends Fragment {
         States estado = mainActivity.getStateOfTheGame().getEstado();
         byte dificultadActual = mainActivity.getStateOfTheGame().getLevelActual();
         this.btBackLevel.setVisibility(View.INVISIBLE);
-
-        this.rebootUI();
+        this.btNextLevel.setEnabled(false);
+        Drawable drawable = new ColorDrawable(Config.COLOR_OPEN_STAGES);
 
         if (mainActivity.getStateOfTheGame().getLevelActual() != 1) {
             this.btBackLevel.setVisibility(View.VISIBLE);
             this.btBackLevel.setEnabled(true);
         }
         if (mainActivity.getStateOfTheGame().isGamePlayed(States.GAME1, dificultadActual)) { // Se ha superado el GAME1
-            Drawable drawable = new ColorDrawable(Config.COLOR_OPEN_STAGES);
+            //this.rebootUI();
+
             this.space1.setForeground(drawable);
+            this.stage1.setForeground(drawable);
             this.stage2.setForeground(drawable);
             this.btGame2.setEnabled(true);
 
@@ -406,17 +410,20 @@ public class FCenterContent extends Fragment {
             }
 
         } else {
-            this.anularBotones();
+            this.space1.setForeground(drawable);
+            this.stage1.setForeground(drawable);
         }
+        this.btGame1.setEnabled(true);
     }
 
     /**
      * Oculta todos los componentes de la UI
      */
-    private void rebootUI() {
+    public void rebootUI() {
         Drawable drawable = new ColorDrawable(Config.COLOR_CLOSED_STAGES);
 
-        this.btGame1.setEnabled(true);
+
+        this.btGame1.setEnabled(false);
         this.btGame2.setEnabled(false);
         this.btGame31.setEnabled(false);
         this.btGame32.setEnabled(false);
@@ -426,11 +433,13 @@ public class FCenterContent extends Fragment {
         this.btNextLevel.setEnabled(false);
 
 
+        this.space1.setForeground(drawable);
         this.space2.setForeground(drawable);
         this.space3.setForeground(drawable);
         this.spaceFill.setForeground(drawable);
 
 
+        this.stage1.setForeground(drawable);
         this.stage2.setForeground(drawable);
         this.stage3.setForeground(drawable);
         this.stage4.setForeground(drawable);
@@ -438,11 +447,7 @@ public class FCenterContent extends Fragment {
         this.finalStage.setForeground(drawable);
     }
 
-    private void anularBotones() {
-        this.btGame2.setEnabled(false);
-        this.btNextLevel.setEnabled(false);
 
-    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {

@@ -27,8 +27,13 @@ public class UserConfig implements Serializable {
         this.idSongSelected = -1;
         this.userRating = 0;
         this.backgroundEmotionNumber = Emotions.HAPPY;
+        userName = null;
+
     }
 
+    public static void init() {
+        UserConfig.ourInstance = new UserConfig();
+    }
     public static UserConfig getOurInstance() {
         return ourInstance;
     }

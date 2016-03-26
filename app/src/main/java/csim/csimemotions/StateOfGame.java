@@ -33,6 +33,8 @@ public class StateOfGame implements Serializable{
 
 
     private StateOfGame() {
+
+
     }
 
     public Object clone() throws CloneNotSupportedException {
@@ -132,4 +134,6 @@ public class StateOfGame implements Serializable{
     public boolean isDialogNoHelp(States game){
         return this.noMoreHelpPlease.contains(game);
     }
+
+
 }

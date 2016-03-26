@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -21,6 +20,7 @@ import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Field;
+import java.util.Hashtable;
 
 import csim.csimemotions.log.LogManager;
 import layout.FBarUp;
@@ -32,6 +32,7 @@ import layout.FCenterContent;
  */
 public class MainActivity extends ActionBarActivity {
 
+    private Hashtable<String, UserConfig> users;
 
     private StateOfGame stateGame;
     private TemporalStateOfGame tStateGame;
@@ -172,14 +173,7 @@ public class MainActivity extends ActionBarActivity {
 
         try {
             loadUserConfig();
-            if(this.userConf.getSog() != null) {
-                this.stateGame = this.userConf.getSog();
-            }else{
-                this.stateGame = StateOfGame.getInstance();
-                this.stateGame.init();
-                this.userConf.setIdSongSelected(R.raw.eh1);
-
-            }
+            loadUserState();
 
 
         } catch (NotSerializableException e) {
@@ -218,6 +212,17 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
+    private void loadUserState() {
+        if (this.userConf.getSog() != null) {
+            this.stateGame = this.userConf.getSog();
+        } else {
+            this.stateGame = StateOfGame.getInstance();
+            this.stateGame.init();
+            this.userConf.setIdSongSelected(R.raw.eh1);
+
+        }
+    }
+
     /**
      * Carga desde un fichero el objeto serializado con las preferencias del usuario
      */
@@ -231,16 +236,33 @@ public class MainActivity extends ActionBarActivity {
             in = new ObjectInputStream(fis);
             this.userConf = (UserConfig) in.readObject();
             in.close();
-        } catch (FileNotFoundException|InvalidClassException ex) {
+        } catch (FileNotFoundException | InvalidClassException ex) {
             this.userConf = UserConfig.getInstance();
             this.loadDefaultSong();
+            saveUserConfig();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        if (this.userConf == null) {
+            this.userConf = UserConfig.getInstance();
+
+        }
+
+        try {
+            fis = this.openFileInput(Config.USERS_CONFIG_FILENAME);
+            in = new ObjectInputStream(fis);
+            users = (Hashtable<String, UserConfig>) in.readObject();
+            in.close();
+        } catch (FileNotFoundException|InvalidClassException ex) {
+            users = new Hashtable<String, UserConfig>();
             saveUserConfig();
         }
         catch (Exception ex) {
             ex.printStackTrace();
         }
-        if(this.userConf == null){
-            this.userConf = UserConfig.getInstance();
+
+        if (this.users == null) {
+            this.users = new Hashtable<String, UserConfig>();
 
         }
 
@@ -267,6 +289,17 @@ public class MainActivity extends ActionBarActivity {
         // save the object to file
         FileOutputStream fos = null;
         ObjectOutputStream out = null;
+
+        try {
+            fos = this.openFileOutput(Config.USERS_CONFIG_FILENAME, Context.MODE_PRIVATE);
+            out = new ObjectOutputStream(fos);
+            out.writeObject(this.users);
+
+            out.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
         try {
             fos = this.openFileOutput(Config.USER_CONFIG_FILENAME, Context.MODE_PRIVATE);
             out = new ObjectOutputStream(fos);
@@ -278,6 +311,28 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+
+    public void appendUser(String text) {
+        if (this.users.containsKey(text) == false) {
+            UserConfig.init();
+            this.stateGame = null;
+            this.userConf = UserConfig.getInstance();
+            this.userConf.setUserName(text);
+            if (this.userConf.getSog() != null) {
+                this.userConf.getSog().init();
+            }
+            this.loadDefaultSong();
+            this.users.put(text, this.userConf);
+            saveUserConfig();
+        } else {
+            this.userConf = users.get(text);
+
+        }
+        loadUserState();
+        fCenter.rebootUI();
+        fCenter.checkUI();
+
+    }
 
 
 

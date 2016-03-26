@@ -8,19 +8,16 @@ public class Config {
     /**
      * Numero de pruebas en el nivel 0
      */
-    public static final byte LEVEL_0_NUM_OF_STAGES = 7;
+    public static final byte LEVEL_0_NUM_OF_STAGES = 4;
     /**
      * Numero de pruebas en el nivel 1
      */
-    public static final byte LEVEL_1_NUM_OF_STAGES = 7;
+    public static final byte LEVEL_1_NUM_OF_STAGES = 4;
     /**
      * Numero de pruebas en el nivel 2
      */
-    public static final byte LEVEL_2_NUM_OF_STAGES = 12;
-    /**
-     * Numero de pruebas en el nivel 3
-     */
-    public static final byte LEVEL_3_NUM_OF_STAGES = 14;
+    public static final byte LEVEL_2_NUM_OF_STAGES = 4;
+
     /**
      * Numero de pruebas en el modo EEG
      */
@@ -72,9 +69,14 @@ public class Config {
     public static final float STAGES_WIDTH = (float) 0.1475;
 
     /**
+     * Color de fondo de los layers de juegos desbloqueados.
+     */
+    public static final int COLOR_OPEN_STAGES = 0x00706377;
+
+    /**
      * Color de fondo de los layers de juegos bloqueados.
      */
-    public static final int COLOR_CLOSED_STAGES = 0x00706377;
+    public static final int COLOR_CLOSED_STAGES = 0x61706377;
 
     /**
      * Nombre del fichero con la configuración del usuario

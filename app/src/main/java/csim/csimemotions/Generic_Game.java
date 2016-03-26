@@ -178,10 +178,7 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
                 timePos = Config.LEVEL_2_TIME;
                 numStages = Config.LEVEL_2_NUM_OF_STAGES;
                 break;
-            case 4:
-                timePos = Config.LEVEL_3_TIME;
-                numStages = Config.LEVEL_3_NUM_OF_STAGES;
-                break;
+
         }
 
         if(actividadPrincipal.getTemporalStateGame().isEnableEEG()){
@@ -300,7 +297,7 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
         }
         switch (respuesta) {
             case GAME_WON:
-                this.sg.chargeReward(this.currentGame);
+                this.sg.chargeReward(this.currentGame, actividadPrincipal.getStateOfTheGame().getLevelActual());
                 this.actividadPrincipal.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                 exitGame();
                // actividadPrincipal.getfCenter().processateArcadeMode();

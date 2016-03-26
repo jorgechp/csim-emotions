@@ -2,6 +2,7 @@ package csim.csimemotions;
 
 
 import java.io.Serializable;
+import java.util.Hashtable;
 import java.util.LinkedHashSet;
 
 /**
@@ -22,7 +23,7 @@ public class StateOfGame implements Serializable{
      * Representa el nivel actual del usuario
      */
     private byte levelActual;
-    private LinkedHashSet<States> estado;
+    private Hashtable<States, LinkedHashSet<Byte>> estado;
     private States lastState;
     /**
      * Inserta estados de juegos en los que el usuario ha renunciado a recibir la ayuda inicial
@@ -55,11 +56,11 @@ public class StateOfGame implements Serializable{
     }
     public void init() {
         iniciarEstado();
-        this.estado = new LinkedHashSet<States>();
+        this.estado = new Hashtable<States, LinkedHashSet<Byte>>();
         this.noMoreHelpPlease = new LinkedHashSet<States>();
     }
 
-    public void init(byte level, States lastState, LinkedHashSet<States> listStates) {
+    public void init(byte level, States lastState, Hashtable<States, LinkedHashSet<Byte>> listStates) {
         iniciarEstado();
         this.estado = listStates;
         this.lastState = lastState;
@@ -79,15 +80,39 @@ public class StateOfGame implements Serializable{
         ++level;
     }
 
-    public void chargeReward(States st) {
-        if (this.estado.contains(st) == false) {
-            this.estado.add(st);
-            lastState = st;
+    /**
+     * Añade un juego y un nivel en el estado del juego, si el juego ya existe, se añade el nivel
+     *
+     * @param st
+     * @param difficulty
+     */
+    public void chargeReward(States st, byte difficulty) {
+        if (this.estado.containsKey(st) == false) {
+            LinkedHashSet<Byte> listaNiveles = new LinkedHashSet<>();
+            listaNiveles.add(difficulty);
+            this.estado.put(st, listaNiveles);
+        } else {
+            //Recupera el LinkedHashSet<Integer> con la lista de niveles, y se le añade el nuevo nivel
+            this.estado.get(st).add(difficulty);
         }
+        lastState = st;
     }
 
-    public boolean isGamePlayed(States game) {
-        return this.estado.contains(game);
+    /**
+     * Comprueba si el usuario ha jugado a un juego en un nivel de dificultad determinado
+     *
+     * @param game
+     * @param difficultyLevel
+     * @return boolean
+     */
+    public boolean isGamePlayed(States game, byte difficultyLevel) {
+        boolean resultado = false;
+
+        if (this.estado.containsKey(game)) {
+            resultado = this.estado.get(game).contains(difficultyLevel);
+        }
+        return resultado;
+
     }
 
     public byte getLevelActual() {

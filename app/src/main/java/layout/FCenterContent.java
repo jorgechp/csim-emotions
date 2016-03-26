@@ -355,15 +355,22 @@ public class FCenterContent extends Fragment {
      */
     public void checkUI() {
         States estado = mainActivity.getStateOfTheGame().getEstado();
+        byte dificultadActual = mainActivity.getStateOfTheGame().getLevelActual();
         this.btBackLevel.setVisibility(View.INVISIBLE);
 
-        if (mainActivity.getStateOfTheGame().isGamePlayed(States.GAME1)) { // Se ha superado el GAME1
-            Drawable drawable = new ColorDrawable(Config.COLOR_CLOSED_STAGES);
+        this.rebootUI();
+
+        if (mainActivity.getStateOfTheGame().getLevelActual() != 1) {
+            this.btBackLevel.setVisibility(View.VISIBLE);
+            this.btBackLevel.setEnabled(true);
+        }
+        if (mainActivity.getStateOfTheGame().isGamePlayed(States.GAME1, dificultadActual)) { // Se ha superado el GAME1
+            Drawable drawable = new ColorDrawable(Config.COLOR_OPEN_STAGES);
             this.space1.setForeground(drawable);
             this.stage2.setForeground(drawable);
             this.btGame2.setEnabled(true);
 
-            if(mainActivity.getStateOfTheGame().isGamePlayed(States.GAME2)){
+            if (mainActivity.getStateOfTheGame().isGamePlayed(States.GAME2, dificultadActual)) {
                 this.space2.setForeground(drawable);
                 this.stage3.setForeground(drawable);
                 this.btGame31.setEnabled(true);
@@ -371,9 +378,9 @@ public class FCenterContent extends Fragment {
                 this.btGame33.setEnabled(true);
             }
 
-            boolean isGame31Played = mainActivity.getStateOfTheGame().isGamePlayed(States.GAME31);
-            boolean isGame32Played = mainActivity.getStateOfTheGame().isGamePlayed(States.GAME32);
-            boolean isGame33Played = mainActivity.getStateOfTheGame().isGamePlayed(States.GAME33);
+            boolean isGame31Played = mainActivity.getStateOfTheGame().isGamePlayed(States.GAME31, dificultadActual);
+            boolean isGame32Played = mainActivity.getStateOfTheGame().isGamePlayed(States.GAME32, dificultadActual);
+            boolean isGame33Played = mainActivity.getStateOfTheGame().isGamePlayed(States.GAME33, dificultadActual);
 
             if(isGame31Played && isGame32Played && isGame33Played){
                 this.space3.setForeground(drawable);
@@ -382,16 +389,14 @@ public class FCenterContent extends Fragment {
 
             }
 
-            boolean isGame4Played = mainActivity.getStateOfTheGame().isGamePlayed(States.GAME4);
+            boolean isGame4Played = mainActivity.getStateOfTheGame().isGamePlayed(States.GAME4, dificultadActual);
 
             if(isGame4Played){
                 this.spaceFill.setForeground(drawable);
                 this.finalStage.setForeground(drawable);
                 this.btNextLevel.setEnabled(true);
                 this.mainActivity.getStateOfTheGame().increaseLevel();
-                if(mainActivity.getStateOfTheGame().getLevelActual() != 1){
-                    this.btBackLevel.setVisibility(View.VISIBLE);
-                }
+
                 if (mainActivity.getStateOfTheGame().getLevelActual() == 3) {
                     this.btNextLevel.setVisibility(View.INVISIBLE);
                 } else {
@@ -399,9 +404,38 @@ public class FCenterContent extends Fragment {
                 }
 
             }
+
         } else {
             this.anularBotones();
         }
+    }
+
+    /**
+     * Oculta todos los componentes de la UI
+     */
+    private void rebootUI() {
+        Drawable drawable = new ColorDrawable(Config.COLOR_CLOSED_STAGES);
+
+        this.btGame1.setEnabled(true);
+        this.btGame2.setEnabled(false);
+        this.btGame31.setEnabled(false);
+        this.btGame32.setEnabled(false);
+        this.btGame33.setEnabled(false);
+        this.btGame4.setEnabled(false);
+        this.btBackLevel.setEnabled(false);
+        this.btNextLevel.setEnabled(false);
+
+
+        this.space2.setForeground(drawable);
+        this.space3.setForeground(drawable);
+        this.spaceFill.setForeground(drawable);
+
+
+        this.stage2.setForeground(drawable);
+        this.stage3.setForeground(drawable);
+        this.stage4.setForeground(drawable);
+
+        this.finalStage.setForeground(drawable);
     }
 
     private void anularBotones() {

@@ -205,7 +205,7 @@ public class F_Game1  extends Generic_Game {
 
         this.IV = (ImageView) getActivity().findViewById(R.id.imVisor);
 
-        this.marcador = (TextView) getActivity().findViewById(R.id.Game1Marcador);
+        // this.marcador = (TextView) getActivity().findViewById(R.id.Game1Marcador);
 
         this.bAngry.setOnClickListener(this.clickListener);
         this.btFear.setOnClickListener(this.clickListener);
@@ -224,8 +224,8 @@ public class F_Game1  extends Generic_Game {
         this.bSad.setTypeface(tfFontsButtons);
 
 
-        this.marcador.setText("0 / " + super.maxNumStages);
-        this.marcador.setTypeface(tfFontsButtons);
+        // this.marcador.setText("0 / " + super.maxNumStages);
+        // this.marcador.setTypeface(tfFontsButtons);
 
         super.feedBackSoundBien = new SoundPlayer(R.raw.feedback_bien_1);
 
@@ -412,13 +412,13 @@ public class F_Game1  extends Generic_Game {
 
             case PLAYER_ERROR: //Respuesta incorrecta
 
-                this.feedBack(false);
+                //this.feedBack(false);
      //           this.reactivarAudio();
                 break;
             case PLAYER_WINS:  //Respuesta correcta
 
                 this.feedBack(true);
-                this.actualizarMarcador();
+                //this.actualizarMarcador();
     //            this.reactivarAudio();
                 break;
 

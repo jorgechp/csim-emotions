@@ -16,12 +16,10 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.HashSet;
 import java.util.Random;
-
 
 import csim.csimemotions.Emotions;
 import csim.csimemotions.Generic_Game;
@@ -57,7 +55,7 @@ public class F_Game4 extends Generic_Game {
     private ViewGroup layoutButton;
 
 
-    private ProgressBar progressBar;
+
     private String[][] sonidos;
     private int numSonidos;
     private HashSet<Integer> listaSonidos;
@@ -138,8 +136,8 @@ public class F_Game4 extends Generic_Game {
             public void onFinish() {
                 F_Game4.super.respuestaUsuario = Emotions.NONE;
                 F_Game4.super.stageNumber++;
-                F_Game4.this.progressBar.setProgress(F_Game4.this.progressBar.getProgress() + 1);
-                F_Game4.this.procesarRespuesta(F_Game4.this.continueGame());
+                //F_Game4.this.progressBar.setProgress(F_Game4.this.progressBar.getProgress() + 1);
+                //F_Game4.this.procesarRespuesta(F_Game4.this.continueGame());
 
 
             }
@@ -183,9 +181,9 @@ public class F_Game4 extends Generic_Game {
         this.ivAngry = (ImageButton) super.actividadPrincipal.findViewById(R.id.Game4_ivAngry);
 
         this.llGame = (LinearLayout) super.actividadPrincipal.findViewById(R.id.Game4_llGameLayout);
-        this.progressBar = (ProgressBar) super.actividadPrincipal.findViewById(R.id.Game4_progressBar);
-        this.progressBar.setProgress(0);
-        this.progressBar.setMax(super.maxNumStages);
+        //this.progressBar = (ProgressBar) super.actividadPrincipal.findViewById(R.id.Game4_progressBar);
+        // this.progressBar.setProgress(0);
+        // this.progressBar.setMax(super.maxNumStages);
 
 
 
@@ -472,7 +470,7 @@ public class F_Game4 extends Generic_Game {
 
                 super.procesarRespuesta(respuesta);
                 super.feedBackSoundBien.play(super.actividadPrincipal, false);
-                this.progressBar.setProgress(this.numStagesCompleted);
+                // this.progressBar.setProgress(this.numStagesCompleted);
                 isGenerate = true;
                 break;
             case GAME_STARTED:

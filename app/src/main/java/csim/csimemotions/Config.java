@@ -8,15 +8,15 @@ public class Config {
     /**
      * Numero de pruebas en el nivel 0
      */
-    public static final byte LEVEL_0_NUM_OF_STAGES = 1;
+    public static final byte LEVEL_0_NUM_OF_STAGES = 3;
     /**
      * Numero de pruebas en el nivel 1
      */
-    public static final byte LEVEL_1_NUM_OF_STAGES = 1;
+    public static final byte LEVEL_1_NUM_OF_STAGES = 3;
     /**
      * Numero de pruebas en el nivel 2
      */
-    public static final byte LEVEL_2_NUM_OF_STAGES = 1;
+    public static final byte LEVEL_2_NUM_OF_STAGES = 3;
 
     /**
      * Numero de pruebas en el modo EEG

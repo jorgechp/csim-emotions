@@ -12,12 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.HashMap;
 import java.util.Random;
-
 
 import csim.csimemotions.Emotions;
 import csim.csimemotions.Generic_Game;
@@ -48,7 +46,6 @@ public class F_Game3 extends Generic_Game {
     private int heightLimitsMax, widthLimitsMax;
     private int widthtLimitsMin;
     private int heightLimitsMin;
-    private ProgressBar rb;
     private Thread threadSound;
     private TextView ttTitle, ttDescription;
 
@@ -111,10 +108,6 @@ public class F_Game3 extends Generic_Game {
         this.ttTitle = (TextView) super.actividadPrincipal.findViewById(R.id.Game31_title);
         this.ttDescription = (TextView) super.actividadPrincipal.findViewById(R.id.Game31_ttGameDescription);
 
-
-        this.rb = (ProgressBar) super.actividadPrincipal.findViewById(R.id.Game31_rbProgressBar);
-        this.rb.setMax(this.numButtons);
-        this.rb.setProgress(0);
 
 
         int id = new Random().nextInt();
@@ -379,7 +372,7 @@ public class F_Game3 extends Generic_Game {
 
 
                 if(actividadPrincipal.getTemporalStateGame().isEnableEEG()) {
-                    F_Game3.this.rb.setProgress(F_Game3.this.rb.getProgress() + 1);
+                    //  F_Game3.this.rb.setProgress(F_Game3.this.rb.getProgress() + 1);
                     F_Game3.this.soundLayout.removeView(F_Game3.this.selectedButton);
                     F_Game3.this.selectedButton = null;
                     F_Game3.this.numButtons--;
@@ -449,12 +442,12 @@ public class F_Game3 extends Generic_Game {
                 break;
             case PLAYER_WINS:
                 super.procesarRespuesta(respuesta);
-                super.feedBackSoundBien.play(super.actividadPrincipal,false);
+                super.feedBackSoundBien.play(super.actividadPrincipal, false);
 
                 this.soundLayout.removeView(this.selectedButton);
                 this.selectedButton = null;
                 super.sonido.destroy();
-                this.rb.setProgress(this.rb.getProgress() + 1);
+                //this.rb.setProgress(this.rb.getProgress() + 1);
 
                 break;
             case GAME_STARTED:

@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.Random;
@@ -45,7 +44,6 @@ public class F_Game2 extends Generic_Game  {
     private int numRowsHappy, numRowsSad, numRowsAngry, numRowsSurprised;
     private ImageButton ibHappy, ibSad, ibAngry, ibSuprised;
     private int stageNum;
-    private ProgressBar progessb;
     private ImageButton ibPlayer;
     private TextView tvTitle;
 
@@ -98,9 +96,8 @@ public class F_Game2 extends Generic_Game  {
         this.ibAngry = (ImageButton) getActivity().findViewById(R.id.Game2_ibAngry);
         F_Game2.this.setEnableButtons(false);
 
-        this.progessb = (ProgressBar) getActivity().findViewById(R.id.Game2_pbProgress);
-        this.progessb.setMax(super.maxNumStages);
-        this.actualizarMarcador();
+
+        //this.actualizarMarcador();
 
         this.procesarRespuesta(this.continueGame());
         this.ibPlayer.setBackgroundResource(R.mipmap.ic_play);
@@ -255,7 +252,7 @@ public class F_Game2 extends Generic_Game  {
             public void onFinish() {
                 F_Game2.super.respuestaUsuario = Emotions.NONE;
                 F_Game2.this.stageNum++;
-                F_Game2.this.actualizarMarcador();
+                //F_Game2.this.actualizarMarcador();
                 F_Game2.this.newStage();
 
             }
@@ -375,19 +372,19 @@ public class F_Game2 extends Generic_Game  {
                 break;
             case PLAYER_ERROR: //Respuesta incorrecta
 
-                this.feedBack(false);
+                //this.feedBack(false);
                 break;
             case PLAYER_WINS:  //Respuesta correcta
 
                 this.feedBack(true);
-                this.actualizarMarcador();
+                //this.actualizarMarcador();
                 break;
         }
     }
 
-    private void actualizarMarcador() {
-        this.progessb.setProgress(this.stageNum);
-    }
+    // private void actualizarMarcador() {
+    //     this.progessb.setProgress(this.stageNum);
+    //}
 
     /**
      * This interface must be implemented by activities that contain this

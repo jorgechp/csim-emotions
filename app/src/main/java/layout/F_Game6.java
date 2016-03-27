@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.io.BufferedReader;
@@ -30,6 +29,8 @@ import csim.csimemotions.R;
 import csim.csimemotions.SoundPlayer;
 import csim.csimemotions.States;
 import csim.csimemotions.stageResults;
+
+//import android.widget.ProgressBar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,7 +51,7 @@ public class F_Game6 extends Generic_Game {
     private ImageButton ibHappy, ibSad, ibAngry, ibSurprised;
     private ImageButton ibContinue;
 
-    private ProgressBar pbProgress;
+    // private ProgressBar pbProgress;
 
     private View.OnClickListener ocl;
     private MediaPlayer.OnCompletionListener oCompletionListener;
@@ -150,7 +151,7 @@ public class F_Game6 extends Generic_Game {
 
         this.ibContinue = (ImageButton) super.actividadPrincipal.findViewById(R.id.Game6_ibContinue);
 
-        this.pbProgress = (ProgressBar) super.actividadPrincipal.findViewById(R.id.Game6_progressBar);
+        //  this.pbProgress = (ProgressBar) super.actividadPrincipal.findViewById(R.id.Game6_progressBar);
 
         //Se genera la lista de cuentos.
         try {
@@ -234,8 +235,8 @@ public class F_Game6 extends Generic_Game {
         this.enableEmotionButtons(false);
         this.ibContinue.setVisibility(View.INVISIBLE);
 
-        this.pbProgress.setProgress(0);
-        this.pbProgress.setMax(this.numParrafos);
+        //this.pbProgress.setProgress(0);
+        //this.pbProgress.setMax(this.numParrafos);
 
 
 
@@ -283,7 +284,7 @@ public class F_Game6 extends Generic_Game {
             if(element != null) {
                 this.ttTales[contador].setText(element.first);
                 this.soundsStage.add(this.completeSounds.poll());
-                this.pbProgress.setProgress(this.pbProgress.getProgress() + 1);
+                //this.pbProgress.setProgress(this.pbProgress.getProgress() + 1);
 
                 //element.second contiene una emocion, siempre y cuando su valor no sea nulo
                 if (element.second != null) {

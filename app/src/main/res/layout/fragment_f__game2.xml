@@ -129,12 +129,6 @@
         android:id="@+id/Game2_flIBar"
         android:layout_gravity="bottom">
 
-        <ProgressBar
-
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/Game2_pbProgress" />
     </FrameLayout>
 
     <FrameLayout

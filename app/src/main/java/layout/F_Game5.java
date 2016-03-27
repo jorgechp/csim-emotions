@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -23,13 +22,14 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
 
-
 import csim.csimemotions.Emotions;
 import csim.csimemotions.Generic_Game;
 import csim.csimemotions.R;
 import csim.csimemotions.SoundPlayer;
 import csim.csimemotions.States;
 import csim.csimemotions.stageResults;
+
+//import android.widget.ProgressBar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -51,7 +51,7 @@ public class F_Game5 extends Generic_Game {
     private Emotions em1, em2, em3,em4;
     private ImageButton iv1, iv2,iv3,iv4;
     private ImageButton ivPlayer;
-    private ProgressBar progressBar;
+    // private ProgressBar progressBar;
 
     private byte speed;
     private ViewGroup.LayoutParams lp;
@@ -234,7 +234,7 @@ public class F_Game5 extends Generic_Game {
 
         this.ttTitle = (TextView) super.actividadPrincipal.findViewById(R.id.Game5_tvTitle);
 
-        this.progressBar = (ProgressBar) super.actividadPrincipal.findViewById(R.id.Game5_progressBar);
+        // this.progressBar = (ProgressBar) super.actividadPrincipal.findViewById(R.id.Game5_progressBar);
 
         this.flScreen = (FrameLayout) super.actividadPrincipal.findViewById(R.id.Game5_flScreen);
 
@@ -337,8 +337,8 @@ public class F_Game5 extends Generic_Game {
 
         Typeface tfTitle = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Action_Man_Bold.ttf");
         this.ttTitle.setTypeface(tfTitle);
-        this.progressBar.setMax(maxNumStages);
-        this.progressBar.setProgress(0);
+        // this.progressBar.setMax(maxNumStages);
+        // this.progressBar.setProgress(0);
         this.procesarRespuesta(this.continueGame());
         this.layoutButton = (ViewGroup) this.ivPlayer.getParent();
         this.screenSize = new float[2];
@@ -468,7 +468,7 @@ public class F_Game5 extends Generic_Game {
 
 
         ++super.stageNumber;
-        this.progressBar.setProgress(this.progressBar.getProgress() + 1);
+        //  this.progressBar.setProgress(this.progressBar.getProgress() + 1);
 
 
 

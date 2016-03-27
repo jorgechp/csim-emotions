@@ -319,7 +319,7 @@ public class F_Game1  extends Generic_Game {
 
 
         //Se comprueba si el juego ha finalizado
-        if (this.numRows >= super.stageNumber && super.maxNumStages >= super.stageNumber) {
+        if (this.numRows > super.stageNumber && super.maxNumStages > super.stageNumber) {
             //Si no ha finalizado, se selecciona aleatoriamente una nueva imagen
 
             do {

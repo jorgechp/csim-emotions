@@ -9,7 +9,7 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_gravity="left">
+        android:layout_gravity="left|center">
 
         <ImageButton
             android:layout_width="wrap_content"
@@ -30,6 +30,28 @@
             android:id="@+id/ibArcadeMode"
             android:background="@mipmap/ic_step"
             android:layout_toRightOf="@+id/ibPreferencias" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center|right">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/tvPoints"
+            android:text="0"
+            android:textSize="@dimen/points_size"
+            android:textColor="@color/tvPoints_color" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ivStarLogo"
+            android:layout_toRightOf="@+id/tvPoints"
+            android:src="@mipmap/ic_start_points_icon" />
     </RelativeLayout>
 
 </FrameLayout>

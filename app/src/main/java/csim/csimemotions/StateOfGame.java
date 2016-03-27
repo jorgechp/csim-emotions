@@ -13,7 +13,7 @@ import java.util.LinkedHashSet;
  * Created by jorge on 30/12/15.
  */
 public class StateOfGame implements Serializable{
-    private static StateOfGame INSTANCE = new StateOfGame();
+
 
     /***
      * Representa el máximo nivel alcanzado en el juego
@@ -31,26 +31,11 @@ public class StateOfGame implements Serializable{
     private LinkedHashSet<States> noMoreHelpPlease;
 
 
-
-    private StateOfGame() {
-
-
+    public StateOfGame() {
+        init();
+        iniciarEstado();
     }
 
-    public Object clone() throws CloneNotSupportedException {
-        throw new CloneNotSupportedException();
-    }
-
-    private synchronized static void createInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new StateOfGame();
-        }
-    }
-
-    public static StateOfGame getInstance() {
-        if (INSTANCE == null) createInstance();
-        return INSTANCE;
-    }
 
     private void iniciarEstado(){
         this.level = 1;

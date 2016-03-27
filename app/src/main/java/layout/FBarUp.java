@@ -8,8 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
-import csim.csimemotions.F_settings_options_menu;
 import csim.csimemotions.IRetornable;
 import csim.csimemotions.MainActivity;
 import csim.csimemotions.R;
@@ -36,6 +36,7 @@ public class FBarUp extends Fragment {
     private IRetornable fgSettingsOptions;
     private FCenterContent fCenterContent;
     private boolean isGameMode;
+    private TextView tvGamePoints;
 
 
     public FBarUp() {
@@ -111,6 +112,7 @@ public class FBarUp extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        tvGamePoints = (TextView) getView().findViewById(R.id.tvPoints);
         this.ibSettingsGames = (ImageButton) getActivity().findViewById(R.id.ibPreferenciasGames);
         this.ibSettings = (ImageButton) getActivity().findViewById(R.id.ibPreferencias);
         this.ibSteps = (ImageButton) getActivity().findViewById(R.id.ibArcadeMode);
@@ -233,6 +235,12 @@ public class FBarUp extends Fragment {
 
         }
         FBarUp.this.isGameMode = isGame;
+    }
+
+    public void updateBarUp() {
+        if (this.tvGamePoints != null) {
+            this.tvGamePoints.setText(Long.toString(actividadPrincipal.getUserConf().getPoints()));
+        }
     }
 
 

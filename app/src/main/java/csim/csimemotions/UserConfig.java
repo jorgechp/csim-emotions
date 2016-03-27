@@ -8,14 +8,20 @@ import java.io.Serializable;
  */
 public class UserConfig implements Serializable {
 
-    private static UserConfig ourInstance = new UserConfig();
+
     private int idSongSelected;
+    /**
+     * Último rating otorgado por el usuario a la aplicación
+     */
     private float userRating;
     private StateOfGame sog;
 
-    public static UserConfig getInstance() {
-        return ourInstance;
-    }
+    /**
+     * Puntos del usuario
+     */
+    private long points;
+
+
 
 
     private byte backgroundSoundNumber;
@@ -23,24 +29,18 @@ public class UserConfig implements Serializable {
 
     private String userName;
 
-    private UserConfig() {
+    public UserConfig() {
         this.idSongSelected = -1;
         this.userRating = 0;
+        points = 0;
         this.backgroundEmotionNumber = Emotions.HAPPY;
         userName = null;
+        sog = new StateOfGame();
+
 
     }
 
-    public static void init() {
-        UserConfig.ourInstance = new UserConfig();
-    }
-    public static UserConfig getOurInstance() {
-        return ourInstance;
-    }
 
-    public static void setOurInstance(UserConfig ourInstance) {
-        UserConfig.ourInstance = ourInstance;
-    }
 
     public byte getBackgroundSoundNumber() {
         return backgroundSoundNumber;
@@ -89,5 +89,23 @@ public class UserConfig implements Serializable {
 
     public void setSog(StateOfGame sog) {
         this.sog = sog;
+    }
+
+    public long getPoints() {
+        return points;
+    }
+
+    /**
+     * Aplica una variación de puntos al usuario.
+     * <p/>
+     * Si los puntos finales del usuarop fueran negativos,se establecerían a 0.
+     *
+     * @param increase
+     */
+    public void changePoints(byte increase) {
+        this.points += increase;
+        if (this.points < 0) {
+            this.points = 0;
+        }
     }
 }

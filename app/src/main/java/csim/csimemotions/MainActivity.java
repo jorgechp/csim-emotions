@@ -129,8 +129,8 @@ public class MainActivity extends ActionBarActivity {
         /**
          * Se instancia el estado del juego
          */
-        this.stateGame = StateOfGame.getInstance();
-        this.stateGame.init();
+        this.stateGame = new StateOfGame();
+
 
 
 
@@ -216,7 +216,7 @@ public class MainActivity extends ActionBarActivity {
         if (this.userConf.getSog() != null) {
             this.stateGame = this.userConf.getSog();
         } else {
-            this.stateGame = StateOfGame.getInstance();
+            this.stateGame = new StateOfGame();
             this.stateGame.init();
             this.userConf.setIdSongSelected(R.raw.eh1);
 
@@ -237,14 +237,14 @@ public class MainActivity extends ActionBarActivity {
             this.userConf = (UserConfig) in.readObject();
             in.close();
         } catch (FileNotFoundException | InvalidClassException ex) {
-            this.userConf = UserConfig.getInstance();
+            this.userConf = new UserConfig();
             this.loadDefaultSong();
             saveUserConfig();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         if (this.userConf == null) {
-            this.userConf = UserConfig.getInstance();
+            this.userConf = new UserConfig();
 
         }
 
@@ -312,15 +312,20 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
+    /**
+     * Carga la configuración de un usuario
+     *
+     * @param text
+     */
     public void appendUser(String text) {
         if (this.users.containsKey(text) == false) {
-            UserConfig.init();
-            this.stateGame = null;
-            this.userConf = UserConfig.getInstance();
+            UserConfig newUserConfig = new UserConfig();
+
+
+            this.userConf = newUserConfig;
             this.userConf.setUserName(text);
-            if (this.userConf.getSog() != null) {
-                this.userConf.getSog().init();
-            }
+            this.stateGame = this.userConf.getSog();
+
             this.loadDefaultSong();
             this.users.put(text, this.userConf);
             saveUserConfig();

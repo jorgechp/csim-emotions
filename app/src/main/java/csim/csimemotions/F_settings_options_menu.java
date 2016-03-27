@@ -244,7 +244,6 @@ public class F_settings_options_menu extends Fragment implements IRetornable{
                     case R.id.OptionsSettings_btSaveNickName:
                         String text = F_settings_options_menu.this.et_nickName.getText().toString();
                         if(text.length() > 0 ) {
-                            userConfig.setUserName(text);
                             F_settings_options_menu.this.actividadPrincipal.appendUser(text);
                             F_settings_options_menu.this.actividadPrincipal.saveUserConfig();
 

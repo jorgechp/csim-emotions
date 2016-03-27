@@ -40,6 +40,7 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
     protected LogManager logMan;
     protected Log logSession;
     private LogStage logStage;
+    private byte gamePoints;
 
     protected int stageNumber;
     private boolean wasSoundPlaying;
@@ -133,6 +134,7 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.gamePoints = 0;
         this.actividadPrincipal = (MainActivity) getActivity();
         this.actividadPrincipal.stopSong();
         this.generarDificultad();
@@ -292,6 +294,7 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
 
     public void procesarRespuesta(stageResults respuesta) {
         this.stageNumber++;
+
         if (this.sonido != null && this.sonido.isPlaying()) {
             this.sonido.destroy();
         }
@@ -299,13 +302,15 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
             case GAME_WON:
                 this.sg.chargeReward(this.currentGame, actividadPrincipal.getStateOfTheGame().getLevelActual());
                 this.actividadPrincipal.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                this.gamePoints += Config.GAME_POINTS;
                 exitGame();
                // actividadPrincipal.getfCenter().processateArcadeMode();
                 break;
             case PLAYER_WINS:
-
+                this.gamePoints += Config.STAGE_POINTS * (1 + actividadPrincipal.getStateOfTheGame().getLevelActual());
                 break;
             case USER_EXIT:
+                this.gamePoints -= Config.GAME_POINTS;
                 exitGame();
                 break;
 
@@ -328,6 +333,8 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
         this.actividadPrincipal.playSong();
         this.actividadPrincipal.saveUserConfig();
         this.actividadPrincipal.setCurrentGame(null);
+        this.actividadPrincipal.getUserConf().changePoints(this.gamePoints);
+
         fg.checkUI();
 
         FragmentTransaction fManagerTransaction = getFragmentManager().beginTransaction();

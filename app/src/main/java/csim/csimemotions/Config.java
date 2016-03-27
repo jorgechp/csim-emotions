@@ -97,13 +97,20 @@ public class Config {
      * Nombre del fichero de registro de eventos de usuarios, en formato CSV
      */
     public static final String USER_LOG_FOLDER_CSV = "CSIM";
-
-
-
     /**
      * Dirección web de la interfaz de comunicación con la web
      */
     public static final String DATABASE_URL = "http://csimemotions.webcindario.com/";
+
+    /**
+     * Puntos recibidos por completar correctamente un stage
+     */
+    public static byte STAGE_POINTS = 10;
+
+    /**
+     * Puntos recibidos por completar correctamente un juego
+     */
+    public static byte GAME_POINTS = 20;
 
 
 }

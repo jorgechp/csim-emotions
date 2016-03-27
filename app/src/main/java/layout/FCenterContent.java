@@ -46,6 +46,7 @@ public class FCenterContent extends Fragment {
     private ImageButton btGame2;
     private ImageButton btGame31,btGame32,btGame33;
     private ImageButton btGame4;
+
     private Button btNextLevel, btBackLevel;
 
     private View.OnClickListener onClickListener;
@@ -414,6 +415,11 @@ public class FCenterContent extends Fragment {
             this.stage1.setForeground(drawable);
         }
         this.btGame1.setEnabled(true);
+
+        //Actualizar puntos
+        this.mainActivity.getfUp().updateBarUp();
+
+
     }
 
     /**

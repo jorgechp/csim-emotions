@@ -62,7 +62,6 @@ public class F_Game4 extends Generic_Game {
 
     private ViewGroup.LayoutParams layoutParams;
 
-    private int numStagesCompleted;
 
     private TextView tvTitle;
     private boolean isTimer;
@@ -137,7 +136,7 @@ public class F_Game4 extends Generic_Game {
                 F_Game4.super.respuestaUsuario = Emotions.NONE;
                 F_Game4.super.stageNumber++;
                 //F_Game4.this.progressBar.setProgress(F_Game4.this.progressBar.getProgress() + 1);
-                //F_Game4.this.procesarRespuesta(F_Game4.this.continueGame());
+                F_Game4.this.procesarRespuesta(F_Game4.this.continueGame());
 
 
             }
@@ -197,7 +196,7 @@ public class F_Game4 extends Generic_Game {
         this.sonidos = super.dbc.getUrlSonido(null,null);
         this.numSonidos = this.sonidos.length;
         this.listaSonidos = new HashSet<>();
-        this.numStagesCompleted = 0;
+
 
         Typeface tfTitle = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Action_Man_Bold.ttf");
         this.tvTitle.setTypeface(tfTitle);
@@ -522,8 +521,8 @@ public class F_Game4 extends Generic_Game {
         }else{
             super.saveStage();
             if(super.respuestaUsuario == super.respuestaCorrecta){
-                ++this.numStagesCompleted;
-                if(this.numStagesCompleted < maxNumStages){
+
+                if (super.stageNumber < maxNumStages) {
                     result = stageResults.PLAYER_WINS;
                 }else{
                     result = stageResults.GAME_WON;

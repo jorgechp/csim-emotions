@@ -466,8 +466,6 @@ public class F_Game5 extends Generic_Game {
         super.sonido.destroy();
 
 
-
-        ++super.stageNumber;
         //  this.progressBar.setProgress(this.progressBar.getProgress() + 1);
 
 

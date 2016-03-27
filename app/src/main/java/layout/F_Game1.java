@@ -194,7 +194,7 @@ public class F_Game1  extends Generic_Game {
         super.dialogoAlerta.setMessage(R.string.Game1_instructions);
         super.onActivityCreated(savedInstanceState);
 
-
+        super.stageNumber = 0;
         this.continueGame();
 
         this.bAngry = (Button) getActivity().findViewById(R.id.btAngry);
@@ -245,7 +245,7 @@ public class F_Game1  extends Generic_Game {
         return inflater.inflate(R.layout.fragment_f__game1, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
+
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -317,9 +317,9 @@ public class F_Game1  extends Generic_Game {
 //            sonido.destroy();
         }
 
-        int numPruebasSuperadas = this.correctImages.size();
+
         //Se comprueba si el juego ha finalizado
-        if (this.numRows > numPruebasSuperadas && super.maxNumStages > numPruebasSuperadas) {
+        if (this.numRows >= super.stageNumber && super.maxNumStages >= super.stageNumber) {
             //Si no ha finalizado, se selecciona aleatoriamente una nueva imagen
 
             do {

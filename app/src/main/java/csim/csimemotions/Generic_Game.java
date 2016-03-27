@@ -291,7 +291,7 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
     }
 
     public void procesarRespuesta(stageResults respuesta) {
-
+        this.stageNumber++;
         if (this.sonido != null && this.sonido.isPlaying()) {
             this.sonido.destroy();
         }
@@ -303,7 +303,7 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
                // actividadPrincipal.getfCenter().processateArcadeMode();
                 break;
             case PLAYER_WINS:
-                this.stageNumber++;
+
                 break;
             case USER_EXIT:
                 exitGame();

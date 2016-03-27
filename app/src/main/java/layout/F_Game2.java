@@ -43,7 +43,7 @@ public class F_Game2 extends Generic_Game  {
     private String[][] imagenesHappy, imagenesSad, imagenesAngry, imagenesSurprised;
     private int numRowsHappy, numRowsSad, numRowsAngry, numRowsSurprised;
     private ImageButton ibHappy, ibSad, ibAngry, ibSuprised;
-    private int stageNum;
+
     private ImageButton ibPlayer;
     private TextView tvTitle;
 
@@ -73,7 +73,7 @@ public class F_Game2 extends Generic_Game  {
         super.onCreate(savedInstanceState);
         this.isSoundPlaying = false;
         this.currentGame = States.GAME2;
-        this.stageNum = 1;
+        super.stageNumber = 1;
 
     }
 
@@ -251,7 +251,7 @@ public class F_Game2 extends Generic_Game  {
 
             public void onFinish() {
                 F_Game2.super.respuestaUsuario = Emotions.NONE;
-                F_Game2.this.stageNum++;
+                F_Game2.super.stageNumber++;
                 //F_Game2.this.actualizarMarcador();
                 F_Game2.this.newStage();
 
@@ -287,6 +287,7 @@ public class F_Game2 extends Generic_Game  {
         String soundSelected[];
         String[] imageSelected;
 
+
         if (super.respuestaCorrecta == null || super.respuestaUsuario == null) {
 
             this.imagenesHappy = super.dbc.getUrlImagen(null, Emotions.HAPPY, actividadPrincipal.getStateOfTheGame().getLevelActual());
@@ -306,11 +307,11 @@ public class F_Game2 extends Generic_Game  {
             super.saveStage();
             if (super.respuestaUsuario == super.respuestaCorrecta) {
                 result = stageResults.PLAYER_WINS;
-                ++this.stageNum;
+
             } else {
                 result = stageResults.PLAYER_ERROR;
             }
-            if (super.maxNumStages < this.stageNum) {
+            if (super.maxNumStages <= super.stageNumber) {
                 result = stageResults.GAME_WON;
             }
 

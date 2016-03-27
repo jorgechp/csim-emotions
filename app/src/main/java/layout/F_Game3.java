@@ -37,6 +37,7 @@ public class F_Game3 extends Generic_Game {
     private boolean isGameExecuting;
     private ImageButton selectedButton;
     private HashMap<ImageButton,SoundPlayer> soundTable;
+    private HashMap<SoundPlayer, Emotions> emotionTable;
     private String[][] soundList;
     private SoundPlayer newPositionSound;
 
@@ -94,6 +95,8 @@ public class F_Game3 extends Generic_Game {
 
 
         this.soundTable = new HashMap<>();
+        this.emotionTable = new HashMap<>();
+
         this.isGameExecuting = true;
         this.soundLayout =  (FrameLayout) super.actividadPrincipal.findViewById(R.id.Game3_flSongTab);
         this.soundList = super.dbc.getUrlSonido(null,null);
@@ -232,17 +235,24 @@ public class F_Game3 extends Generic_Game {
      */
     private SoundPlayer getSpForSelectedButton() {
         SoundPlayer sp = null;
+        Emotions em;
+        //this.selectedButton Contiene el reproductor seleccionado previamente por el usuario
+        //A fin de poder recuperar la canción que ya había sido generada previamente
         if(this.selectedButton != null){
             if (this.soundTable.containsKey(this.selectedButton)){
                 sp = this.soundTable.get(this.selectedButton);
+                em = this.emotionTable.get(sp);
             }else{
                 Random rnd = new Random();
                 String[] selectedSound = this.soundList[rnd.nextInt(this.soundList.length)];
                 int id = Integer.valueOf(selectedSound[2]);
                 sp = new SoundPlayer(id);
                 this.soundTable.put(this.selectedButton,sp);
-                super.respuestaCorrecta = super.getEmotionFromString(selectedSound[1]);
+                em = super.getEmotionFromString(selectedSound[1]);
+                this.emotionTable.put(sp, em);
+
             }
+            super.respuestaCorrecta = em;
         }
         return sp;
     }
@@ -422,12 +432,13 @@ public class F_Game3 extends Generic_Game {
         if(this.actividadPrincipal.getTemporalStateGame().isEnableEEG() && super.cdTimerPost != null) {
             super.cdTimerPost.cancel();
         }
+
         switch (respuesta){
             case GAME_WON:
                 this.threadSound.interrupt();
                 super.feedBackSoundBien.play(super.actividadPrincipal, false);
                 super.procesarRespuesta(respuesta);
-                F_Game3.super.stageNumber++;
+
                 break;
             case PLAYER_ERROR:
                 super.procesarRespuesta(respuesta);

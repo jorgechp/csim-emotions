@@ -81,9 +81,14 @@ public class SoundPlayer {
     }
 
     public boolean isPlaying() {
+
         boolean res = false;
-        if (mp != null) {
-            res = mp.isPlaying();
+        try {
+            if (mp != null) {
+                res = mp.isPlaying();
+            }
+        } catch (IllegalStateException e) {
+            mp.release();
         }
         return res;
     }

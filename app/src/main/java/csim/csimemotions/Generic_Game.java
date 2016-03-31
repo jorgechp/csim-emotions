@@ -40,7 +40,7 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
     protected LogManager logMan;
     protected Log logSession;
     private LogStage logStage;
-    private byte gamePoints;
+    private int gamePoints;
 
     protected int stageNumber;
     private boolean wasSoundPlaying;

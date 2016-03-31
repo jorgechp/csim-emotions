@@ -102,7 +102,7 @@ public class UserConfig implements Serializable {
      *
      * @param increase
      */
-    public void changePoints(byte increase) {
+    public void changePoints(int increase) {
         this.points += increase;
         if (this.points < 0) {
             this.points = 0;

@@ -326,7 +326,7 @@ public class F_Game6 extends Generic_Game {
         switch (respuesta){
             case PLAYER_WINS:
                 //super.sonido.destroy();
-                ++super.stageNumber;
+
                 this.enableEmotionButtons(false);
                 super.saveStage();
                 this.respuestaCorrecta = null;
@@ -530,7 +530,7 @@ public class F_Game6 extends Generic_Game {
                 }
                 else{
                     parrafo = line;
-                    String soundName= "talesSongs/t"+(1+selectedTale)+"/"+"t_"+contadorSonido+".mp3";
+                    String soundName = "talesSongs/t" + (1 + selectedTale) + "/" + "t_" + contadorSonido + ".ogg";
                     inputSound = super.actividadPrincipal.getAssets().openFd(soundName);
                     if(inputSound != null) {
                         F_Game6.this.completeSounds.add(inputSound);

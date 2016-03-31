@@ -381,9 +381,9 @@ public class F_Game5 extends Generic_Game {
             }else{
                 sr = stageResults.PLAYER_ERROR;
             }
+            super.saveStage();
             if(super.stageNumber >= maxNumStages){
 
-                super.saveStage();
 
                 sr = stageResults.GAME_WON;
             }

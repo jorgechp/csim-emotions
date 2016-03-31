@@ -73,7 +73,7 @@ public class F_Game2 extends Generic_Game  {
         super.onCreate(savedInstanceState);
         this.isSoundPlaying = false;
         this.currentGame = States.GAME2;
-        super.stageNumber = 1;
+
 
     }
 

@@ -214,7 +214,7 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
 
 
         this.logSession = new Log(this.actividadPrincipal.getUserConf().getUserName(),System.currentTimeMillis(),this.actividadPrincipal.getTemporalStateGame().isEnableEEG());
-        this.stageNumber = 0;
+        this.stageNumber = 1;
 
 
         //if(this.isDialogAlert && !this.actividadPrincipal.getStateOfTheGame().isDialogNoHelp(currentGame)) {
@@ -287,19 +287,20 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
 
     protected void saveStage(){
         if(this.actividadPrincipal.getTemporalStateGame().isEnableLogging()) {
-            this.logStage = new LogStage(this.respuestaCorrecta,0,this.currentGame,System.currentTimeMillis(),this.respuestaUsuario,this.stageNumber);
+            this.logStage = new LogStage(this.respuestaCorrecta, actividadPrincipal.getStateOfTheGame().getLevelActual(), this.currentGame, System.currentTimeMillis(), this.respuestaUsuario, this.stageNumber);
             this.logSession.addStage(this.logStage);
         }
     }
 
     public void procesarRespuesta(stageResults respuesta) {
-        this.stageNumber++;
+
 
         if (this.sonido != null && this.sonido.isPlaying()) {
             this.sonido.destroy();
         }
         switch (respuesta) {
             case GAME_WON:
+                this.stageNumber++;
                 this.sg.chargeReward(this.currentGame, actividadPrincipal.getStateOfTheGame().getLevelActual());
                 this.actividadPrincipal.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                 this.gamePoints += Config.GAME_POINTS;
@@ -307,7 +308,11 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
                // actividadPrincipal.getfCenter().processateArcadeMode();
                 break;
             case PLAYER_WINS:
+                this.stageNumber++;
                 this.gamePoints += Config.STAGE_POINTS * (1 + actividadPrincipal.getStateOfTheGame().getLevelActual());
+                break;
+            case PLAYER_ERROR:
+                this.stageNumber++;
                 break;
             case USER_EXIT:
                 this.gamePoints -= Config.GAME_POINTS;

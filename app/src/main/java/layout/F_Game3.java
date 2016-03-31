@@ -81,7 +81,7 @@ public class F_Game3 extends Generic_Game {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.numButtons = super.maxNumStages / 2 + 1;
+        this.numButtons = super.maxNumStages / 2 + 2;
         this.soundButtons = new Triple[this.numButtons];
         super.currentGame = States.GAME31;
 

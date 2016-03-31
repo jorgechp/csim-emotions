@@ -522,7 +522,7 @@ public class F_Game4 extends Generic_Game {
             super.saveStage();
             if(super.respuestaUsuario == super.respuestaCorrecta){
 
-                if (super.stageNumber < maxNumStages) {
+                if (super.stageNumber <= maxNumStages) {
                     result = stageResults.PLAYER_WINS;
                 }else{
                     result = stageResults.GAME_WON;

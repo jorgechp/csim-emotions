@@ -29,9 +29,7 @@ import csim.csimemotions.R;
 import csim.csimemotions.SoundPlayer;
 import csim.csimemotions.StateOfGame;
 import csim.csimemotions.States;
-import csim.csimemotions.log.Log;
 import csim.csimemotions.log.LogManager;
-import csim.csimemotions.log.LogStage;
 import csim.csimemotions.stageResults;
 
 /**
@@ -68,7 +66,7 @@ public class F_Game1  extends Generic_Game {
     private StateOfGame sg;
 
     private LogManager logMan;
-    private Log logSession;
+
 
     /**
      * Muestra el estado actual de este juego en la lista de estados.
@@ -150,7 +148,6 @@ public class F_Game1  extends Generic_Game {
         };
 
 
-        super.logSession = new Log(((MainActivity)getActivity()).getUserConf().getUserName(),System.currentTimeMillis(),((MainActivity)getActivity()).getTemporalStateGame().isEnableEEG());
     }
 
 
@@ -194,7 +191,7 @@ public class F_Game1  extends Generic_Game {
         super.dialogoAlerta.setMessage(R.string.Game1_instructions);
         super.onActivityCreated(savedInstanceState);
 
-        super.stageNumber = 0;
+
         this.continueGame();
 
         this.bAngry = (Button) getActivity().findViewById(R.id.btAngry);
@@ -307,7 +304,7 @@ public class F_Game1  extends Generic_Game {
             this.numRows = imagenes.length;
             this.correctImages = new HashMap<Integer, Boolean>();
         } else {
-            super.logSession.addStage(new LogStage(super.respuestaCorrecta,0,this.currentGame,System.currentTimeMillis(),super.respuestaUsuario,correctImages.size()));
+            super.saveStage();
             if (super.respuestaCorrecta == super.respuestaUsuario) {
                 this.correctImages.put(this.indexOfCurrentImage, true);
                 result = stageResults.PLAYER_WINS;

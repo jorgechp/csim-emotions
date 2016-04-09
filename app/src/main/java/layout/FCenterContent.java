@@ -306,7 +306,7 @@ public class FCenterContent extends Fragment {
                 checkUI();
                 isGame = false;
                 break;
-            case R.id.ibPreferenciasGames:
+            case R.id.ibGames:
                 fg = new F_Settings();
                 isGame = false;
                 break;

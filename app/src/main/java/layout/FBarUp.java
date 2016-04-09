@@ -96,7 +96,7 @@ public class FBarUp extends Fragment {
     }
 
     private void loadSettingsFragment() {
-        this.fgSettings = (F_Settings) this.fCenterContent.loadNewFragment(R.id.ibPreferenciasGames);
+        this.fgSettings = (F_Settings) this.fCenterContent.loadNewFragment(R.id.ibGames);
     }
 
     @Override
@@ -113,7 +113,7 @@ public class FBarUp extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         tvGamePoints = (TextView) getView().findViewById(R.id.tvPoints);
-        this.ibSettingsGames = (ImageButton) getActivity().findViewById(R.id.ibPreferenciasGames);
+        this.ibSettingsGames = (ImageButton) getActivity().findViewById(R.id.ibGames);
         this.ibSettings = (ImageButton) getActivity().findViewById(R.id.ibPreferencias);
         this.ibSteps = (ImageButton) getActivity().findViewById(R.id.ibArcadeMode);
         this.onclick = new View.OnClickListener() {
@@ -134,7 +134,7 @@ public class FBarUp extends Fragment {
                         isSettingsOptions= false;
 
                         break;
-                    case R.id.ibPreferenciasGames:
+                    case R.id.ibGames:
                         actividadPrincipal.getfCenter().emptyArcadeQueue();
                         if(FBarUp.this.isGameMode){
                             FBarUp.this.actividadPrincipal.getCurrentGame().procesarRespuesta(stageResults.USER_EXIT);
@@ -177,7 +177,7 @@ public class FBarUp extends Fragment {
             this.fgSettingsOptions.retornar();
             isSettingsOptions = false;
             this.ibSettings.setVisibility(View.INVISIBLE);
-            this.ibSteps.setVisibility(View.INVISIBLE);
+            this.ibSteps.setVisibility(View.VISIBLE);
 
         }else {
             this.fgSettings.retornar();

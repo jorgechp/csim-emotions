@@ -14,7 +14,7 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/ibPreferenciasGames"
+            android:id="@+id/ibGames"
             android:background="@mipmap/ic_settings" />
 
         <ImageButton
@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/ibPreferencias"
             android:background="@mipmap/ic_settings"
-            android:layout_toRightOf="@+id/ibPreferenciasGames" />
+            android:layout_toRightOf="@+id/ibGames" />
 
         <ImageButton
             android:layout_width="wrap_content"

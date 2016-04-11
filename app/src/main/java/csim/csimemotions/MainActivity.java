@@ -344,6 +344,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
+        this.fCenter.rebootUI();
         this.fCenter.checkUI();
         // Trigger the initial hide() shortly after the activity has been
         // created, to briefly hint to the user that UI controls

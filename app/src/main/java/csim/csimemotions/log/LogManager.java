@@ -10,21 +10,15 @@ import android.os.Environment;
 import com.opencsv.CSVWriter;
 
 import java.io.File;
-
 import java.io.FileWriter;
 import java.io.IOException;
-
-
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-
 
 import csim.csimemotions.MainActivity;
 
@@ -84,6 +78,8 @@ public class LogManager {
             }
             writer.writeAll(list);
             writer.flush();
+            writer.close();
+
             return fileOutPut;
         } catch (IOException e) {
             e.printStackTrace();

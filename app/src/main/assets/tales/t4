@@ -1,0 +1,28 @@
+Ángel pasea por el bosque. Está muy contento y disfruta de la naturaleza.
+>H
+Mientras camina, Ángel se tropieza con una piedra y cae al suelo.
+<
+Ángel llora, pues se ha hecho una herida ¡y le duele un montón!.
+>S
+Marina también pasea por el campo. Va cantando una canción y contempla el paisaje.
+>H
+De repente, Marina ve a Ángel y le escucha llorar.
+<
+Marina se asusta, al verle en el suelo.
+>U
+Se acerca a él, y le pregunta.
+<
+¿Estás bien?, ¿necesitas ayuda?.
+<
+Ángel le cuenta lo sucedido a Marina
+<
+- Estaba caminando por el campo, y me he caído. Ahora me duele la pierna y tengo una herida - Dice Ángel, con tristeza. 
+>S
+Marina ayuda a Ángel a levantarse, y coge un botiquín que lleva en su mochila.
+<
+Entre los dos, vendan la pierna de Ángel tras desinfectar la herida.
+<
+Finalmente, Ángel y Marina vuelven a casa. Ángel está contento por la ayuda de Marina y le da las gracias.
+>H
+FIN
+>E

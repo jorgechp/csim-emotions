@@ -7,156 +7,162 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <LinearLayout
-        android:orientation="vertical"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/llFragmentCenterContent">
+        android:id="@+id/scrollView2">
 
-        <TableLayout
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:id="@+id/llFragmentCenterContent">
 
-            <FrameLayout
+            <TableLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/buttons_emotion_distance"
-                android:id="@+id/flTitle">
+                android:layout_height="match_parent">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <FrameLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="@string/mainMenuBarUpTitle"
-                    android:id="@+id/tvFCenterTitle"
-                    android:layout_gravity="center_horizontal"
-                    android:textSize="@dimen/gameTitle"
-                    android:textColor="@id/GameTitles" />
-            </FrameLayout>
+                    android:layout_marginBottom="@dimen/buttons_emotion_distance"
+                    android:id="@+id/flTitle">
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/flStage1">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="@string/mainMenuBarUpTitle"
+                        android:id="@+id/tvFCenterTitle"
+                        android:layout_gravity="center_horizontal"
+                        android:textSize="@dimen/gameTitle"
+                        android:textColor="@id/GameTitles" />
+                </FrameLayout>
 
-                <ImageButton
-                    android:layout_width="wrap_content"
+                <FrameLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/ibGame1"
-                    android:layout_gravity="center"
-                    android:background="@mipmap/ic_game_1_easy" />
+                    android:id="@+id/flStage1">
 
-                <Button
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/ibGame1"
+                        android:layout_gravity="center"
+                        android:background="@mipmap/ic_game_1_easy" />
+
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/fCentercontent_backLevel"
+                        android:id="@+id/ibBackLevel"
+                        android:layout_gravity="left|bottom" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/fCentercontent_backLevel"
-                    android:id="@+id/ibBackLevel"
-                    android:layout_gravity="left|bottom" />
-            </FrameLayout>
+                    android:id="@+id/flMargin1"
+                    android:foreground="#61706377"></FrameLayout>
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/flMargin1"
-                android:foreground="#61706377"></FrameLayout>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/flStage2"
-                android:foreground="#61706377">
-
-                <ImageButton
-                    android:layout_width="wrap_content"
+                <FrameLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/ibGame2"
-                    android:layout_gravity="center"
-                    android:background="@mipmap/ic_game2_easy" />
-            </FrameLayout>
+                    android:id="@+id/flStage2"
+                    android:foreground="#61706377">
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/flMargin2"
-                android:foreground="#61706377" />
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/ibGame2"
+                        android:layout_gravity="center"
+                        android:background="@mipmap/ic_game2_easy" />
+                </FrameLayout>
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/flStage3"
-                android:foreground="#61706377">
-
-                <ImageButton
-                    android:layout_width="wrap_content"
+                <FrameLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/ibGame31"
-                    android:layout_gravity="left"
-                    android:layout_marginLeft="@dimen/buttons_emotion_distance"
-                    android:background="@mipmap/ic_game3_easy" />
+                    android:id="@+id/flMargin2"
+                    android:foreground="#61706377" />
 
-                <ImageButton
-                    android:layout_width="wrap_content"
+                <FrameLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/ibGame32"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@mipmap/ic_game4_easy" />
+                    android:id="@+id/flStage3"
+                    android:foreground="#61706377">
 
-                <ImageButton
-                    android:layout_width="wrap_content"
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/ibGame31"
+                        android:layout_gravity="left"
+                        android:layout_marginLeft="@dimen/buttons_emotion_distance"
+                        android:background="@mipmap/ic_game3_easy" />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/ibGame32"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@mipmap/ic_game4_easy" />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/ibGame33"
+                        android:layout_gravity="right"
+                        android:layout_marginRight="@dimen/buttons_emotion_distance"
+                        android:background="@mipmap/ic_game5_easy" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/ibGame33"
-                    android:layout_gravity="right"
-                    android:layout_marginRight="@dimen/buttons_emotion_distance"
-                    android:background="@mipmap/ic_game5_easy" />
-            </FrameLayout>
+                    android:id="@+id/flMargin3"
+                    android:foreground="#61706377" />
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/flMargin3"
-                android:foreground="#61706377" />
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/flStage4"
-                android:foreground="#61706377">
-
-                <ImageButton
-                    android:layout_width="wrap_content"
+                <FrameLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/ibGame4"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@mipmap/ic_game6_easy" />
-            </FrameLayout>
+                    android:id="@+id/flStage4"
+                    android:foreground="#61706377">
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/flFinalStage"
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/ibGame4"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@mipmap/ic_game6_easy" />
+                </FrameLayout>
 
-                android:layout_marginTop="0dp"
-                android:foreground="#61706377">
-
-
-            <Button
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
+                <FrameLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/fCenterContent_newLevel"
-                    android:id="@+id/ibNextLevel"
-                    android:layout_gravity="right|bottom" />
-            </FrameLayout>
+                    android:id="@+id/flFinalStage"
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:foreground="#61706377"
-                android:focusableInTouchMode="true"
-                android:id="@+id/flFillLayout"></FrameLayout>
+                    android:layout_marginTop="0dp"
+                    android:foreground="#61706377">
 
-        </TableLayout>
-    </LinearLayout>
+
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/fCenterContent_newLevel"
+                        android:id="@+id/ibNextLevel"
+                        android:layout_gravity="right|bottom" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:foreground="#61706377"
+                    android:focusableInTouchMode="true"
+                    android:id="@+id/flFillLayout"></FrameLayout>
+
+            </TableLayout>
+        </LinearLayout>
+    </ScrollView>
 
 </FrameLayout>

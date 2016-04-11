@@ -486,7 +486,7 @@ public class F_Game6 extends Generic_Game {
         InputStream inputStreamText = null;
         AssetFileDescriptor inputSound = null;
 
-        byte selectedTale = (byte) rnd.nextInt(numTales);
+        byte selectedTale = 4;//(byte) rnd.nextInt(numTales);
         AssetManager assetManager = super.actividadPrincipal.getAssets();
         BufferedReader reader = null;
 

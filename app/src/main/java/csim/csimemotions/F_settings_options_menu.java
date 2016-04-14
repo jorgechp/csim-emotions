@@ -1,11 +1,14 @@
 package csim.csimemotions;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -242,14 +245,51 @@ public class F_settings_options_menu extends Fragment implements IRetornable{
             public void onClick(View v) {
                 switch (v.getId()){
                     case R.id.OptionsSettings_btSaveNickName:
-                        String text = F_settings_options_menu.this.et_nickName.getText().toString();
-                        if(text.length() > 0 ) {
-                            F_settings_options_menu.this.actividadPrincipal.appendUser(text);
-                            F_settings_options_menu.this.actividadPrincipal.saveUserConfig();
 
 
-                        }
-                        break;
+                        AlertDialog.Builder builder = new AlertDialog.Builder(F_settings_options_menu.this.actividadPrincipal);
+                        builder.setTitle("Contraseña de acceso a las opciones de configuración");
+
+                        // Set up the input
+                        final EditText input = new EditText(F_settings_options_menu.this.actividadPrincipal);
+                        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+                        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                        builder.setView(input);
+
+                        // Set up the buttons
+                        builder.setPositiveButton(R.string.FOptions_settings_saveNickModalAccept, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String message = null;
+                                if (input.getText().toString().equals(Config.OPTIONS_PASSWORD)) {
+                                    String text = F_settings_options_menu.this.et_nickName.getText().toString();
+                                    if (text.length() > 0) {
+                                        F_settings_options_menu.this.actividadPrincipal.appendUser(text);
+                                        F_settings_options_menu.this.actividadPrincipal.saveUserConfig();
+
+                                        message = getString(R.string.FOptions_settings_saveNickToastAccepted);
+                                    } else {
+                                        message = getString(R.string.FOptions_settings_saveNickToastCanceledNoInput);
+                                    }
+                                } else {
+                                    message = getString(R.string.FOptions_settings_saveNickToastCanceled);
+                                }
+
+                                Toast toast = Toast.makeText(
+                                        F_settings_options_menu.this.actividadPrincipal,
+                                        message,
+                                        Toast.LENGTH_LONG);
+                                toast.show();
+                            }
+                        });
+                        builder.setNegativeButton(R.string.FOptions_settings_saveNickModalCancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+
+                        builder.show();
                 }
             }
         };

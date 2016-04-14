@@ -59,6 +59,12 @@
     <string name="FAbout_Description6">Éste videojuego se encuentra licenciado, a excepción de los iconos y sonidos anteriormente mencionados, bajo una licencia:</string>
     <string name="FAbout_LicenseSound">FeedBack: positive sound: Limetoe  badass victory</string>
     <string name="FAbout_Fonts">Este programa utiliza las fuentes Action_Man_Bold y AndikaNewBasic </string>
+    <string name="FOptions_settings_saveNickModalTitle">Contraseña para cambio de nick</string>
+    <string name="FOptions_settings_saveNickModalAccept">Aceptar</string>
+    <string name="FOptions_settings_saveNickModalCancel">Cancelar</string>
+    <string name="FOptions_settings_saveNickToastAccepted">Cambio de nick aceptado. Contraseña correcta</string>
+    <string name="FOptions_settings_saveNickToastCanceled">Cambio de nick NO ACEPTADO. Contraseña INCORRECTA</string>
+    <string name="FOptions_settings_saveNickToastCanceledNoInput">Cambio de nick NO ACEPTADO. El nick está vacío</string>
     />
 
     />

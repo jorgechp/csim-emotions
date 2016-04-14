@@ -112,5 +112,10 @@ public class Config {
      */
     public static byte GAME_POINTS = 20;
 
+    /**
+     * Contraseña para modificar el apartado de opciones
+     */
+    public static String OPTIONS_PASSWORD = "carrilet";
+
 
 }

@@ -1,0 +1,5 @@
+#!/bin/sh
+for audio_file in `find . -name '*.ogg'`; do
+	normalize-ogg $audio_file;
+
+done

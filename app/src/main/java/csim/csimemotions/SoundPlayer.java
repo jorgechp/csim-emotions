@@ -40,7 +40,7 @@ public class SoundPlayer {
             mp = MediaPlayer.create(context, this.idSong);
             mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
         }
-        mp.start();
+
 
         Log.d(Integer.toString(this.idSong), "On start");
         mp.setLooping(loop);

@@ -79,7 +79,7 @@ public class F_Game5 extends Generic_Game {
      *
      * @return A new instance of fragment F_Game5.
      */
-    // TODO: Rename and change types and number of parameters
+
     public static F_Game5 newInstance() {
         F_Game5 fragment = new F_Game5();
         Bundle args = new Bundle();
@@ -106,6 +106,7 @@ public class F_Game5 extends Generic_Game {
                 F_Game5.this.setEnableButtons(true);
                 isEEGPreTime = false;
                 F_Game5.super.cdTimerPost.start();
+
             }
         };
     }
@@ -126,7 +127,7 @@ public class F_Game5 extends Generic_Game {
         super.cdTimerPost = new CountDownTimer(super.maxTimePost, 1000) {
 
             public void onTick(long millisUntilFinished) {
-                //mTextField.setText("seconds remaining: " + millisUntilFinished / 1000);
+
 
             }
 
@@ -139,6 +140,8 @@ public class F_Game5 extends Generic_Game {
                 F_Game5.this.resetPosition();
                 F_Game5.this.isPlayerEnabled = false;
                 F_Game5.this.generateSong();
+
+
             }
         };
     }
@@ -157,7 +160,7 @@ public class F_Game5 extends Generic_Game {
         return inflater.inflate(R.layout.fragment_f__game5, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
+
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -238,7 +241,7 @@ public class F_Game5 extends Generic_Game {
 
         this.flScreen = (FrameLayout) super.actividadPrincipal.findViewById(R.id.Game5_flScreen);
 
-        this.speed = (byte) (super.stageNumber + 2); //TODO cambiar esto por el nivel de dificultad del juego
+        this.speed = (byte) (super.stageNumber + 2);
 
         this.lp = this.ivPlayer.getLayoutParams();
 
@@ -315,6 +318,7 @@ public class F_Game5 extends Generic_Game {
 
                 if(isCollision){
                     isResponseRegistered = true;
+                    resetPosition();
                     F_Game5.this.procesarRespuesta(F_Game5.this.continueGame());
 
                 }
@@ -337,8 +341,7 @@ public class F_Game5 extends Generic_Game {
 
         Typeface tfTitle = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Action_Man_Bold.ttf");
         this.ttTitle.setTypeface(tfTitle);
-        // this.progressBar.setMax(maxNumStages);
-        // this.progressBar.setProgress(0);
+
         this.procesarRespuesta(this.continueGame());
         this.layoutButton = (ViewGroup) this.ivPlayer.getParent();
         this.screenSize = new float[2];
@@ -403,7 +406,7 @@ public class F_Game5 extends Generic_Game {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
+
         void onFragmentInteraction(Uri uri);
     }
 
@@ -425,6 +428,7 @@ public class F_Game5 extends Generic_Game {
                 isCollision = true;
                 break;
             case PLAYER_ERROR:
+                super.procesarRespuesta(respuesta);
                 isCollision = true;
                 if(this.actividadPrincipal.getTemporalStateGame().isEnableEEG()) {
                     processSelection();
@@ -432,6 +436,7 @@ public class F_Game5 extends Generic_Game {
                 }
                 isResponseRegistered = false;
                 isCancelar = false;
+
                 break;
             case GAME_STARTED:
                 this.generateUI();

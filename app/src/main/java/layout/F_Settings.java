@@ -154,8 +154,10 @@ public class F_Settings extends Fragment {
                                 builder.setPositiveButton(R.string.Settings_eeg_ok, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        String m_Text = input.getText().toString();
-                                        F_Settings.this.actividadPrincipal.getUserConf().setUserName(m_Text);
+
+                                        String text =  input.getText().toString();
+                                        F_Settings.this.actividadPrincipal.appendUser(text);
+                                        F_Settings.this.actividadPrincipal.saveUserConfig();
 
                                     }
                                 });

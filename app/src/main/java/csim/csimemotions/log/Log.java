@@ -21,7 +21,7 @@ public class Log implements Serializable {
         this.user = user;
         this.timestamp = timestamp;
         this.logStage = new ArrayList<LogStage>();
-        this.isEEG = false;
+        this.isEEG = isEEG;
     }
 
     public ArrayList<LogStage> getLogStage() {

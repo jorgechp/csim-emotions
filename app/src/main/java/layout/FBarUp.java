@@ -1,15 +1,21 @@
 package layout;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import csim.csimemotions.Config;
 import csim.csimemotions.IRetornable;
 import csim.csimemotions.MainActivity;
 import csim.csimemotions.R;
@@ -28,7 +34,7 @@ public class FBarUp extends Fragment {
     private OnFragmentInteractionListener mListener;
 
 
-    private ImageButton ibSettingsGames, ibSettings, ibSteps;
+    private ImageButton ibSettingsGames, ibSettings, ibSteps, ibChangeUser;
     private View.OnClickListener onclick;
     private boolean isSettings, isSettingsOptions;
     private MainActivity actividadPrincipal;
@@ -116,11 +122,83 @@ public class FBarUp extends Fragment {
         this.ibSettingsGames = (ImageButton) getActivity().findViewById(R.id.ibGames);
         this.ibSettings = (ImageButton) getActivity().findViewById(R.id.ibPreferencias);
         this.ibSteps = (ImageButton) getActivity().findViewById(R.id.ibArcadeMode);
+        this.ibChangeUser = (ImageButton) getActivity().findViewById(R.id.ib_changeUser);
         this.onclick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 switch (v.getId()){
+                    case R.id.ib_changeUser:
+                        AlertDialog.Builder builderPassword = new AlertDialog.Builder(FBarUp.this.actividadPrincipal);
+                        builderPassword.setTitle(R.string.FOptions_settings_saveNickModalTitle);
+
+                        final AlertDialog.Builder builderNick = new AlertDialog.Builder(FBarUp.this.actividadPrincipal);
+                        builderNick.setTitle(R.string.FOptions_settings_newNickTitle);
+
+
+                        // Set up the input
+                        final EditText inputPassword = new EditText(FBarUp.this.actividadPrincipal);
+                        final EditText inputNick = new EditText(FBarUp.this.actividadPrincipal);
+                        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+                        inputPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                        inputNick.setInputType(InputType.TYPE_CLASS_TEXT);
+                        builderPassword.setView(inputPassword);
+                        builderNick.setView(inputNick);
+
+                        // Set up the buttons
+                        builderPassword.setPositiveButton(R.string.FOptions_settings_saveNickModalAccept, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String message = null;
+                                if (inputPassword.getText().toString().equals(Config.OPTIONS_PASSWORD)) {
+                                    builderNick.show();
+                                } else {
+                                    message = getString(R.string.FOptions_settings_saveNickToastCanceled);
+                                }
+
+                                Toast toast = Toast.makeText(
+                                        FBarUp.this.actividadPrincipal,
+                                        message,
+                                        Toast.LENGTH_LONG);
+                                toast.show();
+                            }
+                        });
+                        builderPassword.setNegativeButton(R.string.FOptions_settings_saveNickModalCancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+
+                        // Set up the buttons
+                        builderNick.setPositiveButton(R.string.FOptions_settings_saveNickModalAccept, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String message = null;
+                                String text = inputNick.getText().toString();
+                                if (text.length() > 0) {
+                                    FBarUp.this.actividadPrincipal.appendUser(text);
+                                    FBarUp.this.actividadPrincipal.saveUserConfig();
+                                    fCenterContent.checkUI();
+
+                                    message = getString(R.string.FOptions_settings_saveNickToastAccepted);
+                                } else {
+                                    message = getString(R.string.FOptions_settings_saveNickToastCanceledNoInput);
+                                }
+
+
+                            }
+                        });
+                        builderNick.setNegativeButton(R.string.FOptions_settings_saveNickModalCancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+
+                        builderPassword.show();
+
+                        break;
                     case R.id.ibArcadeMode:
                         actividadPrincipal.getfCenter().emptyArcadeQueue();
                         actividadPrincipal.getfCenter().startArcadeMode();
@@ -157,6 +235,7 @@ public class FBarUp extends Fragment {
         this.ibSettingsGames.setOnClickListener(this.onclick);
         this.ibSettings.setOnClickListener(this.onclick);
         this.ibSteps.setOnClickListener(this.onclick);
+        this.ibChangeUser.setOnClickListener(this.onclick);
 
         this.actividadPrincipal = (MainActivity) getActivity();
         this.actividadPrincipal.setfUp(this);

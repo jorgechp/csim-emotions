@@ -248,7 +248,7 @@ public class F_settings_options_menu extends Fragment implements IRetornable{
 
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(F_settings_options_menu.this.actividadPrincipal);
-                        builder.setTitle("Contraseña de acceso a las opciones de configuración");
+                        builder.setTitle(R.string.FOptions_settings_saveNickModalTitle);
 
                         // Set up the input
                         final EditText input = new EditText(F_settings_options_menu.this.actividadPrincipal);

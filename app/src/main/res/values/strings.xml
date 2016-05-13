@@ -65,6 +65,7 @@
     <string name="FOptions_settings_saveNickToastAccepted">Cambio de nick aceptado. Contraseña correcta</string>
     <string name="FOptions_settings_saveNickToastCanceled">Cambio de nick NO ACEPTADO. Contraseña INCORRECTA</string>
     <string name="FOptions_settings_saveNickToastCanceledNoInput">Cambio de nick NO ACEPTADO. El nick está vacío</string>
+    <string name="FOptions_settings_newNickTitle">Nuevo nick</string>
     />
 
     />

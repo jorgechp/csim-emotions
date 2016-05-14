@@ -428,13 +428,17 @@ public class F_Game5 extends Generic_Game {
                 isCollision = true;
                 break;
             case PLAYER_ERROR:
-                super.procesarRespuesta(respuesta);
                 isCollision = true;
                 if(this.actividadPrincipal.getTemporalStateGame().isEnableEEG()) {
+                    super.procesarRespuesta(respuesta); // No queremos incrementar el stageNumber fuera del modo EEG
                     processSelection();
                     break;
+                }else{
+                    super.sonido.destroy();
+                    this.isPlayerEnabled = false;
+                    isResponseRegistered = false;
                 }
-                isResponseRegistered = false;
+
                 isCancelar = false;
 
                 break;

@@ -35,7 +35,7 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
     protected SoundPlayer sonido;
     protected Emotions respuestaCorrecta, respuestaUsuario;
     protected ImageView feedbackImage;
-    protected SoundPlayer feedBackSoundBien;
+    protected SoundPlayer feedBackSoundBien, finalVictory;
     protected String[][] imHappy, imSad, imAngry, imSurprised;
     protected LogManager logMan;
     protected Log logSession;
@@ -205,6 +205,7 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
         this.logMan = this.actividadPrincipal.getLogMan();
         this.feedbackImage = (ImageView) getActivity().findViewById(R.id.ivFeedback);
         this.feedBackSoundBien = new SoundPlayer(R.raw.feedback_bien_1);
+        this.finalVictory = new SoundPlayer(R.raw.feedback_victory);
 
 
         this.imHappy = this.dbc.getUrlImagen(null, Emotions.HAPPY, actividadPrincipal.getStateOfTheGame().getLevelActual());
@@ -300,6 +301,8 @@ public abstract class Generic_Game extends android.support.v4.app.Fragment imple
         }
         switch (respuesta) {
             case GAME_WON:
+                this.finalVictory.play(this.actividadPrincipal,false);
+                this.finalVictory.destroy();
                 this.stageNumber++;
                 this.sg.chargeReward(this.currentGame, actividadPrincipal.getStateOfTheGame().getLevelActual());
                 this.actividadPrincipal.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
